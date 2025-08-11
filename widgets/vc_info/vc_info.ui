@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>vc_info</class>
+ <widget class="QWidget" name="vc_info">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>280</width>
+    <height>82</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>280</width>
+    <height>82</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>280</width>
+    <height>82</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#panel_vc_info {
+	margin: 2px;
+}
+
+QPushButton {
+	background: none;
+	border: none;
+}
+
+QPushButton:hover {
+	background: #353535;
+	border-radius: 8px;
+}
+
+#btn_channel {
+	font-size: 11pt;
+	font-weight: 600;
+}
+
+#btn_channel:hover {
+	background: none;
+	border: none;
+	text-decoration: underline;
+}
+
+#line, #line_2 {
+	background-color: #353535;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="layout_vc_info">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="frame_vc_info">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="layout_vc_info_frame">
+      <item>
+       <widget class="QPushButton" name="btn_channel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string notr="true">Server Name | channel-name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="layout_buttons" stretch="1,0,0,0,0,0,0,0">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="layout_ping">
+          <property name="spacing">
+           <number>3</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="icon_ping">
+            <property name="minimumSize">
+             <size>
+              <width>12</width>
+              <height>12</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>12</width>
+              <height>12</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QWidget { border: 2px solid green; border-radius: 6px; }
+[status=&quot;talking&quot;] { background-color: lightgreen; }
+[status=&quot;connecting&quot;] { border: 2px solid orange; }
+[status=&quot;error&quot;] { border: 2px solid red; }</string>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_ping">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">[status=&quot;good&quot;] { color: green; }
+[status=&quot;ok&quot;] { color: orange; }
+[status=&quot;bad&quot;] { color: red; }</string>
+            </property>
+            <property name="text">
+             <string notr="true">0 ms</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_camera">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::CameraVideo"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_screenshare">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::Computer"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_mute">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::AudioInputMicrophone"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_deafen">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::AudioVolumeHigh"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_disconnect">
+          <property name="minimumSize">
+           <size>
+            <width>32</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true"/>
+          </property>
+          <property name="icon">
+           <iconset theme="QIcon::ThemeIcon::CallStop"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
