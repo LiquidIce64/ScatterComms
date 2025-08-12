@@ -10,3 +10,7 @@ class ServerMenu(MenuWidget):
 
     def attach(self):
         self.main_page.layout_main_page.addWidget(self, 1, 1, 1, 1)
+        self.main_page.btn_server_title.setFocusProxy(self)
+
+    def focusOutEvent(self, event):
+        self.main_page.btn_server_title.btn.setChecked(False)

@@ -1,11 +1,11 @@
-from PySide6.QtWidgets import QFrame
-from PySide6.QtCore import Signal, Qt
-from PySide6.QtGui import QMouseEvent
+from PySide6.QtWidgets import QFrame, QPushButton
 
 
 class FrameButton(QFrame):
-    clicked = Signal(QMouseEvent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.btn = QPushButton()
 
-    def mousePressEvent(self, event):
-        super().mousePressEvent(event)
-        self.clicked.emit(event)
+    def mouseReleaseEvent(self, event):
+        self.setFocus()
+        self.btn.click()

@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import Qt
 
 from .ui_main_page import Ui_main_page
 from widgets.chat_widget import ChatWidget, ServerChat
@@ -15,12 +16,23 @@ class MainPage(QWidget, Ui_main_page):
 
         self.search_widget = SearchWidget(self)
         self.layout_main_page.addWidget(self.search_widget, 1, 3, 2, 1)
-        self.btn_search.clicked.connect(self.search_widget.toggle)
+        self.btn_search.toggled.connect(self.search_widget.toggle)
 
         self.dropdown_menu: MenuWidget | None = None
-        self.btn_server_title.clicked.connect(lambda _: self.toggle_dropdown_menu(ServerMenu))
-        self.btn_profile.clicked.connect(lambda _: self.toggle_dropdown_menu(ProfileMenu))
-        self.btn_profile.clicked.connect(self.search_widget.hide)
+
+        self.dropdown_server = None
+        self.btn_server_title.btn.setCheckable(True)
+        self.btn_server_title.btn.toggled.connect(lambda: (
+            self.btn_server_title.btn.isChecked() and self.btn_profile.btn.setChecked(False),
+            self.update_dropdown_menu(ServerMenu, self.btn_server_title)
+        ))
+
+        self.btn_profile.btn.setCheckable(True)
+        self.btn_profile.btn.toggled.connect(lambda: (
+            self.btn_search.setChecked(False),
+            self.btn_profile.btn.isChecked() and self.btn_server_title.btn.setChecked(False),
+            self.update_dropdown_menu(ProfileMenu, self.btn_profile)
+        ))
 
         # debug
         self.chat_widget = ServerChat()
@@ -28,10 +40,26 @@ class MainPage(QWidget, Ui_main_page):
         self.chat_widget.lower()
         self.vc_info = VCInfo(self)
 
-    def toggle_dropdown_menu(self, menu_class):
-        if self.dropdown_menu is not None:
+    def update_dropdown_menu(self, menu_class, button):
+        if button.btn.isChecked():
+            if not isinstance(self.dropdown_menu, menu_class):
+                self.dropdown_menu = menu_class(self)
+        elif isinstance(self.dropdown_menu, menu_class):
             self.dropdown_menu.deleteLater()
-            if isinstance(self.dropdown_menu, menu_class):
-                self.dropdown_menu = None
-                return
-        self.dropdown_menu = menu_class(self)
+            self.dropdown_menu = None
+
+    def mousePressEvent(self, event):
+        if self.dropdown_menu is not None:
+            def outside_widget(widget: QWidget):
+                pos = widget.parent().mapFrom(self, event.pos())
+                return not widget.geometry().contains(pos)
+
+            if (
+                outside_widget(self.btn_server_title)
+                and outside_widget(self.btn_profile)
+                and outside_widget(self.dropdown_menu.frame_menu)
+            ):
+                self.btn_server_title.btn.setChecked(False)
+                self.btn_profile.btn.setChecked(False)
+
+        super().mousePressEvent(event)

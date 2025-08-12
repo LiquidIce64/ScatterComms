@@ -24,3 +24,7 @@ class ProfileMenu(MenuWidget):
 
     def attach(self):
         self.main_page.layout_main_page.addWidget(self, 1, 3, 1, 1)
+        self.main_page.btn_profile.setFocusProxy(self)
+
+    def focusOutEvent(self, event):
+        self.main_page.btn_profile.btn.setChecked(False)

@@ -86,8 +86,16 @@ class Ui_main_page(object):
 "	font-weight: 600;\n"
 "}\n"
 "\n"
-"#btn_profile:hover, #btn_server_title:hover {\n"
+"#btn_server_title:hover, #btn_profile:hover, #btn_search:hover {\n"
 "	background-color: #303030;\n"
+"}\n"
+"\n"
+"#btn_search:checked {\n"
+"	background-color: #404040;\n"
+"}\n"
+"\n"
+"#btn_search {\n"
+"	border-radius: 4px;\n"
 "}")
         self.layout_main_page = QGridLayout(main_page)
         self.layout_main_page.setSpacing(0)
@@ -264,11 +272,15 @@ class Ui_main_page(object):
 
         self.btn_search = QPushButton(self.frame_controls)
         self.btn_search.setObjectName(u"btn_search")
+        self.btn_search.setMinimumSize(QSize(28, 28))
+        self.btn_search.setMaximumSize(QSize(28, 28))
         self.btn_search.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_search.setText(u"")
         icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.EditFind))
         self.btn_search.setIcon(icon)
         self.btn_search.setIconSize(QSize(24, 24))
+        self.btn_search.setCheckable(True)
+        self.btn_search.setChecked(False)
 
         self.layout_controls.addWidget(self.btn_search)
 
