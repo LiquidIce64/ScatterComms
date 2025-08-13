@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import Qt
 
 from .ui_main_page import Ui_main_page
-from widgets.chat_widget import ChatWidget, ServerChat
+from widgets.chat_widget import ServerChat
 from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import ServerMenu, ProfileMenu
 from widgets.dropdown_menus.menu_widget import MenuWidget
+from resources import Icons, StatusIcons
 
 
 class MainPage(QWidget, Ui_main_page):
@@ -20,11 +20,12 @@ class MainPage(QWidget, Ui_main_page):
 
         self.dropdown_menu: MenuWidget | None = None
 
-        self.dropdown_server = None
+        self.update_server_dropdown_icon()
         self.btn_server_title.btn.setCheckable(True)
         self.btn_server_title.btn.toggled.connect(lambda: (
             self.btn_server_title.btn.isChecked() and self.btn_profile.btn.setChecked(False),
-            self.update_dropdown_menu(ServerMenu, self.btn_server_title)
+            self.update_dropdown_menu(ServerMenu, self.btn_server_title),
+            self.update_server_dropdown_icon()
         ))
 
         self.btn_profile.btn.setCheckable(True)
@@ -33,6 +34,7 @@ class MainPage(QWidget, Ui_main_page):
             self.btn_profile.btn.isChecked() and self.btn_server_title.btn.setChecked(False),
             self.update_dropdown_menu(ProfileMenu, self.btn_profile)
         ))
+        self.icon_userstatus.setIcon(StatusIcons.online)
 
         # debug
         self.chat_widget = ServerChat()
@@ -47,6 +49,11 @@ class MainPage(QWidget, Ui_main_page):
         elif isinstance(self.dropdown_menu, menu_class):
             self.dropdown_menu.deleteLater()
             self.dropdown_menu = None
+
+    def update_server_dropdown_icon(self):
+        self.icon_server_dropdown.setIcon(
+            Icons.arrow_up if self.btn_server_title.btn.isChecked() else Icons.arrow_down
+        )
 
     def mousePressEvent(self, event):
         if self.dropdown_menu is not None:

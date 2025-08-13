@@ -53,17 +53,12 @@
 	font-weight: 700;
 }
 
-#btn_server_dropdown, #btn_settings, #btn_inbox, #btn_search {
+#btn_settings, #btn_inbox, #btn_search {
 	background: transparent;
 	border: none;
 }
 
 #btn_profile {
-	border-radius: 6px;
-}
-
-#icon_userstatus {
-	border: 2px solid #252525;
 	border-radius: 6px;
 }
 
@@ -89,6 +84,10 @@
 
 #btn_search {
 	border-radius: 4px;
+}
+
+#icon_server_dropdown {
+	margin: 8px;
 }</string>
   </property>
   <layout class="QGridLayout" name="layout_main_page" rowstretch="0,1,0" columnstretch="0,0,1,0">
@@ -347,7 +346,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="icon_server_dropdown">
+       <widget class="IconWidget" name="icon_server_dropdown">
         <property name="minimumSize">
          <size>
           <width>32</width>
@@ -364,7 +363,7 @@
          <string notr="true"/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../resources/index.qrc">:/icons/test</pixmap>
+         <pixmap resource="../../resources/index.qrc">:/icons/arrow_down</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -438,7 +437,7 @@
           <number>0</number>
          </property>
          <item row="1" column="1">
-          <widget class="QLabel" name="icon_userstatus">
+          <widget class="IconWidget" name="icon_userstatus">
            <property name="minimumSize">
             <size>
              <width>12</width>
@@ -451,11 +450,14 @@
              <height>12</height>
             </size>
            </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: green;</string>
-           </property>
            <property name="text">
             <string notr="true"/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../../resources/index.qrc">:/status/online</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -645,6 +647,11 @@
    <extends>QFrame</extends>
    <header>widgets.common</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QLabel</extends>
+   <header>widgets.common</header>
   </customwidget>
  </customwidgets>
  <resources>

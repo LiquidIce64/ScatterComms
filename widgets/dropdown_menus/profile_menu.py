@@ -1,24 +1,27 @@
 from PySide6.QtWidgets import QFrame
 
 from .menu_widget import MenuButton, MenuWidget
+from resources import StatusIcons
 
 
 class ProfileMenu(MenuWidget):
     def setupButtons(self):
-        self.btn_online = self._add_button("Online")
-        self.btn_away = self._add_button("Away")
-        self.btn_do_not_disturb = self._add_button("Do Not Disturb")
-        self.btn_invisible = self._add_button("Invisible")
+        self.btn_online = self._add_button('Online', StatusIcons.online, 4)
+        self.btn_away = self._add_button('Away', StatusIcons.away, 4)
+        self.btn_do_not_disturb = self._add_button('Do Not Disturb', StatusIcons.do_not_disturb, 4)
+        self.btn_invisible = self._add_button('Invisible', StatusIcons.offline, 4)
 
         self.divider = QFrame(frameShape=QFrame.Shape.HLine)
-        self.divider.setStyleSheet("color: #353535;")
+        self.divider.setStyleSheet('color: #353535;')
         self.layout_menu.addWidget(self.divider)
 
-        self.btn_edit_profile = self._add_button("Edit Profile")
-        self.btn_change_user = self._add_button("Change User")
+        self.btn_edit_profile = self._add_button('Edit Profile')
+        self.btn_change_user = self._add_button('Change User')
 
-    def _add_button(self, label=None, icon=None):
+    def _add_button(self, label=None, icon=None, margin=0):
         btn = MenuButton(label, icon, invert_layout=True)
+        if margin > 0:
+            btn.icon.setStyleSheet(f'margin:{margin}px;')
         self.layout_menu.addWidget(btn)
         return btn
 

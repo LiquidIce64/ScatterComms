@@ -46,9 +46,6 @@
    <item>
     <widget class="QFrame" name="btn">
      <layout class="QHBoxLayout" name="layout_menu_button">
-      <property name="spacing">
-       <number>3</number>
-      </property>
       <property name="leftMargin">
        <number>6</number>
       </property>
@@ -69,7 +66,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="icon">
+       <widget class="IconWidget" name="icon">
         <property name="minimumSize">
          <size>
           <width>24</width>
@@ -86,7 +83,7 @@
          <string notr="true"/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../resources/index.qrc">:/icons/test</pixmap>
+         <pixmap resource="../../../resources/index.qrc">:/icons/test</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -98,8 +95,16 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QLabel</extends>
+   <header>widgets.common</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="../../resources/index.qrc"/>
+  <include location="../../../resources/index.qrc"/>
+  <include location="../../../resources/index.qrc"/>
  </resources>
  <connections/>
 </ui>

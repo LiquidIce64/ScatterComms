@@ -17,6 +17,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
     QSizePolicy, QVBoxLayout, QWidget)
+
+from widgets.common import IconWidget
+import index_rc
 import index_rc
 
 class Ui_menu_button(object):
@@ -44,7 +47,6 @@ class Ui_menu_button(object):
         self.btn = QFrame(menu_button)
         self.btn.setObjectName(u"btn")
         self.layout_menu_button = QHBoxLayout(self.btn)
-        self.layout_menu_button.setSpacing(3)
         self.layout_menu_button.setObjectName(u"layout_menu_button")
         self.layout_menu_button.setContentsMargins(6, 6, 6, 6)
         self.label = QLabel(self.btn)
@@ -53,7 +55,7 @@ class Ui_menu_button(object):
 
         self.layout_menu_button.addWidget(self.label)
 
-        self.icon = QLabel(self.btn)
+        self.icon = IconWidget(self.btn)
         self.icon.setObjectName(u"icon")
         self.icon.setMinimumSize(QSize(24, 24))
         self.icon.setMaximumSize(QSize(24, 24))

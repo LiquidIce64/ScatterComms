@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QLabel, QLayout, QPushButton, QScrollArea,
     QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
-from widgets.common import (FrameButton, RoundedImage)
+from widgets.common import (FrameButton, IconWidget, RoundedImage)
 import index_rc
 
 class Ui_main_page(object):
@@ -59,7 +59,7 @@ class Ui_main_page(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#btn_server_dropdown, #btn_settings, #btn_inbox, #btn_search {\n"
+"#btn_settings, #btn_inbox, #btn_search {\n"
 "	background: transparent;\n"
 "	border: none;\n"
 "}\n"
@@ -68,20 +68,15 @@ class Ui_main_page(object):
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#icon_userstatus {\n"
-"	border: 2px solid #252525;\n"
-"	border-radius: 6px;\n"
-"}\n"
-"\n"
 "#label_userstatus {\n"
-"	"
-                        "margin-left: 4px;\n"
+"	margin-left: 4px;\n"
 "	font-size: 7pt;\n"
 "	font-weight: 600;\n"
 "}\n"
 "\n"
 "#label_username {\n"
-"	margin-left: 1px;\n"
+"	margin-left: "
+                        "1px;\n"
 "	font-size: 11pt;\n"
 "	font-weight: 600;\n"
 "}\n"
@@ -96,6 +91,10 @@ class Ui_main_page(object):
 "\n"
 "#btn_search {\n"
 "	border-radius: 4px;\n"
+"}\n"
+"\n"
+"#icon_server_dropdown {\n"
+"	margin: 8px;\n"
 "}")
         self.layout_main_page = QGridLayout(main_page)
         self.layout_main_page.setSpacing(0)
@@ -198,12 +197,12 @@ class Ui_main_page(object):
 
         self.layout_server_title.addWidget(self.label_servername)
 
-        self.icon_server_dropdown = QLabel(self.btn_server_title)
+        self.icon_server_dropdown = IconWidget(self.btn_server_title)
         self.icon_server_dropdown.setObjectName(u"icon_server_dropdown")
         self.icon_server_dropdown.setMinimumSize(QSize(32, 32))
         self.icon_server_dropdown.setMaximumSize(QSize(32, 32))
         self.icon_server_dropdown.setText(u"")
-        self.icon_server_dropdown.setPixmap(QPixmap(u":/icons/test"))
+        self.icon_server_dropdown.setPixmap(QPixmap(u":/icons/arrow_down"))
         self.icon_server_dropdown.setScaledContents(True)
 
         self.layout_server_title.addWidget(self.icon_server_dropdown)
@@ -231,12 +230,13 @@ class Ui_main_page(object):
         self.layout_profile.setSpacing(0)
         self.layout_profile.setObjectName(u"layout_profile")
         self.layout_profile.setContentsMargins(3, 3, 3, 3)
-        self.icon_userstatus = QLabel(self.btn_profile)
+        self.icon_userstatus = IconWidget(self.btn_profile)
         self.icon_userstatus.setObjectName(u"icon_userstatus")
         self.icon_userstatus.setMinimumSize(QSize(12, 12))
         self.icon_userstatus.setMaximumSize(QSize(12, 12))
-        self.icon_userstatus.setStyleSheet(u"background-color: green;")
         self.icon_userstatus.setText(u"")
+        self.icon_userstatus.setPixmap(QPixmap(u":/status/online"))
+        self.icon_userstatus.setScaledContents(True)
 
         self.layout_profile.addWidget(self.icon_userstatus, 1, 1, 1, 1)
 
