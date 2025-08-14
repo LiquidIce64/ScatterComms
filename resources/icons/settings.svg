@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="settings.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="22.627417"
+     inkscape:cx="13.545514"
+     inkscape:cy="17.125242"
+     inkscape:window-width="2560"
+     inkscape:window-height="1351"
+     inkscape:window-x="1341"
+     inkscape:window-y="280"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect8"
+       width="3"
+       height="3"
+       x="-1.5000036"
+       y="-11.627418"
+       transform="rotate(135.00001)"
+       inkscape:label="rect8" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect48"
+       width="3"
+       height="3"
+       x="-17.5"
+       y="2"
+       transform="rotate(-90)"
+       inkscape:label="rect7" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect47"
+       width="3"
+       height="3"
+       x="21.127417"
+       y="11"
+       transform="rotate(45)"
+       inkscape:label="rect6" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect46"
+       width="3"
+       height="3"
+       x="-17.5"
+       y="-30"
+       transform="scale(-1)"
+       inkscape:label="rect5" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect45"
+       width="3"
+       height="3"
+       x="-1.4999998"
+       y="33.627419"
+       transform="rotate(-45)"
+       inkscape:label="rect4" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect44"
+       width="3"
+       height="3"
+       x="14.5"
+       y="-30"
+       transform="rotate(90)"
+       inkscape:label="rect3" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect51"
+       width="3"
+       height="3"
+       x="-24.127417"
+       y="11.000005"
+       transform="rotate(-134.99999)"
+       inkscape:label="rect2" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect50"
+       width="3"
+       height="3"
+       x="14.5"
+       y="2"
+       inkscape:label="rect1" />
+    <circle
+       style="display:inline;fill:none;fill-opacity:1;stroke:#808080;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="circle"
+       cx="16"
+       cy="16"
+       r="9"
+       inkscape:label="circle" />
+  </g>
+</svg>

@@ -53,9 +53,10 @@
 	font-weight: 700;
 }
 
-#btn_settings, #btn_inbox, #btn_search {
-	background: transparent;
-	border: none;
+#icon_userstatus {
+	background-color: #252525;
+	padding: 2px;
+	border-radius: 6px;
 }
 
 #btn_profile {
@@ -74,16 +75,18 @@
 	font-weight: 600;
 }
 
-#btn_server_title:hover, #btn_profile:hover, #btn_search:hover {
+#btn_settings, #btn_search {
+	background: none;
+	border: none;
+	border-radius: 6px;
+}
+
+#btn_server_title:hover, #btn_profile:hover, #btn_search:hover, #btn_settings:hover {
 	background-color: #303030;
 }
 
 #btn_search:checked {
 	background-color: #404040;
-}
-
-#btn_search {
-	border-radius: 4px;
 }
 
 #icon_server_dropdown {
@@ -401,7 +404,7 @@
      </property>
      <layout class="QHBoxLayout" name="layout_controls" stretch="0,0,0">
       <property name="spacing">
-       <number>6</number>
+       <number>3</number>
       </property>
       <property name="leftMargin">
        <number>3</number>
@@ -511,14 +514,14 @@
        <widget class="QPushButton" name="btn_search">
         <property name="minimumSize">
          <size>
-          <width>28</width>
-          <height>28</height>
+          <width>38</width>
+          <height>38</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>28</width>
-          <height>28</height>
+          <width>38</width>
+          <height>38</height>
          </size>
         </property>
         <property name="cursor">
@@ -528,7 +531,8 @@
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::EditFind"/>
+         <iconset resource="../../resources/index.qrc">
+          <normaloff>:/icons/search</normaloff>:/icons/search</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -539,13 +543,22 @@
         <property name="checkable">
          <bool>true</bool>
         </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btn_settings">
+        <property name="minimumSize">
+         <size>
+          <width>38</width>
+          <height>38</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>38</width>
+          <height>38</height>
+         </size>
+        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -553,7 +566,8 @@
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::DocumentProperties"/>
+         <iconset resource="../../resources/index.qrc">
+          <normaloff>:/icons/settings</normaloff>:/icons/settings</iconset>
         </property>
         <property name="iconSize">
          <size>

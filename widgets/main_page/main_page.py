@@ -6,7 +6,7 @@ from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import ServerMenu, ProfileMenu
 from widgets.dropdown_menus.menu_widget import MenuWidget
-from resources import Icons, StatusIcons
+from resources import Icons
 
 
 class MainPage(QWidget, Ui_main_page):
@@ -14,9 +14,12 @@ class MainPage(QWidget, Ui_main_page):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
+        self.btn_settings.setIcon(Icons.settings)
+
         self.search_widget = SearchWidget(self)
         self.layout_main_page.addWidget(self.search_widget, 1, 3, 2, 1)
         self.btn_search.toggled.connect(self.search_widget.toggle)
+        self.btn_search.setIcon(Icons.search)
 
         self.dropdown_menu: MenuWidget | None = None
 
@@ -34,7 +37,7 @@ class MainPage(QWidget, Ui_main_page):
             self.btn_profile.btn.isChecked() and self.btn_server_title.btn.setChecked(False),
             self.update_dropdown_menu(ProfileMenu, self.btn_profile)
         ))
-        self.icon_userstatus.setIcon(StatusIcons.online)
+        self.icon_userstatus.setIcon(Icons.Status.online)
 
         # debug
         self.chat_widget = ServerChat()

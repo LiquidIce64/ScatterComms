@@ -59,9 +59,10 @@ class Ui_main_page(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#btn_settings, #btn_inbox, #btn_search {\n"
-"	background: transparent;\n"
-"	border: none;\n"
+"#icon_userstatus {\n"
+"	background-color: #252525;\n"
+"	padding: 2px;\n"
+"	border-radius: 6px;\n"
 "}\n"
 "\n"
 "#btn_profile {\n"
@@ -75,22 +76,24 @@ class Ui_main_page(object):
 "}\n"
 "\n"
 "#label_username {\n"
-"	margin-left: "
-                        "1px;\n"
+"	margin-l"
+                        "eft: 1px;\n"
 "	font-size: 11pt;\n"
 "	font-weight: 600;\n"
 "}\n"
 "\n"
-"#btn_server_title:hover, #btn_profile:hover, #btn_search:hover {\n"
+"#btn_settings, #btn_search {\n"
+"	background: none;\n"
+"	border: none;\n"
+"	border-radius: 6px;\n"
+"}\n"
+"\n"
+"#btn_server_title:hover, #btn_profile:hover, #btn_search:hover, #btn_settings:hover {\n"
 "	background-color: #303030;\n"
 "}\n"
 "\n"
 "#btn_search:checked {\n"
 "	background-color: #404040;\n"
-"}\n"
-"\n"
-"#btn_search {\n"
-"	border-radius: 4px;\n"
 "}\n"
 "\n"
 "#icon_server_dropdown {\n"
@@ -220,7 +223,7 @@ class Ui_main_page(object):
         self.frame_controls.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_controls.setFrameShadow(QFrame.Shadow.Raised)
         self.layout_controls = QHBoxLayout(self.frame_controls)
-        self.layout_controls.setSpacing(6)
+        self.layout_controls.setSpacing(3)
         self.layout_controls.setObjectName(u"layout_controls")
         self.layout_controls.setContentsMargins(3, 3, 6, 3)
         self.btn_profile = FrameButton(self.frame_controls)
@@ -272,23 +275,26 @@ class Ui_main_page(object):
 
         self.btn_search = QPushButton(self.frame_controls)
         self.btn_search.setObjectName(u"btn_search")
-        self.btn_search.setMinimumSize(QSize(28, 28))
-        self.btn_search.setMaximumSize(QSize(28, 28))
+        self.btn_search.setMinimumSize(QSize(38, 38))
+        self.btn_search.setMaximumSize(QSize(38, 38))
         self.btn_search.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_search.setText(u"")
-        icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.EditFind))
+        icon = QIcon()
+        icon.addFile(u":/icons/search", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btn_search.setIcon(icon)
         self.btn_search.setIconSize(QSize(24, 24))
         self.btn_search.setCheckable(True)
-        self.btn_search.setChecked(False)
 
         self.layout_controls.addWidget(self.btn_search)
 
         self.btn_settings = QPushButton(self.frame_controls)
         self.btn_settings.setObjectName(u"btn_settings")
+        self.btn_settings.setMinimumSize(QSize(38, 38))
+        self.btn_settings.setMaximumSize(QSize(38, 38))
         self.btn_settings.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_settings.setText(u"")
-        icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.DocumentProperties))
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/settings", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btn_settings.setIcon(icon1)
         self.btn_settings.setIconSize(QSize(24, 24))
 

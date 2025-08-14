@@ -1,1 +1,1 @@
-from .icons import Icons, StatusIcons
+from .icons import Icons

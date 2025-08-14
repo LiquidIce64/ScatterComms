@@ -2,8 +2,8 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="16"
-   height="16"
+   width="8"
+   height="8"
    viewBox="0 0 16 16"
    version="1.1"
    id="svg1"
@@ -24,13 +24,13 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="true"
-     inkscape:zoom="50.248776"
-     inkscape:cx="7.4628683"
-     inkscape:cy="7.4131159"
+     inkscape:zoom="100.49755"
+     inkscape:cx="3.5373996"
+     inkscape:cy="3.7065579"
      inkscape:window-width="2560"
      inkscape:window-height="1351"
-     inkscape:window-x="1341"
-     inkscape:window-y="280"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
     <inkscape:grid
@@ -51,23 +51,67 @@
        visible="true" />
   </sodipodi:namedview>
   <defs
-     id="defs1" />
+     id="defs1">
+    <inkscape:path-effect
+       effect="powermask"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       uri="#mask-powermask-path-effect1"
+       invert="false"
+       hide_mask="false"
+       background="true"
+       background_color="#ffffffff" />
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect1">
+      <path
+         id="mask-powermask-path-effect1_box"
+         style="fill:#ffffff;fill-opacity:1"
+         d="M -1,-1 H 17 V 17 H -1 Z" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         id="circle1"
+         cx="5"
+         cy="5"
+         inkscape:label="mask"
+         r="7"
+         d="M 12,5 A 7,7 0 0 1 5,12 7,7 0 0 1 -2,5 7,7 0 0 1 5,-2 7,7 0 0 1 12,5 Z" />
+    </mask>
+    <filter
+       id="mask-powermask-path-effect1_inverse"
+       inkscape:label="filtermask-powermask-path-effect1"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect1_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect1_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+  </defs>
   <g
      inkscape:label="Слой 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <ellipse
-       style="fill:#998000;fill-opacity:1;stroke:#252525;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       id="path1"
-       cy="8"
-       cx="8"
-       rx="6.9974651"
-       ry="6.9974666" />
-    <circle
-       style="fill:#252525;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       id="path2"
-       cx="6"
-       cy="6"
-       r="5" />
+    <path
+       style="fill:#998000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="circle"
+       inkscape:label="circle"
+       mask="url(#mask-powermask-path-effect1)"
+       inkscape:path-effect="#path-effect1"
+       sodipodi:type="arc"
+       sodipodi:cx="8"
+       sodipodi:cy="8"
+       sodipodi:rx="8"
+       sodipodi:ry="8"
+       d="M 16,8 A 8,8 0 0 1 8,16 8,8 0 0 1 0,8 8,8 0 0 1 8,0 8,8 0 0 1 16,8 Z" />
   </g>
 </svg>
