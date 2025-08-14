@@ -70,6 +70,8 @@ class MainPage(QWidget, Ui_main_page):
                 and outside_widget(self.dropdown_menu.frame_menu)
             ):
                 self.btn_server_title.btn.setChecked(False)
+                self.btn_server_title.clearFocus()
                 self.btn_profile.btn.setChecked(False)
+                self.btn_profile.clearFocus()
 
         super().mousePressEvent(event)

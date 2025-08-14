@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file alias="emoji">icons/emoji.svg</file>
+    <file alias="plus">icons/plus.svg</file>
+    <file alias="send">icons/send.svg</file>
     <file alias="search">icons/search.svg</file>
     <file alias="edit">icons/edit.svg</file>
     <file alias="settings">icons/settings.svg</file>

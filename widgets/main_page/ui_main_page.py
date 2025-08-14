@@ -88,7 +88,9 @@ class Ui_main_page(object):
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#btn_server_title:hover, #btn_profile:hover, #btn_search:hover, #btn_settings:hover {\n"
+"#btn_server_title:hover, #btn_server_title:focus,\n"
+"#btn_profile:hover, #btn_profile:focus,\n"
+"#btn_search:hover, #btn_settings:hover {\n"
 "	background-color: #303030;\n"
 "}\n"
 "\n"
@@ -188,6 +190,7 @@ class Ui_main_page(object):
         self.btn_server_title.setMinimumSize(QSize(220, 46))
         self.btn_server_title.setMaximumSize(QSize(220, 46))
         self.btn_server_title.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btn_server_title.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.btn_server_title.setFrameShape(QFrame.Shape.NoFrame)
         self.btn_server_title.setFrameShadow(QFrame.Shadow.Raised)
         self.layout_server_title = QHBoxLayout(self.btn_server_title)
@@ -229,6 +232,7 @@ class Ui_main_page(object):
         self.btn_profile = FrameButton(self.frame_controls)
         self.btn_profile.setObjectName(u"btn_profile")
         self.btn_profile.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btn_profile.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.layout_profile = QGridLayout(self.btn_profile)
         self.layout_profile.setSpacing(0)
         self.layout_profile.setObjectName(u"layout_profile")

@@ -5,6 +5,7 @@ class FrameButton(QFrame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.btn = QPushButton()
+        self.btn.toggled.connect(self.repaint)
 
     def mouseReleaseEvent(self, event):
         self.setFocus()

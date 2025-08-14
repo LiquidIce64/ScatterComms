@@ -81,7 +81,9 @@
 	border-radius: 6px;
 }
 
-#btn_server_title:hover, #btn_profile:hover, #btn_search:hover, #btn_settings:hover {
+#btn_server_title:hover, #btn_server_title:focus,
+#btn_profile:hover, #btn_profile:focus,
+#btn_search:hover, #btn_settings:hover {
 	background-color: #303030;
 }
 
@@ -319,6 +321,9 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::StrongFocus</enum>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
@@ -422,6 +427,9 @@
        <widget class="FrameButton" name="btn_profile">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::StrongFocus</enum>
         </property>
         <layout class="QGridLayout" name="layout_profile" rowstretch="1,0" columnstretch="0,0,1">
          <property name="leftMargin">

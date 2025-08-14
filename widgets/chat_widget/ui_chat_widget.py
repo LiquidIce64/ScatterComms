@@ -18,6 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QPushButton,
     QScrollArea, QSizePolicy, QSpacerItem, QTextEdit,
     QVBoxLayout, QWidget)
+import index_rc
 
 class Ui_chat_widget(object):
     def setupUi(self, chat_widget):
@@ -35,8 +36,17 @@ class Ui_chat_widget(object):
 "}\n"
 "\n"
 "#btn_attachment, #btn_emoji, #btn_send {\n"
-"	background: transparent;\n"
+"	background: none;\n"
 "	border: none;\n"
+"	border-radius: 6px;\n"
+"}\n"
+"\n"
+"#btn_attachment:hover, #btn_emoji:hover, #btn_send:hover {\n"
+"	background-color: #454545;\n"
+"}\n"
+"\n"
+"#btn_emoji:checked {\n"
+"	background-color: #555555;\n"
 "}\n"
 "\n"
 "#frame_members {\n"
@@ -85,9 +95,10 @@ class Ui_chat_widget(object):
         self.btn_attachment.setMinimumSize(QSize(32, 32))
         self.btn_attachment.setMaximumSize(QSize(32, 32))
         self.btn_attachment.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.ListAdd))
+        self.btn_attachment.setText(u"")
+        icon = QIcon()
+        icon.addFile(u":/icons/plus", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btn_attachment.setIcon(icon)
-        self.btn_attachment.setIconSize(QSize(24, 24))
 
         self.layout_messagebox.addWidget(self.btn_attachment, 0, Qt.AlignmentFlag.AlignBottom)
 
@@ -98,7 +109,7 @@ class Ui_chat_widget(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.textbox.sizePolicy().hasHeightForWidth())
         self.textbox.setSizePolicy(sizePolicy)
-        self.textbox.setMinimumSize(QSize(0, 30))
+        self.textbox.setMinimumSize(QSize(0, 28))
         self.textbox.setMaximumSize(QSize(16777215, 132))
         self.textbox.setFrameShape(QFrame.Shape.NoFrame)
         self.textbox.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
@@ -124,9 +135,11 @@ class Ui_chat_widget(object):
         self.btn_emoji.setMinimumSize(QSize(32, 32))
         self.btn_emoji.setMaximumSize(QSize(32, 32))
         self.btn_emoji.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.InsertLink))
+        self.btn_emoji.setText(u"")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/emoji", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btn_emoji.setIcon(icon1)
-        self.btn_emoji.setIconSize(QSize(24, 24))
+        self.btn_emoji.setCheckable(True)
 
         self.layout_messagebox.addWidget(self.btn_emoji, 0, Qt.AlignmentFlag.AlignBottom)
 
@@ -136,9 +149,10 @@ class Ui_chat_widget(object):
         self.btn_send.setMinimumSize(QSize(32, 32))
         self.btn_send.setMaximumSize(QSize(32, 32))
         self.btn_send.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        icon2 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.DocumentSend))
+        self.btn_send.setText(u"")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/send", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
         self.btn_send.setIcon(icon2)
-        self.btn_send.setIconSize(QSize(24, 24))
 
         self.layout_messagebox.addWidget(self.btn_send, 0, Qt.AlignmentFlag.AlignBottom)
 
@@ -154,10 +168,7 @@ class Ui_chat_widget(object):
     # setupUi
 
     def retranslateUi(self, chat_widget):
-        self.btn_attachment.setText("")
         self.textbox.setPlaceholderText(QCoreApplication.translate("chat_widget", u"Message #chat-name", None))
-        self.btn_emoji.setText("")
-        self.btn_send.setText("")
         pass
     # retranslateUi
 
