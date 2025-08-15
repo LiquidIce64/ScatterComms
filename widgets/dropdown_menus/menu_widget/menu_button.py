@@ -6,11 +6,11 @@ from .ui_menu_button import Ui_menu_button
 
 
 class MenuButton(QWidget, Ui_menu_button):
-    clicked = Signal()
-
     def __init__(self, label: str = None, icon: QPixmap | QIcon = None, *args, invert_layout=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self.clicked = self.btn.clicked
+
         if label is not None:
             self.label.setText(label)
         if icon is not None:
@@ -19,6 +19,3 @@ class MenuButton(QWidget, Ui_menu_button):
             self.icon.setIcon(icon)
         if invert_layout:
             self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
-
-    def mouseReleaseEvent(self, event):
-        self.clicked.emit()

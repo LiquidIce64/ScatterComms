@@ -18,7 +18,7 @@
 	border-radius: 6px;
 }
 
-#btn:hover {
+#btn:hover, #btn:focus {
 	background-color: #353535;
 }
 
@@ -44,7 +44,10 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="btn">
+    <widget class="FrameButton" name="btn">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::TabFocus</enum>
+     </property>
      <layout class="QHBoxLayout" name="layout_menu_button">
       <property name="leftMargin">
        <number>6</number>
@@ -100,6 +103,12 @@
    <class>IconWidget</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
+  </customwidget>
+  <customwidget>
+   <class>FrameButton</class>
+   <extends>QFrame</extends>
+   <header>widgets.common</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

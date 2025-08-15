@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QSizePolicy, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QSizePolicy,
+    QVBoxLayout, QWidget)
 
-from widgets.common import IconWidget
+from widgets.common import (FrameButton, IconWidget)
 import index_rc
 import index_rc
 
@@ -32,7 +32,7 @@ class Ui_menu_button(object):
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#btn:hover {\n"
+"#btn:hover, #btn:focus {\n"
 "	background-color: #353535;\n"
 "}\n"
 "\n"
@@ -44,8 +44,9 @@ class Ui_menu_button(object):
         self.layout_menu_button_widget.setSpacing(0)
         self.layout_menu_button_widget.setObjectName(u"layout_menu_button_widget")
         self.layout_menu_button_widget.setContentsMargins(0, 0, 0, 0)
-        self.btn = QFrame(menu_button)
+        self.btn = FrameButton(menu_button)
         self.btn.setObjectName(u"btn")
+        self.btn.setFocusPolicy(Qt.FocusPolicy.TabFocus)
         self.layout_menu_button = QHBoxLayout(self.btn)
         self.layout_menu_button.setObjectName(u"layout_menu_button")
         self.layout_menu_button.setContentsMargins(6, 6, 6, 6)

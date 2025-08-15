@@ -660,7 +660,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>RoundedImage</class>
+   <class>IconWidget</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>
@@ -671,7 +671,7 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>IconWidget</class>
+   <class>RoundedImage</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>
