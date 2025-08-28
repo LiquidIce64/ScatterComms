@@ -12,9 +12,12 @@ class MainPage(QWidget, Ui_main_page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self.dropdown_menu: MenuWidget | None = None
 
+        # Settings
         self.btn_settings.setIcon(Icons.settings)
 
+        # Search
         self.search_widget = SearchWidget(self)
         self.layout_main_page.addWidget(self.search_widget, 1, 3, 2, 1)
         self.btn_search.toggled.connect(lambda: (
@@ -23,8 +26,7 @@ class MainPage(QWidget, Ui_main_page):
         ))
         self.btn_search.setIcon(Icons.search)
 
-        self.dropdown_menu: MenuWidget | None = None
-
+        # Server title
         self.update_server_dropdown_icon()
         self.btn_server_title.setCheckable(True)
         self.btn_server_title.toggled.connect(lambda: (
@@ -33,6 +35,7 @@ class MainPage(QWidget, Ui_main_page):
             self.update_server_dropdown_icon()
         ))
 
+        # Profile
         self.btn_profile.setCheckable(True)
         self.btn_profile.toggled.connect(lambda: (
             self.btn_profile.isChecked() and (
@@ -43,12 +46,12 @@ class MainPage(QWidget, Ui_main_page):
         ))
         self.icon_userstatus.setIcon(Icons.Status.online)
 
+        # Chat
         self.max_textbox_height = self.textbox.maximumHeight()
         self.textbox.document().documentLayout().documentSizeChanged.connect(self.update_textbox_height)
         self.textbox.textChanged.connect(lambda: (
             self.btn_send.setEnabled(not self.textbox.document().isEmpty())
         ))
-
         self.btn_attachment.setIcon(Icons.plus)
         self.btn_emoji.setIcon(Icons.emoji)
         self.btn_send.setIcon(Icons.send)
