@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QWidget
 
 from .ui_main_page import Ui_main_page
-from widgets.chat_widget import ServerChat
 from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import ServerMenu, ProfileMenu
@@ -44,11 +43,24 @@ class MainPage(QWidget, Ui_main_page):
         ))
         self.icon_userstatus.setIcon(Icons.Status.online)
 
+        self.max_textbox_height = self.textbox.maximumHeight()
+        self.textbox.document().documentLayout().documentSizeChanged.connect(self.update_textbox_height)
+        self.textbox.textChanged.connect(lambda: (
+            self.btn_send.setEnabled(not self.textbox.document().isEmpty())
+        ))
+
+        self.btn_attachment.setIcon(Icons.plus)
+        self.btn_emoji.setIcon(Icons.emoji)
+        self.btn_send.setIcon(Icons.send)
+
         # debug
-        self.chat_widget = ServerChat()
-        self.layout_center_panel.addWidget(self.chat_widget)
-        self.chat_widget.lower()
         self.vc_info = VCInfo(self)
+
+    def update_textbox_height(self):
+        new_height = self.textbox.document().size().height()
+        new_height = min(new_height, self.max_textbox_height)
+        new_height = max(new_height, self.textbox.minimumHeight())
+        self.textbox.setMaximumHeight(new_height)
 
     def update_dropdown_menu(self, menu_class, button):
         if button.isChecked():
