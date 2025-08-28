@@ -16,7 +16,10 @@ class ProfileMenu(MenuWidget):
         self.layout_menu.addWidget(self.divider)
 
         self.btn_edit_profile = self.add_button('Edit Profile', Icons.edit, 2)
-        self.btn_change_user = self.add_button('Change User', Icons.user, 2)
+        self.btn_change_profile = self.add_button('Change Profile', Icons.user, 2)
+
+        self.btn_change_profile.clicked.connect(
+            lambda: self.main_page.main_window.switch_to(self.main_page.main_window.Page.Profiles))
 
         # debug
         self.btn_online.clicked.connect(

@@ -3,15 +3,15 @@ from PySide6.QtWidgets import QWidget
 from .ui_main_page import Ui_main_page
 from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
-from widgets.dropdown_menus import ServerMenu, ProfileMenu
-from widgets.dropdown_menus.menu_widget import MenuWidget
+from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from resources import Icons
 
 
 class MainPage(QWidget, Ui_main_page):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, main_window, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self.main_window = main_window
         self.dropdown_menu: MenuWidget | None = None
 
         # Settings

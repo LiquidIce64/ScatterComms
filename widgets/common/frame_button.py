@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QFrame, QPushButton
+from PySide6.QtCore import Qt
 
 
 class FrameButton(QFrame):
@@ -17,6 +18,10 @@ class FrameButton(QFrame):
     def isChecked(self): return self.__btn.isChecked()
 
     def mouseReleaseEvent(self, event): self.click()
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            self.click()
 
     def deleteLater(self):
         self.__btn.deleteLater()

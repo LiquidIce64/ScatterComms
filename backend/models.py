@@ -3,7 +3,10 @@ from datetime import datetime
 from typing import List
 from sqlalchemy import DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, declarative_base, Mapped, mapped_column, relationship
+
+
+EmptyBase = declarative_base()
 
 
 class Base(DeclarativeBase):
@@ -18,11 +21,18 @@ class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
+class Profile(EmptyBase):
+    __tablename__ = 'profiles'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user: Mapped['User']
+
+
 class User(TimestampMixin, Base):
     __tablename__ = 'users'
 
     username: Mapped[str] = mapped_column(nullable=False)
-    avatar_path: Mapped[str] = mapped_column(nullable=False)
+    avatar_path: Mapped[str] = mapped_column(nullable=True)
     about: Mapped[str] = mapped_column(nullable=True)
 
 

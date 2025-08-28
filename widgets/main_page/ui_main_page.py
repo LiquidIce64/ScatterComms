@@ -426,6 +426,7 @@ class Ui_main_page(object):
         self.textbox.setFrameShape(QFrame.Shape.NoFrame)
         self.textbox.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.textbox.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.textbox.setTabChangesFocus(True)
         self.textbox.setDocumentTitle(u"")
         self.textbox.setUndoRedoEnabled(False)
         self.textbox.setMarkdown(u"")
@@ -437,7 +438,6 @@ class Ui_main_page(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>")
-        self.textbox.setTabStopDistance(20.000000000000000)
         self.textbox.setAcceptRichText(True)
 
         self.layout_messagebox.addWidget(self.textbox)
@@ -477,6 +477,15 @@ class Ui_main_page(object):
 
         self.layout_main_page.setRowStretch(1, 1)
         self.layout_main_page.setColumnStretch(2, 1)
+        QWidget.setTabOrder(self.scroll_servers, self.btn_server_title)
+        QWidget.setTabOrder(self.btn_server_title, self.btn_profile)
+        QWidget.setTabOrder(self.btn_profile, self.btn_search)
+        QWidget.setTabOrder(self.btn_search, self.btn_settings)
+        QWidget.setTabOrder(self.btn_settings, self.btn_attachment)
+        QWidget.setTabOrder(self.btn_attachment, self.textbox)
+        QWidget.setTabOrder(self.textbox, self.btn_emoji)
+        QWidget.setTabOrder(self.btn_emoji, self.btn_send)
+        QWidget.setTabOrder(self.btn_send, self.scroll_chat)
 
         self.retranslateUi(main_page)
 
