@@ -1,8 +1,11 @@
 from PySide6.QtWidgets import QFrame, QPushButton
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QFocusEvent
 
 
 class FrameButton(QFrame):
+    focusLost = Signal(QFocusEvent)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__btn = QPushButton()
@@ -22,6 +25,10 @@ class FrameButton(QFrame):
     def keyPressEvent(self, event):
         if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             self.click()
+
+    def focusOutEvent(self, event):
+        self.focusLost.emit(event)
+        super().focusOutEvent(event)
 
     def deleteLater(self):
         self.__btn.deleteLater()

@@ -10,6 +10,8 @@ class MenuButton(QWidget, Ui_menu_button):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.clicked = self.btn.clicked
+        self.setFocusProxy(self.btn)
+        self.focusLost = self.btn.focusLost
 
         if label is not None:
             self.label.setText(label)

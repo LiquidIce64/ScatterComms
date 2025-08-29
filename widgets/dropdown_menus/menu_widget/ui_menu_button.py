@@ -27,6 +27,7 @@ class Ui_menu_button(object):
         if not menu_button.objectName():
             menu_button.setObjectName(u"menu_button")
         menu_button.resize(268, 36)
+        menu_button.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         menu_button.setWindowTitle(u"Form")
         menu_button.setStyleSheet(u"#btn {\n"
 "	border-radius: 6px;\n"
@@ -46,7 +47,8 @@ class Ui_menu_button(object):
         self.layout_menu_button_widget.setContentsMargins(0, 0, 0, 0)
         self.btn = FrameButton(menu_button)
         self.btn.setObjectName(u"btn")
-        self.btn.setFocusPolicy(Qt.FocusPolicy.TabFocus)
+        self.btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.layout_menu_button = QHBoxLayout(self.btn)
         self.layout_menu_button.setObjectName(u"layout_menu_button")
         self.layout_menu_button.setContentsMargins(6, 6, 6, 6)

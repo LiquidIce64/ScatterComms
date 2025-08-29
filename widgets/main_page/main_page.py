@@ -69,6 +69,11 @@ class MainPage(QWidget, Ui_main_page):
         if button.isChecked():
             if not isinstance(self.dropdown_menu, menu_class):
                 self.dropdown_menu = menu_class(self)
+                self.dropdown_menu.focusLost.connect(lambda e: button.setChecked(False))
+                self.dropdown_menu.connect_button_signals(self)
+                self.layout_main_page.addWidget(self.dropdown_menu, *self.dropdown_menu.grid_layout_args)
+                button.setFocusProxy(self.dropdown_menu)
+                self.dropdown_menu.setFocus()
         elif isinstance(self.dropdown_menu, menu_class):
             self.dropdown_menu.deleteLater()
             self.dropdown_menu = None
