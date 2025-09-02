@@ -2,16 +2,19 @@ from typing import Optional
 from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker
 
-from .models import *
-
-engine: Optional[Engine] = None
-
-SessionMaker: Optional[sessionmaker] = None
+from .models import Base
 
 
-def init_database(filepath: str):
-    global engine
-    global SessionMaker
-    engine = create_engine('sqlite:///' + filepath)
-    Base.metadata.create_all(engine)
-    SessionMaker = sessionmaker(engine)
+class Database:
+    engine: Optional[Engine] = None
+    SessionMaker: Optional[sessionmaker] = None
+
+    @classmethod
+    def init(cls, filepath: str):
+        cls.engine = create_engine('sqlite:///' + filepath)
+        Base.metadata.create_all(cls.engine)
+        cls.SessionMaker = sessionmaker(cls.engine)
+
+    @classmethod
+    def create_session(cls):
+        return cls.SessionMaker()

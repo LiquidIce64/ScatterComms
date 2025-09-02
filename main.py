@@ -2,7 +2,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from backend import StorageBackend
-from database import init_database
+from database import Database
 from widgets import MainWindow
 
 if __name__ == "__main__":
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     app.setApplicationName('OpenComms')
 
     StorageBackend.init(test_mode='--test-appdata' in sys.argv)
-    init_database(StorageBackend.locate_appdata_file('app_database.db', allow_empty=False))
+    Database.init(StorageBackend.locate_appdata_file('app_database.db', allow_empty=False))
 
     window = MainWindow()
     window.show()

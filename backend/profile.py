@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from database import SessionMaker, User
+from database import Database, User
 
 
 class ProfileBackend:
@@ -10,7 +10,7 @@ class ProfileBackend:
 
     @staticmethod
     def get_profiles():
-        with SessionMaker() as session:
+        with Database.create_session() as session:
             users = session.scalars(
                 select(User)
                 .where(User.owned_by_me == True)
@@ -21,7 +21,7 @@ class ProfileBackend:
 
     @staticmethod
     def create_profile(username: str):
-        with SessionMaker() as session:
+        with Database.create_session() as session:
             user = User(username=username, owned_by_me=True)
             session.add(user)
             profile = ProfileBackend.Profile(user)
