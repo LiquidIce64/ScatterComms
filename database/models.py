@@ -26,7 +26,7 @@ class User(UUIDMixin, TimestampMixin, Base):
     __tablename__ = 'users'
 
     username: Mapped[str] = mapped_column(nullable=False)
-    avatar_path: Mapped[str] = mapped_column(nullable=True)
+    load_avatar: Mapped[bool] = mapped_column(nullable=False, default=False)
     about: Mapped[str] = mapped_column(nullable=True)
     owned_by_me: Mapped[bool] = mapped_column(nullable=False, default=False)
 
@@ -37,7 +37,7 @@ class Server(UUIDMixin, TimestampMixin, Base):
     __tablename__ = 'servers'
 
     name: Mapped[str] = mapped_column(nullable=False)
-    icon_path: Mapped[str] = mapped_column(nullable=False)
+    icon_uri: Mapped[str] = mapped_column(nullable=False)
 
     members: Mapped[List['ServerMember']] = relationship(back_populates='server')
     roles: Mapped[List['Role']] = relationship(back_populates='server', cascade='all, delete-orphan')
@@ -159,7 +159,7 @@ class Attachment(UUIDMixin, SortMixin, Base):
     __tablename__ = 'attachments'
 
     uri: Mapped[str] = mapped_column(nullable=False)
-    path: Mapped[str] = mapped_column(nullable=True)
+    filename: Mapped[str] = mapped_column(nullable=False)
 
     message_uuid: Mapped[UUID] = mapped_column(ForeignKey('messages.uuid'))
     message: Mapped['Message'] = relationship(back_populates='attachments')

@@ -1,4 +1,3 @@
-from typing import Optional
 from sqlalchemy import select
 from database import SessionMaker, User
 
@@ -7,7 +6,7 @@ class ProfileBackend:
     class Profile:
         def __init__(self, user):
             self.username: str = user.username
-            self.avatar_path: Optional[str] = user.avatar_path
+            self.load_avatar: bool = user.load_avatar
 
     @staticmethod
     def get_profiles():

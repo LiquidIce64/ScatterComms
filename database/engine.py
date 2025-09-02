@@ -1,10 +1,17 @@
-from sqlalchemy import create_engine
+from typing import Optional
+from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker
 
 from .models import *
 
-engine = create_engine("sqlite:///test.db")
+engine: Optional[Engine] = None
 
-Base.metadata.create_all(engine)
+SessionMaker: Optional[sessionmaker] = None
 
-SessionMaker = sessionmaker(engine)
+
+def init_database(filepath: str):
+    global engine
+    global SessionMaker
+    engine = create_engine('sqlite:///' + filepath)
+    Base.metadata.create_all(engine)
+    SessionMaker = sessionmaker(engine)
