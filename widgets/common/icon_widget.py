@@ -9,7 +9,7 @@ class IconWidget(QLabel):
 
     def setIcon(self, icon: QIcon):
         self.__icon = icon
-        self.repaint()
+        self.update()
 
     def setPixmap(self, pixmap):
         self.setIcon(QIcon(pixmap))

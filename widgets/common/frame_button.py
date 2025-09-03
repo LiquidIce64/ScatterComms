@@ -12,7 +12,7 @@ class FrameButton(QFrame):
         self.clicked = self.__btn.clicked
         self.toggled = self.__btn.toggled
 
-        self.toggled.connect(self.repaint)
+        self.toggled.connect(self.update)
 
     def click(self): self.__btn.click()
     def toggle(self): self.__btn.toggle()

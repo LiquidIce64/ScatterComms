@@ -1,25 +1,21 @@
-from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel
-from PySide6.QtGui import QPixmap, QPainter, QPainterPath
+from PySide6.QtGui import QPainter, QPainterPath
 
 
 class RoundedImage(QLabel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.target = None
 
-    def setPixmap(self, pixmap: QPixmap):
-        self.target = QPixmap(pixmap.size())
-        self.target.fill(Qt.GlobalColor.transparent)
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        self.initPainter(painter)
 
-        painter = QPainter(self.target)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform, True)
 
-        radius = int(min(pixmap.width(), pixmap.height()) / 2)
         path = QPainterPath()
-        path.addRoundedRect(pixmap.rect(), radius, radius)
+        path.addEllipse(self.rect())
         painter.setClipPath(path)
 
-        painter.drawPixmap(0, 0, pixmap)
-        super().setPixmap(self.target)
+        painter.drawPixmap(self.rect(), self.pixmap())
+        painter.end()
