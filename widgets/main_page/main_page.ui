@@ -89,8 +89,8 @@
 	border-radius: 6px;
 }
 
-#btn_server_title:hover, #btn_server_title:focus,
-#btn_profile:hover, #btn_profile:focus,
+#btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=&quot;true&quot;],
+#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=&quot;true&quot;],
 #btn_search:hover, #btn_settings:hover {
 	background-color: #303030;
 }

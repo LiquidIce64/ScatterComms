@@ -12,7 +12,13 @@ class FrameButton(QFrame):
         self.clicked = self.__btn.clicked
         self.toggled = self.__btn.toggled
 
-        self.toggled.connect(self.update)
+        self.toggled.connect(self.__on_toggle)
+
+    def __on_toggle(self):
+        self.setProperty('checked', self.__btn.isChecked())
+        self.style().unpolish(self)
+        self.style().polish(self)
+        self.update()
 
     def click(self): self.__btn.click()
     def toggle(self): self.__btn.toggle()
@@ -20,7 +26,9 @@ class FrameButton(QFrame):
     def setCheckable(self, checkable: bool): self.__btn.setCheckable(checkable)
     def isChecked(self): return self.__btn.isChecked()
 
-    def mouseReleaseEvent(self, event): self.click()
+    def mouseReleaseEvent(self, event):
+        if self.contentsRect().contains(event.position().toPoint()):
+            self.click()
 
     def keyPressEvent(self, event):
         if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):

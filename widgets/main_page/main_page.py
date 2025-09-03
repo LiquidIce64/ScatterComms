@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import QCoreApplication
 
 from .ui_main_page import Ui_main_page
 from widgets.vc_info import VCInfo
@@ -74,7 +75,7 @@ class MainPage(QWidget, Ui_main_page):
             status_icon = Icons.Status.online
             self.main_window.session.status = ProfileBackend.Status.online
         self.icon_userstatus.setIcon(status_icon)
-        self.label_userstatus.setText(status.value)
+        self.label_userstatus.setText(QCoreApplication.translate('main_page', status.value))
 
     def update_textbox_height(self):
         new_height = self.textbox.document().size().height()
