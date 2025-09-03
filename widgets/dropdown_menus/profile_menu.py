@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QFrame
 
 from .menu_widget import MenuWidget
 from resources import Icons
+from backend import ProfileBackend
 
 
 class ProfileMenu(MenuWidget):
@@ -27,12 +28,14 @@ class ProfileMenu(MenuWidget):
         self.btn_change_profile.clicked.connect(
             lambda: main_page.main_window.switch_to(main_page.main_window.Page.Profiles))
 
-        # debug
+        def set_status(status):
+            main_page.main_window.session.status = status
+
         self.btn_online.clicked.connect(
-            lambda: main_page.icon_userstatus.setIcon(Icons.Status.online))
+            lambda: set_status(ProfileBackend.Status.online))
         self.btn_away.clicked.connect(
-            lambda: main_page.icon_userstatus.setIcon(Icons.Status.away))
+            lambda: set_status(ProfileBackend.Status.away))
         self.btn_do_not_disturb.clicked.connect(
-            lambda: main_page.icon_userstatus.setIcon(Icons.Status.do_not_disturb))
+            lambda: set_status(ProfileBackend.Status.do_not_disturb))
         self.btn_invisible.clicked.connect(
-            lambda: main_page.icon_userstatus.setIcon(Icons.Status.offline))
+            lambda: set_status(ProfileBackend.Status.offline))

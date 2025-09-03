@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
 
 from .ui_main_page import Ui_main_page
@@ -5,10 +6,14 @@ from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from resources import Icons
+from backend import ProfileBackend
+
+if TYPE_CHECKING:
+    from widgets import MainWindow
 
 
 class MainPage(QWidget, Ui_main_page):
-    def __init__(self, main_window, *args, **kwargs):
+    def __init__(self, main_window: 'MainWindow', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.main_window = main_window
@@ -44,7 +49,9 @@ class MainPage(QWidget, Ui_main_page):
             ),
             self.update_dropdown_menu(ProfileMenu, self.btn_profile)
         ))
-        self.icon_userstatus.setIcon(Icons.Status.online)
+        self.label_username.setText(self.main_window.session.profile.username)
+        self.update_status()
+        self.main_window.session.status_changed.connect(self.update_status)
 
         # Chat
         self.max_textbox_height = self.textbox.maximumHeight()
@@ -58,6 +65,16 @@ class MainPage(QWidget, Ui_main_page):
 
         # debug
         self.vc_info = VCInfo(self)
+
+    def update_status(self):
+        status = self.main_window.session.status
+        try:
+            status_icon = getattr(Icons.Status, status.name)
+        except Exception:
+            status_icon = Icons.Status.online
+            self.main_window.session.status = ProfileBackend.Status.online
+        self.icon_userstatus.setIcon(status_icon)
+        self.label_userstatus.setText(status.value)
 
     def update_textbox_height(self):
         new_height = self.textbox.document().size().height()
