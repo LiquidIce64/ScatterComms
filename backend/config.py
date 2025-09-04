@@ -1,5 +1,3 @@
-from typing import Union
-
 from PySide6.QtCore import QSettings, QByteArray, Signal, QObject
 
 from .profile import ProfileBackend
@@ -19,8 +17,11 @@ class ConfigBackend:
 
             self.geometry = settings.value('window/geometry', defaultValue=None, type=QByteArray)
             self.state = settings.value('window/state', defaultValue=None, type=QByteArray)
-            self.profile: Union[ProfileBackend.Profile, object, None] = ProfileBackend.get_profile(profile_uuid)
-            self.__status: ProfileBackend.Status = ProfileBackend.Status(status)
+            self.profile = ProfileBackend.get_profile(profile_uuid)
+            try:
+                self.__status = ProfileBackend.Status(status)
+            except ValueError:
+                self.__status = ProfileBackend.Status.Online
 
         @property
         def status(self): return self.__status
