@@ -4,6 +4,7 @@ from PySide6.QtGui import QFocusEvent
 
 
 class FrameButton(QFrame):
+    focused = Signal(QFocusEvent)
     focusLost = Signal(QFocusEvent)
 
     def __init__(self, *args, **kwargs):
@@ -33,6 +34,10 @@ class FrameButton(QFrame):
     def keyPressEvent(self, event):
         if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             self.click()
+
+    def focusInEvent(self, event):
+        self.focused.emit(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.focusLost.emit(event)

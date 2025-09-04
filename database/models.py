@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from sqlalchemy import DateTime, ForeignKey, Table, Column
 from sqlalchemy.sql import func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
@@ -32,10 +32,11 @@ class User(UUIDMixin, TimestampMixin, Base):
     member_of: Mapped[List['ServerMember']] = relationship(back_populates='user')
 
 
-class Server(UUIDMixin, TimestampMixin, Base):
+class Server(UUIDMixin, TimestampMixin, SortMixin, Base):
     __tablename__ = 'servers'
 
     name: Mapped[str] = mapped_column(nullable=False)
+    selected_chat_uuid: Mapped[Optional['UUID']] = mapped_column(ForeignKey('chats.uuid'))
 
     members: Mapped[List['ServerMember']] = relationship(back_populates='server')
     roles: Mapped[List['Role']] = relationship(back_populates='server', cascade='all, delete-orphan')

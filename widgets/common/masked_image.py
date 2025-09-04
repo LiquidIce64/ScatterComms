@@ -27,6 +27,11 @@ class MaskedImage(QLabel):
             status_path.addEllipse(status_rect)
             path -= status_path
 
+    class RoundedRectMask(BaseMask):
+        def apply(self, rect: QRect, path: QPainterPath):
+            radius = min(rect.width(), rect.height()) // 4
+            path.addRoundedRect(rect, radius, radius)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.painter_mask: Optional[BaseMask] = None

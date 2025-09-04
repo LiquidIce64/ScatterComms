@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QCoreApplication
+from PySide6.QtGui import QWheelEvent
 
 from .ui_main_page import Ui_main_page
 from widgets.vc_info import VCInfo
@@ -31,6 +32,9 @@ class MainPage(QWidget, Ui_main_page):
             self.btn_search.isChecked() and self.btn_profile.setChecked(False)
         ))
         self.btn_search.setIcon(Icons.Search)
+
+        # Server list
+        self.frame_servers.scrolled.connect(self.scroll_servers.scroll)
 
         # Server title
         self.update_server_dropdown_icon()

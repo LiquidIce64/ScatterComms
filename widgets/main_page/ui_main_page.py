@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main_page.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,7 +20,8 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
     QWidget)
 
-from widgets.common import (FrameButton, IconWidget, MaskedImage)
+from widgets.common import (FrameButton, IconWidget, MaskedImage, ScrollableFrame)
+from widgets.server import ServerList
 import index_rc
 
 class Ui_main_page(object):
@@ -145,21 +146,21 @@ class Ui_main_page(object):
 
         self.layout_main_page.addWidget(self.frame_chat_title, 0, 2, 1, 1)
 
-        self.frame_servers = QFrame(main_page)
+        self.frame_servers = ScrollableFrame(main_page)
         self.frame_servers.setObjectName(u"frame_servers")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.frame_servers.sizePolicy().hasHeightForWidth())
         self.frame_servers.setSizePolicy(sizePolicy1)
-        self.frame_servers.setMinimumSize(QSize(60, 0))
-        self.frame_servers.setMaximumSize(QSize(60, 16777215))
+        self.frame_servers.setMinimumSize(QSize(58, 0))
+        self.frame_servers.setMaximumSize(QSize(58, 16777215))
         self.frame_servers.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_servers.setFrameShadow(QFrame.Shadow.Raised)
         self.layout_servers_frame = QVBoxLayout(self.frame_servers)
         self.layout_servers_frame.setSpacing(0)
         self.layout_servers_frame.setObjectName(u"layout_servers_frame")
-        self.layout_servers_frame.setContentsMargins(3, 6, 1, 6)
+        self.layout_servers_frame.setContentsMargins(2, 6, 2, 6)
         self.scroll_servers = QScrollArea(self.frame_servers)
         self.scroll_servers.setObjectName(u"scroll_servers")
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -168,24 +169,41 @@ class Ui_main_page(object):
         sizePolicy2.setHeightForWidth(self.scroll_servers.sizePolicy().hasHeightForWidth())
         self.scroll_servers.setSizePolicy(sizePolicy2)
         self.scroll_servers.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_servers.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scroll_servers.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.scroll_servers.setWidgetResizable(True)
         self.scroll_servers.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.scrollcontent_servers = QWidget()
         self.scrollcontent_servers.setObjectName(u"scrollcontent_servers")
-        self.scrollcontent_servers.setGeometry(QRect(0, 0, 54, 586))
+        self.scrollcontent_servers.setGeometry(QRect(0, 0, 52, 586))
         self.verticalLayout = QVBoxLayout(self.scrollcontent_servers)
-        self.verticalLayout.setSpacing(3)
+        self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.verticalLayout.setContentsMargins(3, 0, 0, 0)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.widget_serverlist_pinned = ServerList(self.scrollcontent_servers)
+        self.widget_serverlist_pinned.setObjectName(u"widget_serverlist_pinned")
+
+        self.verticalLayout.addWidget(self.widget_serverlist_pinned)
+
         self.divider_servers = QFrame(self.scrollcontent_servers)
         self.divider_servers.setObjectName(u"divider_servers")
-        self.divider_servers.setMaximumSize(QSize(48, 16777215))
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.divider_servers.sizePolicy().hasHeightForWidth())
+        self.divider_servers.setSizePolicy(sizePolicy3)
+        self.divider_servers.setMinimumSize(QSize(32, 2))
+        self.divider_servers.setMaximumSize(QSize(32, 2))
         self.divider_servers.setFrameShadow(QFrame.Shadow.Sunken)
         self.divider_servers.setFrameShape(QFrame.Shape.HLine)
 
-        self.verticalLayout.addWidget(self.divider_servers)
+        self.verticalLayout.addWidget(self.divider_servers, 0, Qt.AlignmentFlag.AlignHCenter)
+
+        self.widget_serverlist = ServerList(self.scrollcontent_servers)
+        self.widget_serverlist.setObjectName(u"widget_serverlist")
+
+        self.verticalLayout.addWidget(self.widget_serverlist)
 
         self.spacer_servers = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -195,22 +213,18 @@ class Ui_main_page(object):
 
         self.layout_servers_frame.addWidget(self.scroll_servers)
 
-        self.spacer_servers_offset = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
-
-        self.layout_servers_frame.addItem(self.spacer_servers_offset)
-
 
         self.layout_main_page.addWidget(self.frame_servers, 0, 0, 3, 1)
 
         self.btn_server_title = FrameButton(main_page)
         self.btn_server_title.setObjectName(u"btn_server_title")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.btn_server_title.sizePolicy().hasHeightForWidth())
-        self.btn_server_title.setSizePolicy(sizePolicy3)
-        self.btn_server_title.setMinimumSize(QSize(220, 46))
-        self.btn_server_title.setMaximumSize(QSize(220, 46))
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.btn_server_title.sizePolicy().hasHeightForWidth())
+        self.btn_server_title.setSizePolicy(sizePolicy4)
+        self.btn_server_title.setMinimumSize(QSize(222, 46))
+        self.btn_server_title.setMaximumSize(QSize(222, 46))
         self.btn_server_title.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_server_title.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.btn_server_title.setFrameShape(QFrame.Shape.NoFrame)
@@ -241,8 +255,8 @@ class Ui_main_page(object):
 
         self.frame_controls = QFrame(main_page)
         self.frame_controls.setObjectName(u"frame_controls")
-        sizePolicy3.setHeightForWidth(self.frame_controls.sizePolicy().hasHeightForWidth())
-        self.frame_controls.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.frame_controls.sizePolicy().hasHeightForWidth())
+        self.frame_controls.setSizePolicy(sizePolicy4)
         self.frame_controls.setMinimumSize(QSize(260, 46))
         self.frame_controls.setMaximumSize(QSize(260, 46))
         self.frame_controls.setFrameShape(QFrame.Shape.NoFrame)
@@ -333,18 +347,14 @@ class Ui_main_page(object):
         self.frame_side_panel.setObjectName(u"frame_side_panel")
         sizePolicy1.setHeightForWidth(self.frame_side_panel.sizePolicy().hasHeightForWidth())
         self.frame_side_panel.setSizePolicy(sizePolicy1)
-        self.frame_side_panel.setMinimumSize(QSize(220, 0))
-        self.frame_side_panel.setMaximumSize(QSize(220, 16777215))
+        self.frame_side_panel.setMinimumSize(QSize(222, 0))
+        self.frame_side_panel.setMaximumSize(QSize(222, 16777215))
         self.frame_side_panel.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_side_panel.setFrameShadow(QFrame.Shadow.Raised)
         self.layout_side_panel = QVBoxLayout(self.frame_side_panel)
         self.layout_side_panel.setSpacing(0)
         self.layout_side_panel.setObjectName(u"layout_side_panel")
         self.layout_side_panel.setContentsMargins(6, 6, 6, 6)
-        self.spacer_side_panel = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-
-        self.layout_side_panel.addItem(self.spacer_side_panel)
-
 
         self.layout_main_page.addWidget(self.frame_side_panel, 1, 1, 2, 1)
 
@@ -416,11 +426,11 @@ class Ui_main_page(object):
 
         self.textbox = QTextEdit(self.frame_messagebox)
         self.textbox.setObjectName(u"textbox")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.textbox.sizePolicy().hasHeightForWidth())
-        self.textbox.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.textbox.sizePolicy().hasHeightForWidth())
+        self.textbox.setSizePolicy(sizePolicy5)
         self.textbox.setMinimumSize(QSize(0, 28))
         self.textbox.setMaximumSize(QSize(16777215, 132))
         self.textbox.setFrameShape(QFrame.Shape.NoFrame)
