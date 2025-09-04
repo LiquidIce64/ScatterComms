@@ -15,7 +15,7 @@ class ConfigBackend:
             settings = ConfigBackend.get_settings('session.ini')
 
             profile_uuid = settings.value('profile/uuid', defaultValue='', type=str)
-            status = settings.value('profile/status', defaultValue=ProfileBackend.Status.online, type=str)
+            status = settings.value('profile/status', defaultValue=ProfileBackend.Status.Online, type=str)
 
             self.geometry = settings.value('window/geometry', defaultValue=None, type=QByteArray)
             self.state = settings.value('window/state', defaultValue=None, type=QByteArray)

@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QLabel, QSizePolicy, QVBoxLayout,
     QWidget)
 
-from widgets.common import (FrameButton, RoundedImage)
+from widgets.common import (FrameButton, MaskedImage)
 import index_rc
 import index_rc
 
@@ -44,7 +44,7 @@ class Ui_profile_card(object):
         self.layout_frame = QVBoxLayout(self.btn)
         self.layout_frame.setObjectName(u"layout_frame")
         self.layout_frame.setContentsMargins(6, 6, 6, 6)
-        self.icon_avatar = RoundedImage(self.btn)
+        self.icon_avatar = MaskedImage(self.btn)
         self.icon_avatar.setObjectName(u"icon_avatar")
         self.icon_avatar.setMinimumSize(QSize(96, 96))
         self.icon_avatar.setMaximumSize(QSize(96, 96))

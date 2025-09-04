@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
     QWidget)
 
-from widgets.common import (FrameButton, IconWidget, RoundedImage)
+from widgets.common import (FrameButton, IconWidget, MaskedImage)
 import index_rc
 
 class Ui_main_page(object):
@@ -69,14 +69,14 @@ class Ui_main_page(object):
 "}\n"
 "\n"
 "#icon_userstatus {\n"
-"	background-color: #252525;\n"
+"	-background-color: #252525;\n"
 "	padding: 2px;\n"
-"	border-radius: 6px;\n"
+"	-border-radius: 6px;\n"
 "}\n"
 "\n"
 "#btn_profile {\n"
-"	bo"
-                        "rder-radius: 6px;\n"
+"	"
+                        "border-radius: 6px;\n"
 "}\n"
 "\n"
 "#label_userstatus {\n"
@@ -280,7 +280,7 @@ class Ui_main_page(object):
 
         self.layout_profile.addWidget(self.label_userstatus, 1, 2, 1, 1)
 
-        self.icon_useravatar = RoundedImage(self.btn_profile)
+        self.icon_useravatar = MaskedImage(self.btn_profile)
         self.icon_useravatar.setObjectName(u"icon_useravatar")
         self.icon_useravatar.setMinimumSize(QSize(32, 32))
         self.icon_useravatar.setMaximumSize(QSize(32, 32))

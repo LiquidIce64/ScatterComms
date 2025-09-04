@@ -21,7 +21,7 @@ class MainPage(QWidget, Ui_main_page):
         self.dropdown_menu: MenuWidget | None = None
 
         # Settings
-        self.btn_settings.setIcon(Icons.settings)
+        self.btn_settings.setIcon(Icons.Settings)
 
         # Search
         self.search_widget = SearchWidget(self)
@@ -30,7 +30,7 @@ class MainPage(QWidget, Ui_main_page):
             self.search_widget.toggle(),
             self.btn_search.isChecked() and self.btn_profile.setChecked(False)
         ))
-        self.btn_search.setIcon(Icons.search)
+        self.btn_search.setIcon(Icons.Search)
 
         # Server title
         self.update_server_dropdown_icon()
@@ -53,6 +53,7 @@ class MainPage(QWidget, Ui_main_page):
         self.label_username.setText(self.main_window.session.profile.username)
         self.update_status()
         self.main_window.session.status_changed.connect(self.update_status)
+        self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat
         self.max_textbox_height = self.textbox.maximumHeight()
@@ -60,9 +61,9 @@ class MainPage(QWidget, Ui_main_page):
         self.textbox.textChanged.connect(lambda: (
             self.btn_send.setEnabled(not self.textbox.document().isEmpty())
         ))
-        self.btn_attachment.setIcon(Icons.plus)
-        self.btn_emoji.setIcon(Icons.emoji)
-        self.btn_send.setIcon(Icons.send)
+        self.btn_attachment.setIcon(Icons.Plus)
+        self.btn_emoji.setIcon(Icons.Emoji)
+        self.btn_send.setIcon(Icons.Send)
 
         # debug
         self.vc_info = VCInfo(self)
@@ -72,8 +73,8 @@ class MainPage(QWidget, Ui_main_page):
         try:
             status_icon = getattr(Icons.Status, status.name)
         except Exception:
-            status_icon = Icons.Status.online
-            self.main_window.session.status = ProfileBackend.Status.online
+            status_icon = Icons.Status.Online
+            self.main_window.session.status = ProfileBackend.Status.Online
         self.icon_userstatus.setIcon(status_icon)
         self.label_userstatus.setText(QCoreApplication.translate('main_page', status.value))
 
@@ -98,7 +99,7 @@ class MainPage(QWidget, Ui_main_page):
 
     def update_server_dropdown_icon(self):
         self.icon_server_dropdown.setIcon(
-            Icons.arrow_up if self.btn_server_title.isChecked() else Icons.arrow_down
+            Icons.ArrowUp if self.btn_server_title.isChecked() else Icons.ArrowDown
         )
 
     def mousePressEvent(self, event):

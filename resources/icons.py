@@ -5,19 +5,18 @@ ICON_DIR = 'resources/icons/'
 
 
 class Icons:
-    arrow_up = QIcon(ICON_DIR + 'arrow_up.svg')
-    arrow_down = QIcon(ICON_DIR + 'arrow_down.svg')
-    settings = QIcon(ICON_DIR + 'settings.svg')
-    search = QIcon(ICON_DIR + 'search.svg')
-    edit = QIcon(ICON_DIR + 'edit.svg')
-    user = QIcon(ICON_DIR + 'user.svg')
-    plus = QIcon(ICON_DIR + 'plus.svg')
-    emoji = QIcon(ICON_DIR + 'emoji.svg')
-    send = QIcon(ICON_DIR + 'send.svg')
-    send.addFile(ICON_DIR + 'send_disabled.svg', mode=send.Mode.Disabled)
+    ArrowUp = QIcon(ICON_DIR + 'arrow_up.svg')
+    ArrowDown = QIcon(ICON_DIR + 'arrow_down.svg')
+    Settings = QIcon(ICON_DIR + 'settings.svg')
+    Search = QIcon(ICON_DIR + 'search.svg')
+    Edit = QIcon(ICON_DIR + 'edit.svg')
+    User = QIcon(ICON_DIR + 'user.svg')
+    Plus = QIcon(ICON_DIR + 'plus.svg')
+    Emoji = QIcon(ICON_DIR + 'emoji.svg')
+    Send = QIcon(ICON_DIR + 'send.svg')
 
     class Status:
-        online = QIcon(ICON_DIR + 'status_online.svg')
-        away = QIcon(ICON_DIR + 'status_away.svg')
-        do_not_disturb = QIcon(ICON_DIR + 'status_do_not_disturb.svg')
-        offline = QIcon(ICON_DIR + 'status_offline.svg')
+        Online = QIcon(ICON_DIR + 'status_online.svg')
+        Away = QIcon(ICON_DIR + 'status_away.svg')
+        DoNotDisturb = QIcon(ICON_DIR + 'status_do_not_disturb.svg')
+        Offline = QIcon(ICON_DIR + 'status_offline.svg')

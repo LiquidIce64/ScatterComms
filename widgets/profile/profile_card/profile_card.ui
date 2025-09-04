@@ -63,7 +63,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="RoundedImage" name="icon_avatar">
+       <widget class="MaskedImage" name="icon_avatar">
         <property name="minimumSize">
          <size>
           <width>96</width>
@@ -107,7 +107,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>RoundedImage</class>
+   <class>MaskedImage</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>

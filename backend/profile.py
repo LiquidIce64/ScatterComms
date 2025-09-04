@@ -6,10 +6,10 @@ from database import Database, User
 
 class ProfileBackend:
     class Status(Enum):
-        online = 'Online'
-        away = 'Away'
-        do_not_disturb = 'Do Not Disturb'
-        offline = 'Invisible'
+        Online = 'Online'
+        Away = 'Away'
+        DoNotDisturb = 'Do Not Disturb'
+        Offline = 'Invisible'
 
     class Profile:
         def __init__(self, user):
