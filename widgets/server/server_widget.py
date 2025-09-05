@@ -2,16 +2,20 @@ from PySide6.QtCore import Qt, QMimeData
 
 from .ui_server_widget import Ui_widget_server
 from widgets.common import DraggableWidget
+from backend import ServerBackend
 
 
 class ServerWidget(DraggableWidget, Ui_widget_server):
     # noinspection PyTypeChecker
     drop_actions = Qt.DropAction.MoveAction | Qt.DropAction.LinkAction
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, server: ServerBackend.Server, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.icon.painter_mask = self.icon.RoundedRectMask()
+
+        self.server = server
+        self.setToolTip(server.name)
 
         self.selected = False
         self.notification = False

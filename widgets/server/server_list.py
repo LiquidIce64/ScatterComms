@@ -1,11 +1,15 @@
 from random import randint
 
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QSpacerItem, QSizePolicy
+from PySide6.QtWidgets import (
+    QFrame, QVBoxLayout, QPushButton,
+    QSpacerItem, QSizePolicy, QInputDialog
+)
 from PySide6.QtCore import Qt, QPointF
 
 from .server_widget import ServerWidget
 from widgets.common import IconWidget
 from resources import Icons
+from backend import ServerBackend, run_task
 
 
 class ServerListBase(QFrame):
@@ -16,6 +20,19 @@ class ServerListBase(QFrame):
         self.layout_frame.setObjectName('layout_frame')
         self.layout_frame.setContentsMargins(0, 0, 0, 0)
         self.layout_frame.setSpacing(6)
+
+    def add_server(self, server: ServerBackend.Server, index=-1):
+        state = randint(1, 3)
+        widget = ServerWidget(server, parent=self)
+        if state == 2:
+            widget.notification = True
+        if state == 3:
+            widget.selected = True
+        widget.update_line()
+        if index == -1:
+            self.layout_frame.addWidget(widget)
+        else:
+            self.layout_frame.insertWidget(index, widget)
 
     def drag_start(self): pass
     def drag_end(self): pass
@@ -42,22 +59,27 @@ class ServerList(ServerListBase):
         self.btn_create_server.setObjectName('btn_create_server')
         self.btn_create_server.setIcon(Icons.Plus)
         self.btn_create_server.setFixedSize(40, 40)
+        self.btn_create_server.clicked.connect(self.create_server)
         self.layout_frame.addWidget(self.btn_create_server, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.spacer_servers = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         self.layout_frame.addSpacerItem(self.spacer_servers)
 
-        # debug
-        def add_server():
-            state = randint(1, 3)
-            widget = ServerWidget(parent=self)
-            if state == 2:
-                widget.notification = True
-            if state == 3:
-                widget.selected = True
-            widget.update_line()
-            self.layout_frame.insertWidget(0, widget)
-        self.btn_create_server.clicked.connect(add_server)
+        run_task(ServerBackend.get_server_list_unpinned, result_slot=self.add_servers)
+
+    def add_servers(self, servers):
+        for server in servers:
+            self.add_server(server, index=0)
+
+    def create_server(self):
+        while True:
+            name, ok = QInputDialog.getText(self, 'Create new server', 'Server name:')
+            if not ok:
+                return
+            if name:
+                break
+        server = ServerBackend.create_server(name)
+        self.add_server(server, index=0)
 
     def drag_start(self):
         self.setProperty('drag', True)
@@ -73,6 +95,7 @@ class ServerList(ServerListBase):
         if not isinstance(widget, ServerWidget):
             return
         self.layout_frame.insertWidget(0, widget)
+        run_task(ServerBackend.reorder_server, widget.server.uuid, 0)
 
 
 class PinnedServerList(ServerListBase):
@@ -83,10 +106,14 @@ class PinnedServerList(ServerListBase):
         self.drop_target.setObjectName('drop_target')
         self.drop_target.setFixedSize(40, 40)
 
-        # debug
-        w1 = ServerWidget(parent=self)
-        w1.allow_drag = False
-        self.layout_frame.addWidget(w1)
+        run_task(ServerBackend.get_server_list_pinned, result_slot=self.add_servers)
+
+    def add_servers(self, servers):
+        for server in servers:
+            self.add_server(server)
+        w = self.layout_frame.itemAt(0).widget()
+        if isinstance(w, ServerWidget):
+            w.allow_drag = False
 
     def __drop_location(self, position: QPointF):
         y_pos = position.y()
@@ -115,3 +142,9 @@ class PinnedServerList(ServerListBase):
         if not isinstance(widget, ServerWidget):
             return
         self.layout_frame.insertWidget(self.__drop_location(event.position()), widget)
+        servers = []
+        for i in range(self.layout_frame.count()):
+            w = self.layout_frame.itemAt(i).widget()
+            if isinstance(w, ServerWidget):
+                servers.append(w.server.uuid)
+        run_task(ServerBackend.reorder_server_list, servers)
