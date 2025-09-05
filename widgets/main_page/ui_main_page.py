@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QWidget)
 
 from widgets.common import (FrameButton, IconWidget, MaskedImage, ScrollableFrame)
-from widgets.server import ServerList
+from widgets.server import (PinnedServerList, ServerList)
 import index_rc
 
 class Ui_main_page(object):
@@ -63,6 +63,30 @@ class Ui_main_page(object):
 "	background-color: #252525;\n"
 "}\n"
 "\n"
+"#frame_serverlist_pinned {\n"
+"	padding-bottom: 6px;\n"
+"}\n"
+"\n"
+"#frame_serverlist {\n"
+"	padding-top: 6px;\n"
+"	padding-bottom: 6px;\n"
+"}\n"
+"\n"
+"#frame_serverlist[drag=\"true\"] {\n"
+"	background-color: #202020;\n"
+"	border-radi"
+                        "us: 6px;\n"
+"}\n"
+"\n"
+"#frame_serverlist #btn_create_server {\n"
+"	background-color: #2A2A2A;\n"
+"	border-radius: 10px;\n"
+"}\n"
+"\n"
+"#frame_serverlist #btn_create_server:hover {\n"
+"	background-color: #353535;\n"
+"}\n"
+"\n"
 "#label_servername {\n"
 "	margin-left: 4px;\n"
 "	font-size: 12pt;\n"
@@ -70,14 +94,11 @@ class Ui_main_page(object):
 "}\n"
 "\n"
 "#icon_userstatus {\n"
-"	-background-color: #252525;\n"
 "	padding: 2px;\n"
-"	-border-radius: 6px;\n"
 "}\n"
 "\n"
 "#btn_profile {\n"
-"	"
-                        "border-radius: 6px;\n"
+"	border-radius: 6px;\n"
 "}\n"
 "\n"
 "#label_userstatus {\n"
@@ -101,7 +122,8 @@ class Ui_main_page(object):
 "#btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=\"true\"],\n"
 "#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=\"true\"],\n"
 "#btn_search:hover, #btn_settings:hover {\n"
-"	background-color: #303030;\n"
+"	background-color: #"
+                        "303030;\n"
 "}\n"
 "\n"
 "#btn_attachment:hover, #btn_emoji:hover, #btn_send:hover {\n"
@@ -177,37 +199,32 @@ class Ui_main_page(object):
         self.scrollcontent_servers.setObjectName(u"scrollcontent_servers")
         self.scrollcontent_servers.setGeometry(QRect(0, 0, 52, 586))
         self.verticalLayout = QVBoxLayout(self.scrollcontent_servers)
-        self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.widget_serverlist_pinned = ServerList(self.scrollcontent_servers)
-        self.widget_serverlist_pinned.setObjectName(u"widget_serverlist_pinned")
+        self.frame_serverlist_pinned = PinnedServerList(self.scrollcontent_servers)
+        self.frame_serverlist_pinned.setObjectName(u"frame_serverlist_pinned")
 
-        self.verticalLayout.addWidget(self.widget_serverlist_pinned)
+        self.verticalLayout.addWidget(self.frame_serverlist_pinned)
 
         self.divider_servers = QFrame(self.scrollcontent_servers)
         self.divider_servers.setObjectName(u"divider_servers")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.divider_servers.sizePolicy().hasHeightForWidth())
-        self.divider_servers.setSizePolicy(sizePolicy3)
         self.divider_servers.setMinimumSize(QSize(32, 2))
         self.divider_servers.setMaximumSize(QSize(32, 2))
-        self.divider_servers.setFrameShadow(QFrame.Shadow.Sunken)
         self.divider_servers.setFrameShape(QFrame.Shape.HLine)
+        self.divider_servers.setFrameShadow(QFrame.Shadow.Sunken)
 
         self.verticalLayout.addWidget(self.divider_servers, 0, Qt.AlignmentFlag.AlignHCenter)
 
-        self.widget_serverlist = ServerList(self.scrollcontent_servers)
-        self.widget_serverlist.setObjectName(u"widget_serverlist")
+        self.frame_serverlist = ServerList(self.scrollcontent_servers)
+        self.frame_serverlist.setObjectName(u"frame_serverlist")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.frame_serverlist.sizePolicy().hasHeightForWidth())
+        self.frame_serverlist.setSizePolicy(sizePolicy3)
 
-        self.verticalLayout.addWidget(self.widget_serverlist)
-
-        self.spacer_servers = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout.addItem(self.spacer_servers)
+        self.verticalLayout.addWidget(self.frame_serverlist)
 
         self.scroll_servers.setWidget(self.scrollcontent_servers)
 

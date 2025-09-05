@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QCoreApplication
-from PySide6.QtGui import QWheelEvent
 
 from .ui_main_page import Ui_main_page
 from widgets.vc_info import VCInfo

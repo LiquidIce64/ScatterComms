@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QSizePolicy,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QSizePolicy, QVBoxLayout, QWidget)
 
-from widgets.common import (FrameButton, MaskedImage)
+from widgets.common import MaskedImage
 import index_rc
 import index_rc
 
@@ -27,7 +27,9 @@ class Ui_widget_server(object):
         if not widget_server.objectName():
             widget_server.setObjectName(u"widget_server")
         widget_server.resize(172, 40)
+        widget_server.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         widget_server.setMouseTracking(True)
+        widget_server.setFocusPolicy(Qt.FocusPolicy.TabFocus)
         widget_server.setWindowTitle(u"Form")
         widget_server.setStyleSheet(u"#line {\n"
 "	background-color: white;\n"
@@ -37,25 +39,23 @@ class Ui_widget_server(object):
         self.layout_widget.setSpacing(0)
         self.layout_widget.setObjectName(u"layout_widget")
         self.layout_widget.setContentsMargins(0, 0, 0, 0)
-        self.btn = FrameButton(widget_server)
-        self.btn.setObjectName(u"btn")
-        self.btn.setMinimumSize(QSize(52, 40))
-        self.btn.setMaximumSize(QSize(52, 40))
-        self.btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        self.layout_btn = QHBoxLayout(self.btn)
-        self.layout_btn.setSpacing(2)
-        self.layout_btn.setObjectName(u"layout_btn")
-        self.layout_btn.setContentsMargins(0, 0, 6, 0)
-        self.line = QLabel(self.btn)
+        self.frame = QFrame(widget_server)
+        self.frame.setObjectName(u"frame")
+        self.frame.setMinimumSize(QSize(52, 40))
+        self.frame.setMaximumSize(QSize(52, 40))
+        self.layout_frame = QHBoxLayout(self.frame)
+        self.layout_frame.setSpacing(2)
+        self.layout_frame.setObjectName(u"layout_frame")
+        self.layout_frame.setContentsMargins(0, 0, 6, 0)
+        self.line = QLabel(self.frame)
         self.line.setObjectName(u"line")
         self.line.setMinimumSize(QSize(0, 4))
         self.line.setMaximumSize(QSize(4, 40))
         self.line.setText(u"")
 
-        self.layout_btn.addWidget(self.line, 0, Qt.AlignmentFlag.AlignVCenter)
+        self.layout_frame.addWidget(self.line, 0, Qt.AlignmentFlag.AlignVCenter)
 
-        self.icon = MaskedImage(self.btn)
+        self.icon = MaskedImage(self.frame)
         self.icon.setObjectName(u"icon")
         self.icon.setMinimumSize(QSize(40, 40))
         self.icon.setMaximumSize(QSize(40, 40))
@@ -63,10 +63,10 @@ class Ui_widget_server(object):
         self.icon.setPixmap(QPixmap(u":/icons/test"))
         self.icon.setScaledContents(True)
 
-        self.layout_btn.addWidget(self.icon, 0, Qt.AlignmentFlag.AlignRight)
+        self.layout_frame.addWidget(self.icon, 0, Qt.AlignmentFlag.AlignRight)
 
 
-        self.layout_widget.addWidget(self.btn)
+        self.layout_widget.addWidget(self.frame)
 
 
         self.retranslateUi(widget_server)

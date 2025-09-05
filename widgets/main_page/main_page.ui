@@ -55,6 +55,29 @@
 	background-color: #252525;
 }
 
+#frame_serverlist_pinned {
+	padding-bottom: 6px;
+}
+
+#frame_serverlist {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+#frame_serverlist[drag=&quot;true&quot;] {
+	background-color: #202020;
+	border-radius: 6px;
+}
+
+#frame_serverlist #btn_create_server {
+	background-color: #2A2A2A;
+	border-radius: 10px;
+}
+
+#frame_serverlist #btn_create_server:hover {
+	background-color: #353535;
+}
+
 #label_servername {
 	margin-left: 4px;
 	font-size: 12pt;
@@ -62,9 +85,7 @@
 }
 
 #icon_userstatus {
-	-background-color: #252525;
 	padding: 2px;
-	-border-radius: 6px;
 }
 
 #btn_profile {
@@ -252,9 +273,6 @@
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="spacing">
-           <number>6</number>
-          </property>
           <property name="sizeConstraint">
            <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
           </property>
@@ -271,16 +289,10 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="ServerList" name="widget_serverlist_pinned" native="true"/>
+           <widget class="PinnedServerList" name="frame_serverlist_pinned"/>
           </item>
           <item alignment="Qt::AlignmentFlag::AlignHCenter">
            <widget class="Line" name="divider_servers">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
             <property name="minimumSize">
              <size>
               <width>32</width>
@@ -293,29 +305,20 @@
               <height>2</height>
              </size>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Shadow::Sunken</enum>
-            </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="ServerList" name="widget_serverlist" native="true"/>
-          </item>
-          <item>
-           <spacer name="spacer_servers">
-            <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
+           <widget class="ServerList" name="frame_serverlist">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -981,15 +984,21 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <header>widgets.common</header>
   </customwidget>
   <customwidget>
+   <class>ScrollableFrame</class>
+   <extends>QFrame</extends>
+   <header>widgets.common</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>ServerList</class>
-   <extends>QWidget</extends>
+   <extends>QFrame</extends>
    <header>widgets.server</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ScrollableFrame</class>
+   <class>PinnedServerList</class>
    <extends>QFrame</extends>
-   <header>widgets.common</header>
+   <header>widgets.server</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

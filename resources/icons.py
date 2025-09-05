@@ -14,6 +14,7 @@ class Icons:
     Plus = QIcon(ICON_DIR + 'plus.svg')
     Emoji = QIcon(ICON_DIR + 'emoji.svg')
     Send = QIcon(ICON_DIR + 'send.svg')
+    ServerFrame = QIcon(ICON_DIR + 'server_frame.svg')
 
     class Status:
         Online = QIcon(ICON_DIR + 'status_online.svg')

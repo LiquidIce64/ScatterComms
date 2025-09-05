@@ -10,8 +10,14 @@
     <height>40</height>
    </rect>
   </property>
+  <property name="cursor">
+   <cursorShape>PointingHandCursor</cursorShape>
+  </property>
   <property name="mouseTracking">
    <bool>true</bool>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::FocusPolicy::TabFocus</enum>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
@@ -39,7 +45,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="FrameButton" name="btn">
+    <widget class="QFrame" name="frame">
      <property name="minimumSize">
       <size>
        <width>52</width>
@@ -52,13 +58,7 @@
        <height>40</height>
       </size>
      </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
-     </property>
-     <layout class="QHBoxLayout" name="layout_btn">
+     <layout class="QHBoxLayout" name="layout_frame">
       <property name="spacing">
        <number>2</number>
       </property>
@@ -128,12 +128,6 @@
    <class>MaskedImage</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
-  </customwidget>
-  <customwidget>
-   <class>FrameButton</class>
-   <extends>QFrame</extends>
-   <header>widgets.common</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

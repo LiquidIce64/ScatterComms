@@ -17,9 +17,7 @@ class FrameButton(QFrame):
 
     def __on_toggle(self):
         self.setProperty('checked', self.__btn.isChecked())
-        self.style().unpolish(self)
         self.style().polish(self)
-        self.update()
 
     def click(self): self.__btn.click()
     def toggle(self): self.__btn.toggle()
