@@ -35,12 +35,9 @@ class Ui_widget_server(object):
 "	border-radius: 2px;\n"
 "}\n"
 "\n"
-"#icon {\n"
+"#saved_messages #icon {\n"
 "	background-color: #2A2A2A;\n"
 "	border-radius: 10px;\n"
-"}\n"
-"\n"
-"#saved_messages #icon {\n"
 "	padding: 8px;\n"
 "}\n"
 "")

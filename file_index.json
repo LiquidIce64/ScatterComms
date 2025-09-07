@@ -1,11 +1,11 @@
 {
-  "index.qrc": "e87d5d843073485d1ac4bc134c26c2fa",
+  "index.qrc": "d792ffac8795f5e6c06ccb2481741da6",
   "main_page.ui": "bcc0387ae59a636b947ad196b5116219",
   "menu_button.ui": "e410a3a5c03fc6576534777f766097fb",
   "menu_widget.ui": "d2eb67280429956af0ff6dbf14daaced",
   "profile_card.ui": "d840c27858124588eee40cfda3132c8f",
   "profile_select.ui": "4527eddd1991c21f5c2df7ef89eb3c67",
   "search_widget.ui": "375a5a554b175be37312351cf3b968cf",
-  "server_widget.ui": "2a08afc775b00629c4fa072dab768851",
+  "server_widget.ui": "fc0e6befcccaf92433ac91e131b3c097",
   "vc_info.ui": "e9a350966e42a0039bc57d792101f47b"
 }

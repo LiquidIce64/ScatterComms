@@ -28,12 +28,9 @@
 	border-radius: 2px;
 }
 
-#icon {
+#saved_messages #icon {
 	background-color: #2A2A2A;
 	border-radius: 10px;
-}
-
-#saved_messages #icon {
 	padding: 8px;
 }
 </string>
