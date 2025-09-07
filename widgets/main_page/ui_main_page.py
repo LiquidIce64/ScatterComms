@@ -316,7 +316,7 @@ class Ui_main_page(object):
         self.icon_useravatar.setMinimumSize(QSize(32, 32))
         self.icon_useravatar.setMaximumSize(QSize(32, 32))
         self.icon_useravatar.setText(u"")
-        self.icon_useravatar.setPixmap(QPixmap(u":/icons/test"))
+        self.icon_useravatar.setPixmap(QPixmap(u":/icons/avatar"))
         self.icon_useravatar.setScaledContents(True)
 
         self.layout_profile.addWidget(self.icon_useravatar, 0, 0, 1, 2)

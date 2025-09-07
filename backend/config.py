@@ -40,5 +40,5 @@ class ConfigBackend:
 
     @classmethod
     def get_settings(cls, filename: str):
-        filepath = StorageBackend.locate_config_file(filename, allow_empty=False)
+        filepath = StorageBackend.locate_config(filename, allow_empty=False)
         return QSettings(filepath, QSettings.Format.IniFormat)

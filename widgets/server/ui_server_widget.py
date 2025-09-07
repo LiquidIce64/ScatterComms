@@ -20,7 +20,6 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
 
 from widgets.common import MaskedImage
 import index_rc
-import index_rc
 
 class Ui_widget_server(object):
     def setupUi(self, widget_server):
@@ -34,7 +33,17 @@ class Ui_widget_server(object):
         widget_server.setStyleSheet(u"#line {\n"
 "	background-color: white;\n"
 "	border-radius: 2px;\n"
-"}")
+"}\n"
+"\n"
+"#icon {\n"
+"	background-color: #2A2A2A;\n"
+"	border-radius: 10px;\n"
+"}\n"
+"\n"
+"#saved_messages #icon {\n"
+"	padding: 8px;\n"
+"}\n"
+"")
         self.layout_widget = QVBoxLayout(widget_server)
         self.layout_widget.setSpacing(0)
         self.layout_widget.setObjectName(u"layout_widget")
@@ -60,7 +69,7 @@ class Ui_widget_server(object):
         self.icon.setMinimumSize(QSize(40, 40))
         self.icon.setMaximumSize(QSize(40, 40))
         self.icon.setText(u"")
-        self.icon.setPixmap(QPixmap(u":/icons/test"))
+        self.icon.setPixmap(QPixmap(u":/icons/server"))
         self.icon.setScaledContents(True)
 
         self.layout_frame.addWidget(self.icon, 0, Qt.AlignmentFlag.AlignRight)

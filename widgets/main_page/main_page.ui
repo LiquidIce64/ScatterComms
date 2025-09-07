@@ -533,7 +533,7 @@
             <string notr="true"/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../../resources/index.qrc">:/icons/test</pixmap>
+            <pixmap resource="../../resources/index.qrc">:/icons/avatar</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>

@@ -7,6 +7,7 @@ ICON_DIR = 'resources/icons/'
 class Icons:
     ArrowUp = QIcon(ICON_DIR + 'arrow_up.svg')
     ArrowDown = QIcon(ICON_DIR + 'arrow_down.svg')
+    Avatar = QIcon(ICON_DIR + 'avatar.svg')
     Settings = QIcon(ICON_DIR + 'settings.svg')
     Search = QIcon(ICON_DIR + 'search.svg')
     Edit = QIcon(ICON_DIR + 'edit.svg')
@@ -14,6 +15,8 @@ class Icons:
     Plus = QIcon(ICON_DIR + 'plus.svg')
     Emoji = QIcon(ICON_DIR + 'emoji.svg')
     Send = QIcon(ICON_DIR + 'send.svg')
+    Save = QIcon(ICON_DIR + 'save.svg')
+    Server = QIcon(ICON_DIR + 'server.svg')
     ServerFrame = QIcon(ICON_DIR + 'server_frame.svg')
 
     class Status:

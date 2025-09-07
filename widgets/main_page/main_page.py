@@ -53,7 +53,8 @@ class MainPage(QWidget, Ui_main_page):
             ),
             self.update_dropdown_menu(ProfileMenu, self.btn_profile)
         ))
-        self.label_username.setText(self.main_window.session.profile.username)
+        self.update_profile()
+        self.main_window.session.profile.changed.connect(self.update_profile)
         self.update_status()
         self.main_window.session.status_changed.connect(self.update_status)
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
@@ -70,6 +71,11 @@ class MainPage(QWidget, Ui_main_page):
 
         # debug
         self.vc_info = VCInfo(self)
+
+    def update_profile(self):
+        profile = self.main_window.session.profile
+        self.label_username.setText(profile.username)
+        self.icon_useravatar.setPixmap(profile.avatar or Icons.Avatar)
 
     def update_status(self):
         status = self.main_window.session.status

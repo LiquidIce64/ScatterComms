@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt, QMimeData
 
 from .ui_server_widget import Ui_widget_server
 from widgets.common import DraggableWidget
+from resources import Icons
 from backend import ServerBackend
 
 
@@ -15,21 +16,22 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
         self.icon.painter_mask = self.icon.RoundedRectMask()
 
         self.server = server
-        self.setToolTip(server.name)
+        self.update_server_info()
+        self.server.changed.connect(self.update_server_info)
 
         self.selected = False
         self.notification = False
 
         self.update_line()
 
-    def drag_render_widget(self):
-        return self.icon
+    def update_server_info(self):
+        self.setToolTip(self.server.name)
+        self.icon.setPixmap(self.server.icon or Icons.Server)
 
-    def init_mime(self, mime: QMimeData): pass
-
+    def drag_render_widget(self): return self.icon
     def drag_start(self): self.hide()
-
     def drag_end(self): self.show()
+    def init_mime(self, mime: QMimeData): pass
 
     def update_line(self):
         if self.selected:

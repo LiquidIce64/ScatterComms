@@ -10,7 +10,7 @@ if __name__ == "__main__":
     app.setApplicationName('OpenComms')
 
     StorageBackend.init(test_mode='--test-appdata' in sys.argv)
-    Database.init(StorageBackend.locate_appdata_file('app_database.db', allow_empty=False))
+    Database.init(StorageBackend.locate_appdata('app_database.db', allow_empty=False))
 
     window = MainWindow()
     window.show()

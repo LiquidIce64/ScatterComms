@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'profile_card.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.9.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -49,7 +49,7 @@ class Ui_profile_card(object):
         self.icon_avatar.setMinimumSize(QSize(96, 96))
         self.icon_avatar.setMaximumSize(QSize(96, 96))
         self.icon_avatar.setText(u"")
-        self.icon_avatar.setPixmap(QPixmap(u":/icons/test"))
+        self.icon_avatar.setPixmap(QPixmap(u":/icons/avatar"))
         self.icon_avatar.setScaledContents(True)
 
         self.layout_frame.addWidget(self.icon_avatar)

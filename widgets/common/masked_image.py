@@ -1,8 +1,8 @@
-from typing import Optional
+from typing import Optional, Union
 
 from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import QRect, QSize
-from PySide6.QtGui import QPainter, QPainterPath
+from PySide6.QtGui import QPainter, QPainterPath, QPixmap, QImage, QIcon
 
 
 class BaseMask:
@@ -35,6 +35,16 @@ class MaskedImage(QLabel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.painter_mask: Optional[BaseMask] = None
+        self.__icon: Optional[QIcon] = None
+
+    def setPixmap(self, pixmap: Union[QPixmap, QImage, QIcon]):
+        if isinstance(pixmap, QIcon):
+            self.__icon = pixmap
+        else:
+            self.__icon = None
+            if isinstance(pixmap, QImage):
+                pixmap = QPixmap(pixmap)
+            super().setPixmap(pixmap)
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -48,5 +58,8 @@ class MaskedImage(QLabel):
             self.painter_mask.apply(self.rect(), path)
             painter.setClipPath(path)
 
-        painter.drawPixmap(self.rect(), self.pixmap())
+        if self.__icon is None:
+            painter.drawPixmap(self.rect(), self.pixmap())
+        else:
+            self.__icon.paint(painter, self.contentsRect())
         painter.end()

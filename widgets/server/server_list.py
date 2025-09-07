@@ -95,7 +95,7 @@ class ServerList(ServerListBase):
         if not isinstance(widget, ServerWidget):
             return
         self.layout_frame.insertWidget(0, widget)
-        run_task(ServerBackend.reorder_server, widget.server.uuid, 0)
+        ServerBackend.edit_server(widget.server.uuid, sort_order=0)
 
 
 class PinnedServerList(ServerListBase):
@@ -114,6 +114,9 @@ class PinnedServerList(ServerListBase):
         w = self.layout_frame.itemAt(0).widget()
         if isinstance(w, ServerWidget):
             w.allow_drag = False
+            w.icon.setPixmap(Icons.Save)
+            w.setObjectName('saved_messages')
+            w.setToolTip('Saved Messages')
 
     def __drop_location(self, position: QPointF):
         y_pos = position.y()
@@ -147,4 +150,4 @@ class PinnedServerList(ServerListBase):
             w = self.layout_frame.itemAt(i).widget()
             if isinstance(w, ServerWidget):
                 servers.append(w.server.uuid)
-        run_task(ServerBackend.reorder_server_list, servers)
+        ServerBackend.reorder_server_list(servers)

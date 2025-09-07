@@ -1,6 +1,13 @@
+from typing import Union
 from enum import Enum
 from uuid import UUID
 from sqlalchemy import select
+
+from PySide6.QtGui import QImage, QPixmap
+
+from .cached_object import CachedObject
+from .multithreading import multithreaded
+from .storage import StorageBackend
 from database import Database, User
 
 
@@ -11,10 +18,41 @@ class ProfileBackend:
         DoNotDisturb = 'Do Not Disturb'
         Offline = 'Invisible'
 
-    class Profile:
+    class Profile(CachedObject):
         def __init__(self, user):
-            self.uuid: UUID = user.uuid
-            self.username: str = user.username
+            if hasattr(self, '_Profile__uuid'):
+                return  # already initialized
+            super().__init__()
+            self.__uuid: UUID = user.uuid
+            self.__username: str = user.username
+            self.__avatar = StorageBackend.Profile.get_avatar(self.uuid)
+
+        def update(self, user):
+            self.__uuid: UUID = user.uuid
+            self.__username: str = user.username
+            self.__avatar = StorageBackend.Profile.get_avatar(self.uuid)
+            self.changed.emit()
+
+        @property
+        def uuid(self): return self.__uuid
+        @property
+        def username(self): return self.__username
+        @property
+        def avatar(self): return self.__avatar
+
+        @username.setter
+        def username(self, new_value: str):
+            self.__username = new_value
+            ProfileBackend.edit_user(self.__uuid, username=new_value)
+            self.changed.emit()
+
+        @avatar.setter
+        def avatar(self, new_value: Union[QImage, QPixmap]):
+            if isinstance(new_value, QPixmap):
+                new_value = new_value.toImage()
+            self.__avatar = new_value
+            StorageBackend.Profile.set_avatar(self.__uuid, new_value)
+            self.changed.emit()
 
     @staticmethod
     def get_profiles():
@@ -53,3 +91,13 @@ class ProfileBackend:
             profile = ProfileBackend.Profile(user)
             session.commit()
         return profile
+
+    @staticmethod
+    @multithreaded
+    def edit_user(uuid: UUID, **kwargs):
+        with Database.create_session() as session:
+            user = session.get(User, uuid)
+            for kw, value in kwargs.items():
+                setattr(user, kw, value)
+            session.add(user)
+            session.commit()

@@ -26,7 +26,17 @@
    <string notr="true">#line {
 	background-color: white;
 	border-radius: 2px;
-}</string>
+}
+
+#icon {
+	background-color: #2A2A2A;
+	border-radius: 10px;
+}
+
+#saved_messages #icon {
+	padding: 8px;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
    <property name="spacing">
@@ -111,7 +121,7 @@
          <string notr="true"/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../resources/index.qrc">:/icons/test</pixmap>
+         <pixmap resource="../../resources/index.qrc">:/icons/server</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -131,7 +141,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../resources/index.qrc"/>
   <include location="../../resources/index.qrc"/>
  </resources>
  <connections/>
