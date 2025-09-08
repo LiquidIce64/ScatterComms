@@ -119,14 +119,15 @@ class PinnedServerList(ServerListBase):
     def add_servers(self, servers):
         for server in servers:
             self.add_server(server)
-        w = self.layout_frame.itemAt(0)
-        if w is not None:
-            w = w.widget()
-        if isinstance(w, ServerWidget):
-            w.allow_drag = False
-            w.icon.setPixmap(Icons.Save)
-            w.setObjectName('saved_messages')
-            w.setToolTip('Saved Messages')
+        saved_messages = self.layout_frame.itemAt(0)
+        if saved_messages is not None:
+            saved_messages = saved_messages.widget()
+        if isinstance(saved_messages, ServerWidget):
+            saved_messages.allow_drag = False
+            saved_messages.icon.setPixmap(Icons.Save)
+            saved_messages.setObjectName('saved_messages')
+            saved_messages.setToolTip('Saved Messages')
+            ConfigBackend.session.selected_server = saved_messages.server
 
     def __drop_location(self, position: QPointF):
         y_pos = position.y()

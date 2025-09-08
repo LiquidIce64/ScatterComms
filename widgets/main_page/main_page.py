@@ -56,7 +56,7 @@ class MainPage(QWidget, Ui_main_page):
         self.update_profile()
         self.update_status()
         ConfigBackend.session.profile.changed.connect(self.update_profile)
-        ConfigBackend.session.changed.connect(self.update_status)
+        ConfigBackend.session.profile_changed.connect(self.update_status)
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat

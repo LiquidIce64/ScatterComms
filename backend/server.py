@@ -50,6 +50,24 @@ class ServerBackend:
             self.changed.emit()
 
     @staticmethod
+    def get_server(profile_uuid: UUID, server_uuid):
+        if not isinstance(server_uuid, UUID):
+            try:
+                server_uuid = UUID(str(server_uuid))
+            except ValueError:
+                return None
+        with Database.create_session() as session:
+            _server = session.scalars(
+                select(Server)
+                .where(Server.uuid == server_uuid)
+                .where(Server.members.any(ServerMember.user_uuid == profile_uuid))
+            ).one_or_none()
+            if _server is None:
+                return None
+            server = ServerBackend.Server(_server)
+        return server
+
+    @staticmethod
     def get_server_list_pinned(profile_uuid: UUID):
         with Database.create_session() as session:
             servers = session.scalars(
