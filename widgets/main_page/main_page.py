@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QCoreApplication
-
+import gc
 from .ui_main_page import Ui_main_page
 from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
@@ -69,9 +69,6 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_emoji.setIcon(Icons.Emoji)
         self.btn_send.setIcon(Icons.Send)
 
-        # debug
-        self.vc_info = VCInfo(self)
-
     def update_profile(self):
         profile = ConfigBackend.session.profile
         self.label_username.setText(profile.username)
@@ -126,3 +123,14 @@ class MainPage(QWidget, Ui_main_page):
                 self.btn_profile.setChecked(False)
 
         super().mousePressEvent(event)
+
+    def deleteLater(self):
+        self.scrollcontent_servers.deleteLater()
+        self.scrollcontent_chat.deleteLater()
+        del self.scrollcontent_servers
+        del self.scrollcontent_chat
+
+        for child in self.findChildren(QWidget):
+            child.deleteLater()
+            del child
+        super().deleteLater()
