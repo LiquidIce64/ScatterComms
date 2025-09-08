@@ -36,3 +36,5 @@ class MainWindow(QMainWindow):
         ConfigBackend.session.geometry = self.saveGeometry()
         ConfigBackend.session.state = self.saveState()
         ConfigBackend.session.save()
+        ConfigBackend.session.setParent(None)
+        ConfigBackend.session = None
