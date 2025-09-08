@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QWidget, QInputDialog
 from .ui_profile_select import Ui_profile_select
 from widgets.profile.profile_card import ProfileCard
 from resources import Icons
-from backend import ProfileBackend
+from backend import ProfileBackend, ConfigBackend
 
 if TYPE_CHECKING:
     from widgets import MainWindow
@@ -16,7 +16,7 @@ class ProfileSelect(QWidget, Ui_profile_select):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.main_window = main_window
-        self.main_window.session.profile = None
+        ConfigBackend.session.profile = None
 
         self.icon_create.setIcon(Icons.Plus)
         self.btn_create.clicked.connect(self.create_profile)
@@ -40,5 +40,5 @@ class ProfileSelect(QWidget, Ui_profile_select):
         self.add_profile_card(profile)
 
     def select_profile(self, profile):
-        self.main_window.session.profile = profile
+        ConfigBackend.session.profile = profile
         self.main_window.switch_to(self.main_window.Page.Main)

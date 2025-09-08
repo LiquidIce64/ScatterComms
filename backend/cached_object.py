@@ -17,7 +17,6 @@ class CachedObject(QObject):
         else:
             instance = super().__new__(cls)
             cls._cached_instances[key] = ref(instance)
-
             return instance
 
     def update(self, obj): pass

@@ -9,7 +9,7 @@ from PySide6.QtCore import Qt, QPointF
 from .server_widget import ServerWidget
 from widgets.common import IconWidget
 from resources import Icons
-from backend import ServerBackend, run_task
+from backend import ServerBackend, run_task, ConfigBackend
 
 
 class ServerListBase(QFrame):
@@ -65,7 +65,11 @@ class ServerList(ServerListBase):
         self.spacer_servers = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         self.layout_frame.addSpacerItem(self.spacer_servers)
 
-        run_task(ServerBackend.get_server_list_unpinned, result_slot=self.add_servers)
+        run_task(
+            ServerBackend.get_server_list_unpinned,
+            ConfigBackend.session.profile.uuid,
+            result_slot=self.add_servers
+        )
 
     def add_servers(self, servers):
         for server in servers:
@@ -78,7 +82,7 @@ class ServerList(ServerListBase):
                 return
             if name:
                 break
-        server = ServerBackend.create_server(name)
+        server = ServerBackend.create_server(name, ConfigBackend.session.profile.uuid)
         self.add_server(server, index=0)
 
     def drag_start(self):
@@ -106,12 +110,18 @@ class PinnedServerList(ServerListBase):
         self.drop_target.setObjectName('drop_target')
         self.drop_target.setFixedSize(40, 40)
 
-        run_task(ServerBackend.get_server_list_pinned, result_slot=self.add_servers)
+        run_task(
+            ServerBackend.get_server_list_pinned,
+            ConfigBackend.session.profile.uuid,
+            result_slot=self.add_servers
+        )
 
     def add_servers(self, servers):
         for server in servers:
             self.add_server(server)
-        w = self.layout_frame.itemAt(0).widget()
+        w = self.layout_frame.itemAt(0)
+        if w is not None:
+            w = w.widget()
         if isinstance(w, ServerWidget):
             w.allow_drag = False
             w.icon.setPixmap(Icons.Save)

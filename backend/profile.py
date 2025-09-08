@@ -8,6 +8,7 @@ from PySide6.QtGui import QImage, QPixmap
 from .cached_object import CachedObject
 from .multithreading import multithreaded
 from .storage import StorageBackend
+from .server import ServerBackend
 from database import Database, User
 
 
@@ -20,12 +21,13 @@ class ProfileBackend:
 
     class Profile(CachedObject):
         def __init__(self, user):
-            if hasattr(self, '_Profile__uuid'):
-                return  # already initialized
+            if hasattr(self, '_initialized'):
+                return
             super().__init__()
             self.__uuid: UUID = user.uuid
             self.__username: str = user.username
             self.__avatar = StorageBackend.Profile.get_avatar(self.uuid)
+            self._initialized = True
 
         def update(self, user):
             self.__uuid: UUID = user.uuid
@@ -88,8 +90,9 @@ class ProfileBackend:
         with Database.create_session() as session:
             user = User(username=username, owned_by_me=True)
             session.add(user)
-            profile = ProfileBackend.Profile(user)
             session.commit()
+            profile = ProfileBackend.Profile(user)
+            ServerBackend.create_server('Saved Messages', profile.uuid, sort_order=1)
         return profile
 
     @staticmethod

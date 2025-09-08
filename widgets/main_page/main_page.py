@@ -7,7 +7,7 @@ from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from resources import Icons
-from backend import ProfileBackend
+from backend import ProfileBackend, ConfigBackend
 
 if TYPE_CHECKING:
     from widgets import MainWindow
@@ -54,9 +54,9 @@ class MainPage(QWidget, Ui_main_page):
             self.update_dropdown_menu(ProfileMenu, self.btn_profile)
         ))
         self.update_profile()
-        self.main_window.session.profile.changed.connect(self.update_profile)
         self.update_status()
-        self.main_window.session.status_changed.connect(self.update_status)
+        ConfigBackend.session.profile.changed.connect(self.update_profile)
+        ConfigBackend.session.changed.connect(self.update_status)
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat
@@ -73,19 +73,18 @@ class MainPage(QWidget, Ui_main_page):
         self.vc_info = VCInfo(self)
 
     def update_profile(self):
-        profile = self.main_window.session.profile
+        profile = ConfigBackend.session.profile
         self.label_username.setText(profile.username)
         self.icon_useravatar.setPixmap(profile.avatar or Icons.Avatar)
 
     def update_status(self):
-        status = self.main_window.session.status
         try:
-            status_icon = getattr(Icons.Status, status.name)
+            status_icon = getattr(Icons.Status, ConfigBackend.session.status.name)
         except Exception:
             status_icon = Icons.Status.Online
-            self.main_window.session.status = ProfileBackend.Status.Online
+            ConfigBackend.session.status = ProfileBackend.Status.Online
         self.icon_userstatus.setIcon(status_icon)
-        self.label_userstatus.setText(QCoreApplication.translate('main_page', status.value))
+        self.label_userstatus.setText(QCoreApplication.translate('main_page', ConfigBackend.session.status.value))
 
     def update_textbox_height(self):
         new_height = self.textbox.document().size().height()

@@ -16,14 +16,15 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle('OpenComms')
 
-        self.session = ConfigBackend.Session()
+        ConfigBackend.session = ConfigBackend.Session()
+        ConfigBackend.session.setParent(self)
 
-        if self.session.geometry is not None:
-            self.restoreGeometry(self.session.geometry)
-        if self.session.state is not None:
-            self.restoreState(self.session.state)
+        if ConfigBackend.session.geometry is not None:
+            self.restoreGeometry(ConfigBackend.session.geometry)
+        if ConfigBackend.session.state is not None:
+            self.restoreState(ConfigBackend.session.state)
 
-        self.switch_to(self.Page.Profiles if self.session.profile is None else self.Page.Main)
+        self.switch_to(self.Page.Profiles if ConfigBackend.session.profile is None else self.Page.Main)
 
     def switch_to(self, page: Page):
         current_page = self.centralWidget()
@@ -32,6 +33,6 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(page.value(self))
 
     def closeEvent(self, event):
-        self.session.geometry = self.saveGeometry()
-        self.session.state = self.saveState()
-        self.session.save()
+        ConfigBackend.session.geometry = self.saveGeometry()
+        ConfigBackend.session.state = self.saveState()
+        ConfigBackend.session.save()

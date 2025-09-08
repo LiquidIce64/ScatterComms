@@ -7,18 +7,19 @@ from PySide6.QtGui import QImage, QPixmap
 from .multithreading import multithreaded
 from .storage import StorageBackend
 from .cached_object import CachedObject
-from database import Database, Server
+from database import Database, Server, ServerMember, User, Role
 
 
 class ServerBackend:
     class Server(CachedObject):
         def __init__(self, server):
-            if hasattr(self, '_Server__uuid'):
-                return  # already initialized
+            if hasattr(self, '_initialized'):
+                return
             super().__init__()
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.uuid)
+            self._initialized = True
 
         def update(self, server):
             self.__uuid: UUID = server.uuid
@@ -48,22 +49,24 @@ class ServerBackend:
             self.changed.emit()
 
     @staticmethod
-    def get_server_list_pinned():
+    def get_server_list_pinned(profile_uuid: UUID):
         with Database.create_session() as session:
             servers = session.scalars(
                 select(Server)
                 .where(Server.sort_order > 0)
+                .where(Server.members.any(ServerMember.user_uuid == profile_uuid))
                 .order_by(Server.sort_order)
             ).all()
             server_list = [ServerBackend.Server(server) for server in servers]
         return server_list
 
     @staticmethod
-    def get_server_list_unpinned():
+    def get_server_list_unpinned(profile_uuid: UUID):
         with Database.create_session() as session:
             servers = session.scalars(
                 select(Server)
                 .where(Server.sort_order == 0)
+                .where(Server.members.any(ServerMember.user_uuid == profile_uuid))
                 .order_by(Server.created_at)
             ).all()
             server_list = [ServerBackend.Server(server) for server in servers]
@@ -91,10 +94,17 @@ class ServerBackend:
             session.commit()
 
     @staticmethod
-    def create_server(name: str):
+    def create_server(name: str, owner_uuid: UUID, sort_order=0):
         with Database.create_session() as session:
-            _server = Server(name=name, sort_order=0)
-            session.add(_server)
-            server = ServerBackend.Server(_server)
+            _server = Server(name=name, sort_order=sort_order)
+            owner = session.get(User, owner_uuid)
+            server_member = ServerMember(server=_server, user=owner)
+            owner_role = Role(
+                name='Owner', color=0xFFC814FF,
+                server=_server, users=[owner],
+                sort_order=sort_order
+            )
+            session.add_all([_server, owner, server_member, owner_role])
             session.commit()
+            server = ServerBackend.Server(_server)
         return server
