@@ -32,7 +32,7 @@ class User(UUIDMixin, TimestampMixin, Base):
     member_of: Mapped[List['ServerMember']] = relationship(back_populates='user')
 
 
-class Server(UUIDMixin, TimestampMixin, SortMixin, Base):
+class Server(UUIDMixin, TimestampMixin, Base):
     __tablename__ = 'servers'
 
     name: Mapped[str] = mapped_column(nullable=False)
@@ -41,6 +41,13 @@ class Server(UUIDMixin, TimestampMixin, SortMixin, Base):
     members: Mapped[List['ServerMember']] = relationship(back_populates='server')
     roles: Mapped[List['Role']] = relationship(back_populates='server', cascade='all, delete-orphan')
     chat_categories: Mapped[List['ChatCategory']] = relationship(back_populates='server', cascade='all, delete-orphan')
+
+
+class ServerSortOrder(SortMixin, Base):
+    __tablename__ = 'server_sort_orders'
+
+    server_uuid: Mapped[UUID] = mapped_column(ForeignKey('servers.uuid'), primary_key=True)
+    user_uuid: Mapped[UUID] = mapped_column(ForeignKey('users.uuid'), primary_key=True)
 
 
 class ServerMember(TimestampMixin, Base):

@@ -4,6 +4,7 @@ from sqlalchemy import select
 
 from PySide6.QtGui import QImage, QPixmap
 
+from database.models import ServerSortOrder
 from .multithreading import multithreaded
 from .storage import StorageBackend
 from .cached_object import CachedObject
@@ -53,9 +54,13 @@ class ServerBackend:
         with Database.create_session() as session:
             servers = session.scalars(
                 select(Server)
-                .where(Server.sort_order > 0)
-                .where(Server.members.any(ServerMember.user_uuid == profile_uuid))
-                .order_by(Server.sort_order)
+                .join(
+                    ServerSortOrder,
+                    (Server.uuid == ServerSortOrder.server_uuid)
+                    & (ServerSortOrder.user_uuid == profile_uuid)
+                )
+                .where(ServerSortOrder.sort_order > 0)
+                .order_by(ServerSortOrder.sort_order)
             ).all()
             server_list = [ServerBackend.Server(server) for server in servers]
         return server_list
@@ -65,8 +70,12 @@ class ServerBackend:
         with Database.create_session() as session:
             servers = session.scalars(
                 select(Server)
-                .where(Server.sort_order == 0)
-                .where(Server.members.any(ServerMember.user_uuid == profile_uuid))
+                .join(
+                    ServerSortOrder,
+                    (Server.uuid == ServerSortOrder.server_uuid)
+                    & (ServerSortOrder.user_uuid == profile_uuid)
+                )
+                .where(ServerSortOrder.sort_order == 0)
                 .order_by(Server.created_at)
             ).all()
             server_list = [ServerBackend.Server(server) for server in servers]
@@ -84,27 +93,48 @@ class ServerBackend:
 
     @staticmethod
     @multithreaded
-    def reorder_server_list(new_order: list[UUID]):
+    def reorder_server(profile_uuid: UUID, server_uuid: UUID, new_order: int):
         with Database.create_session() as session:
-            servers = session.scalars(select(Server).where(Server.uuid.in_(new_order))).all()
-            server_map = {server.uuid: server for server in servers}
-            for i, uuid in enumerate(new_order, start=1):
-                server_map[uuid].sort_order = i
-            session.add_all(servers)
+            server_sort_order = session.get(ServerSortOrder, {'server_uuid': server_uuid, 'user_uuid': profile_uuid})
+            server_sort_order.sort_order = new_order
+            session.add(server_sort_order)
             session.commit()
 
     @staticmethod
-    def create_server(name: str, owner_uuid: UUID, sort_order=0):
+    @multithreaded
+    def reorder_server_list(profile_uuid: UUID, new_order: list[UUID]):
         with Database.create_session() as session:
-            _server = Server(name=name, sort_order=sort_order)
-            owner = session.get(User, owner_uuid)
-            server_member = ServerMember(server=_server, user=owner)
-            owner_role = Role(
-                name='Owner', color=0xFFC814FF,
-                server=_server, users=[owner],
+            server_sort_orders = session.scalars(
+                select(ServerSortOrder)
+                .where(ServerSortOrder.user_uuid == profile_uuid)
+            ).all()
+            server_sort_map = {server_sort.server_uuid: server_sort for server_sort in server_sort_orders}
+            for i, uuid in enumerate(new_order, start=1):
+                server_sort_map.pop(uuid).sort_order = i
+            for server_sort in server_sort_map.values():
+                server_sort.sort_order = 0
+            session.add_all(server_sort_orders)
+            session.commit()
+
+    @staticmethod
+    def create_server(name: str, profile_uuid: UUID, sort_order=0):
+        with Database.create_session() as session:
+            _server = Server(name=name)
+            session.add(_server)
+            session.flush()
+            session.refresh(_server)
+            server_sort_order = ServerSortOrder(
+                server_uuid=_server.uuid,
+                user_uuid=profile_uuid,
                 sort_order=sort_order
             )
-            session.add_all([_server, owner, server_member, owner_role])
+            profile = session.get(User, profile_uuid)
+            server_member = ServerMember(server=_server, user=profile)
+            owner_role = Role(
+                name='Owner', color=0xFFC814FF,
+                server=_server, users=[profile], sort_order=0
+            )
+            session.add_all([server_sort_order, profile, server_member, owner_role])
             session.commit()
             server = ServerBackend.Server(_server)
         return server

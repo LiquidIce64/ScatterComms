@@ -99,7 +99,7 @@ class ServerList(ServerListBase):
         if not isinstance(widget, ServerWidget):
             return
         self.layout_frame.insertWidget(0, widget)
-        ServerBackend.edit_server(widget.server.uuid, sort_order=0)
+        ServerBackend.reorder_server(ConfigBackend.session.profile.uuid, widget.server.uuid, 0)
 
 
 class PinnedServerList(ServerListBase):
@@ -160,4 +160,4 @@ class PinnedServerList(ServerListBase):
             w = self.layout_frame.itemAt(i).widget()
             if isinstance(w, ServerWidget):
                 servers.append(w.server.uuid)
-        ServerBackend.reorder_server_list(servers)
+        ServerBackend.reorder_server_list(ConfigBackend.session.profile.uuid, servers)
