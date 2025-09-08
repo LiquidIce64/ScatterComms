@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QFrame
 
 from .menu_widget import MenuWidget
 from resources import Icons
-from backend import ProfileBackend
+from backend import ProfileBackend, ConfigBackend
 
 
 class ProfileMenu(MenuWidget):
@@ -29,7 +29,7 @@ class ProfileMenu(MenuWidget):
             lambda: main_page.main_window.switch_to(main_page.main_window.Page.Profiles))
 
         def set_status(status):
-            main_page.main_window.session.status = status
+            ConfigBackend.session.status = status
 
         self.btn_online.clicked.connect(
             lambda: set_status(ProfileBackend.Status.Online))
