@@ -13,14 +13,14 @@ if TYPE_CHECKING:
 class MenuWidget(QWidget, Ui_menu_widget):
     focusLost = Signal(QFocusEvent)
     grid_layout_args = (1, 1, 1, 1)
-    __left_side_icons = False
+    _left_side_icons = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
     def add_button(self, label=None, icon=None, icon_margin=0):
-        btn = MenuButton(label, icon, invert_layout=self.__left_side_icons)
+        btn = MenuButton(label, icon, invert_layout=self._left_side_icons)
         if icon_margin > 0:
             btn.icon.setStyleSheet(f'margin:{icon_margin}px;')
         btn.focusLost.connect(self.focusOutEvent)

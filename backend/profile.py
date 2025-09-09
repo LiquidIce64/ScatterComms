@@ -61,7 +61,7 @@ class ProfileBackend:
         with Database.create_session() as session:
             users = session.scalars(
                 select(User)
-                .where(User.owned_by_me == True)
+                .where(User.owned_by_me)
                 .order_by(User.created_at)
             ).all()
             profiles = [ProfileBackend.Profile(user) for user in users]
@@ -78,7 +78,7 @@ class ProfileBackend:
             user = session.scalars(
                 select(User)
                 .where(User.uuid == uuid)
-                .where(User.owned_by_me == True)
+                .where(User.owned_by_me)
             ).one_or_none()
             if user is None:
                 return None

@@ -1,5 +1,4 @@
 from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QIcon
 
 from .ui_menu_button import Ui_menu_button
@@ -20,4 +19,4 @@ class MenuButton(QWidget, Ui_menu_button):
                 icon = QIcon(icon)
             self.icon.setIcon(icon)
         if invert_layout:
-            self.setLayoutDirection(Qt.LayoutDirection.RightToLeft)
+            self.layout_menu_button.insertWidget(0, self.icon)

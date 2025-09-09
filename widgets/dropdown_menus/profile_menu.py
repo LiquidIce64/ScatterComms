@@ -7,7 +7,7 @@ from backend import ProfileBackend, ConfigBackend
 
 class ProfileMenu(MenuWidget):
     grid_layout_args = (1, 3, 1, 1)
-    __left_side_icons = True
+    _left_side_icons = True
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -198,14 +198,14 @@ class Ui_main_page(object):
         self.scrollcontent_servers = QWidget()
         self.scrollcontent_servers.setObjectName(u"scrollcontent_servers")
         self.scrollcontent_servers.setGeometry(QRect(0, 0, 52, 586))
-        self.verticalLayout = QVBoxLayout(self.scrollcontent_servers)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.layout_servers = QVBoxLayout(self.scrollcontent_servers)
+        self.layout_servers.setObjectName(u"layout_servers")
+        self.layout_servers.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.layout_servers.setContentsMargins(0, 0, 0, 0)
         self.frame_serverlist_pinned = PinnedServerList(self.scrollcontent_servers)
         self.frame_serverlist_pinned.setObjectName(u"frame_serverlist_pinned")
 
-        self.verticalLayout.addWidget(self.frame_serverlist_pinned)
+        self.layout_servers.addWidget(self.frame_serverlist_pinned)
 
         self.divider_servers = QFrame(self.scrollcontent_servers)
         self.divider_servers.setObjectName(u"divider_servers")
@@ -214,7 +214,7 @@ class Ui_main_page(object):
         self.divider_servers.setFrameShape(QFrame.Shape.HLine)
         self.divider_servers.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout.addWidget(self.divider_servers, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.layout_servers.addWidget(self.divider_servers, 0, Qt.AlignmentFlag.AlignHCenter)
 
         self.frame_serverlist = ServerList(self.scrollcontent_servers)
         self.frame_serverlist.setObjectName(u"frame_serverlist")
@@ -224,7 +224,7 @@ class Ui_main_page(object):
         sizePolicy3.setHeightForWidth(self.frame_serverlist.sizePolicy().hasHeightForWidth())
         self.frame_serverlist.setSizePolicy(sizePolicy3)
 
-        self.verticalLayout.addWidget(self.frame_serverlist)
+        self.layout_servers.addWidget(self.frame_serverlist)
 
         self.scroll_servers.setWidget(self.scrollcontent_servers)
 

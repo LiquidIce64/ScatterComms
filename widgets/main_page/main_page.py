@@ -1,9 +1,8 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
 from PySide6.QtCore import QCoreApplication
-import gc
+
 from .ui_main_page import Ui_main_page
-from widgets.vc_info import VCInfo
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from resources import Icons
