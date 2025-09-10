@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QMimeData
+from PySide6.QtCore import Qt
 
 from .ui_server_widget import Ui_widget_server
 from widgets.common import DraggableWidget
@@ -29,9 +29,6 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
         self.icon.setPixmap(self.server.icon or Icons.Server)
 
     def drag_render_widget(self): return self.icon
-    def drag_start(self): self.hide()
-    def drag_end(self): self.show()
-    def init_mime(self, mime: QMimeData): pass
 
     def update_line(self):
         if self.selected:

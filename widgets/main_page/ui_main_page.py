@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
     QWidget)
 
+from widgets.chat import ChatList
 from widgets.common import (FrameButton, IconWidget, MaskedImage, ScrollableFrame)
 from widgets.server import (PinnedServerList, ServerList)
 import index_rc
@@ -93,6 +94,15 @@ class Ui_main_page(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
+"#scroll_chatlist, #scrollcontent_chatlist {\n"
+"	background-color: #252525;\n"
+"}\n"
+"\n"
+"#widget_chatlist #drop_target {\n"
+"	border: 2px solid #353535;\n"
+"	border-radius: 6px;\n"
+"}\n"
+"\n"
 "#icon_userstatus {\n"
 "	padding: 2px;\n"
 "}\n"
@@ -119,11 +129,11 @@ class Ui_main_page(object):
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=\"true\"],\n"
+"#btn_server_title:hover, #btn_server_"
+                        "title:focus, #btn_server_title[checked=\"true\"],\n"
 "#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=\"true\"],\n"
 "#btn_search:hover, #btn_settings:hover {\n"
-"	background-color: #"
-                        "303030;\n"
+"	background-color: #303030;\n"
 "}\n"
 "\n"
 "#btn_attachment:hover, #btn_emoji:hover, #btn_send:hover {\n"
@@ -204,6 +214,7 @@ class Ui_main_page(object):
         self.layout_servers.setContentsMargins(0, 0, 0, 0)
         self.frame_serverlist_pinned = PinnedServerList(self.scrollcontent_servers)
         self.frame_serverlist_pinned.setObjectName(u"frame_serverlist_pinned")
+        self.frame_serverlist_pinned.setAcceptDrops(True)
 
         self.layout_servers.addWidget(self.frame_serverlist_pinned)
 
@@ -223,6 +234,7 @@ class Ui_main_page(object):
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.frame_serverlist.sizePolicy().hasHeightForWidth())
         self.frame_serverlist.setSizePolicy(sizePolicy3)
+        self.frame_serverlist.setAcceptDrops(True)
 
         self.layout_servers.addWidget(self.frame_serverlist)
 
@@ -371,7 +383,30 @@ class Ui_main_page(object):
         self.layout_side_panel = QVBoxLayout(self.frame_side_panel)
         self.layout_side_panel.setSpacing(0)
         self.layout_side_panel.setObjectName(u"layout_side_panel")
-        self.layout_side_panel.setContentsMargins(6, 6, 6, 6)
+        self.layout_side_panel.setContentsMargins(0, 6, 0, 6)
+        self.scroll_chatlist = QScrollArea(self.frame_side_panel)
+        self.scroll_chatlist.setObjectName(u"scroll_chatlist")
+        self.scroll_chatlist.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_chatlist.setFrameShadow(QFrame.Shadow.Plain)
+        self.scroll_chatlist.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_chatlist.setWidgetResizable(True)
+        self.scrollcontent_chatlist = QWidget()
+        self.scrollcontent_chatlist.setObjectName(u"scrollcontent_chatlist")
+        self.scrollcontent_chatlist.setGeometry(QRect(0, 0, 220, 540))
+        self.layout_scroll_chatlist = QVBoxLayout(self.scrollcontent_chatlist)
+        self.layout_scroll_chatlist.setSpacing(0)
+        self.layout_scroll_chatlist.setObjectName(u"layout_scroll_chatlist")
+        self.layout_scroll_chatlist.setContentsMargins(0, 0, 0, 0)
+        self.widget_chatlist = ChatList(self.scrollcontent_chatlist)
+        self.widget_chatlist.setObjectName(u"widget_chatlist")
+        self.widget_chatlist.setAcceptDrops(True)
+
+        self.layout_scroll_chatlist.addWidget(self.widget_chatlist)
+
+        self.scroll_chatlist.setWidget(self.scrollcontent_chatlist)
+
+        self.layout_side_panel.addWidget(self.scroll_chatlist)
+
 
         self.layout_main_page.addWidget(self.frame_side_panel, 1, 1, 2, 1)
 

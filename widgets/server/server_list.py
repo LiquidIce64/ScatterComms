@@ -15,7 +15,6 @@ from backend import ServerBackend, run_task, ConfigBackend
 class ServerListBase(QFrame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setAcceptDrops(True)
         self.layout_frame = QVBoxLayout(self)
         self.layout_frame.setObjectName('layout_frame')
         self.layout_frame.setContentsMargins(0, 0, 0, 0)

@@ -84,6 +84,15 @@
 	font-weight: 700;
 }
 
+#scroll_chatlist, #scrollcontent_chatlist {
+	background-color: #252525;
+}
+
+#widget_chatlist #drop_target {
+	border: 2px solid #353535;
+	border-radius: 6px;
+}
+
 #icon_userstatus {
 	padding: 2px;
 }
@@ -289,7 +298,11 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="PinnedServerList" name="frame_serverlist_pinned"/>
+           <widget class="PinnedServerList" name="frame_serverlist_pinned">
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item alignment="Qt::AlignmentFlag::AlignHCenter">
            <widget class="Line" name="divider_servers">
@@ -317,6 +330,9 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="acceptDrops">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -648,17 +664,67 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
        <number>6</number>
       </property>
       <property name="rightMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
        <number>6</number>
       </property>
+      <item>
+       <widget class="QScrollArea" name="scroll_chatlist">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Plain</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollcontent_chatlist">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>220</width>
+           <height>540</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="layout_scroll_chatlist">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="ChatList" name="widget_chatlist" native="true">
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -999,6 +1065,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <class>PinnedServerList</class>
    <extends>QFrame</extends>
    <header>widgets.server</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ChatList</class>
+   <extends>QWidget</extends>
+   <header>widgets.chat</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

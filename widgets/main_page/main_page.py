@@ -124,11 +124,6 @@ class MainPage(QWidget, Ui_main_page):
         super().mousePressEvent(event)
 
     def deleteLater(self):
-        self.scrollcontent_servers.deleteLater()
-        self.scrollcontent_chat.deleteLater()
-        del self.scrollcontent_servers
-        del self.scrollcontent_chat
-
         for child in self.findChildren(QWidget):
             child.deleteLater()
             del child

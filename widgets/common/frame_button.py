@@ -1,11 +1,13 @@
 from PySide6.QtWidgets import QFrame, QPushButton
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFocusEvent
+from PySide6.QtCore import Qt, Signal, QEvent
+from PySide6.QtGui import QFocusEvent, QEnterEvent
 
 
 class FrameButton(QFrame):
     focused = Signal(QFocusEvent)
     focusLost = Signal(QFocusEvent)
+    hovered = Signal(QEnterEvent)
+    hoverEnd = Signal(QEvent)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,7 +28,10 @@ class FrameButton(QFrame):
     def isChecked(self): return self.__btn.isChecked()
 
     def mouseReleaseEvent(self, event):
-        if self.contentsRect().contains(event.position().toPoint()):
+        if (
+            event.button() == Qt.MouseButton.LeftButton
+            and self.contentsRect().contains(event.position().toPoint())
+        ):
             self.click()
 
     def keyPressEvent(self, event):
@@ -40,6 +45,14 @@ class FrameButton(QFrame):
     def focusOutEvent(self, event):
         self.focusLost.emit(event)
         super().focusOutEvent(event)
+
+    def enterEvent(self, event):
+        self.hovered.emit(event)
+        super().enterEvent(event)
+
+    def leaveEvent(self, event):
+        self.hoverEnd.emit(event)
+        super().leaveEvent(event)
 
     def deleteLater(self):
         self.__btn.deleteLater()

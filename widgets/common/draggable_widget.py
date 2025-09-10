@@ -13,12 +13,13 @@ class DraggableWidget(QWidget):
         self.allow_drag = True
 
     def drag_render_widget(self) -> Optional[QWidget]: pass
-
     def init_mime(self, mime: QMimeData): pass
 
-    def drag_start(self): pass
+    def drag_start(self):
+        self.window().setFocus()
+        self.hide()
 
-    def drag_end(self): pass
+    def drag_end(self): self.show()
 
     def mouseMoveEvent(self, event):
         if self.allow_drag and event.buttons() == Qt.MouseButton.LeftButton:
@@ -33,7 +34,7 @@ class DraggableWidget(QWidget):
                 pixmap = QPixmap(render_widget.size() * p_ratio)
                 pixmap.setDevicePixelRatio(p_ratio)
                 pixmap.fill(Qt.GlobalColor.transparent)
-                render_widget.render(pixmap, renderFlags=QWidget.RenderFlag.IgnoreMask)
+                render_widget.render(pixmap, renderFlags=QWidget.RenderFlag.DrawChildren)
                 drag.setPixmap(pixmap)
 
             self.drag_start()
