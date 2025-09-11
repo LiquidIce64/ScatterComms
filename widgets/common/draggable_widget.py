@@ -1,7 +1,7 @@
 from typing import Optional
 
-from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import Qt, QMimeData
+from PySide6.QtWidgets import QWidget, QApplication
+from PySide6.QtCore import Qt, QMimeData, QPointF
 from PySide6.QtGui import QDrag, QPixmap
 
 
@@ -11,6 +11,7 @@ class DraggableWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.allow_drag = True
+        self.__drag_start_pos = QPointF()
 
     def drag_render_widget(self) -> Optional[QWidget]: return self
     def init_mime(self, mime: QMimeData): pass
@@ -21,8 +22,15 @@ class DraggableWidget(QWidget):
 
     def drag_end(self): self.show()
 
+    def mousePressEvent(self, event):
+        if event.buttons() == Qt.MouseButton.LeftButton:
+            self.__drag_start_pos = event.position()
+
     def mouseMoveEvent(self, event):
         if self.allow_drag and event.buttons() == Qt.MouseButton.LeftButton:
+            drag_vector = (event.position() - self.__drag_start_pos)
+            if max(abs(drag_vector.x()), abs(drag_vector.y())) < QApplication.startDragDistance():
+                return
             drag = QDrag(self)
             mime = QMimeData()
             self.init_mime(mime)
