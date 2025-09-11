@@ -26,6 +26,7 @@ class Ui_chat_widget(object):
         if not chat_widget.objectName():
             chat_widget.setObjectName(u"chat_widget")
         chat_widget.resize(208, 30)
+        chat_widget.setWindowTitle(u"Form")
         chat_widget.setStyleSheet(u"#btn {border-radius: 6px;}\n"
 "#btn:hover, #btn:focus {background-color: #2A2A2A;}\n"
 "\n"
@@ -58,6 +59,7 @@ class Ui_chat_widget(object):
         self.icon.setObjectName(u"icon")
         self.icon.setMinimumSize(QSize(24, 24))
         self.icon.setMaximumSize(QSize(24, 24))
+        self.icon.setText(u"")
         self.icon.setPixmap(QPixmap(u":/icons/text_chat"))
         self.icon.setScaledContents(True)
 
@@ -81,7 +83,6 @@ class Ui_chat_widget(object):
     # setupUi
 
     def retranslateUi(self, chat_widget):
-        chat_widget.setWindowTitle(QCoreApplication.translate("chat_widget", u"Form", None))
-        self.icon.setText("")
+        pass
     # retranslateUi
 

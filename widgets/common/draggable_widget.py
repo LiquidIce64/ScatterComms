@@ -39,7 +39,11 @@ class DraggableWidget(QWidget):
             render_widget = self.drag_render_widget()
             if render_widget is not None:
                 p_ratio = render_widget.devicePixelRatio()
-                pixmap = QPixmap(render_widget.size() * p_ratio)
+                size = render_widget.size() * p_ratio
+                # Small drag pixmaps get rendered incorrectly on HDR displays.
+                # Setting a pixmap size above 255 forces it to draw a proper color-corrected window
+                # instead of doing cursor image shenanigans...
+                pixmap = QPixmap(max(size.width(), 256), size.height())
                 pixmap.setDevicePixelRatio(p_ratio)
                 pixmap.fill(Qt.GlobalColor.transparent)
                 render_widget.render(pixmap, renderFlags=QWidget.RenderFlag.DrawChildren)
