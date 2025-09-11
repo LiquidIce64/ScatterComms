@@ -103,7 +103,8 @@ class MainPage(QWidget, Ui_main_page):
 
     def update_server_dropdown_icon(self):
         self.icon_server_dropdown.setIcon(
-            Icons.ArrowUp if self.btn_server_title.isChecked() else Icons.ArrowDown
+            Icons.ArrowUp if self.btn_server_title.isChecked() else Icons.ArrowDown,
+            override_color=True
         )
 
     def mousePressEvent(self, event):

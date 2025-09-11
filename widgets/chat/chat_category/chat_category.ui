@@ -21,18 +21,17 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#icon_dropdown {
+	color: #808080;
 	margin: 2px;
 }
+#icon_dropdown[highlight=&quot;true&quot;] {color: white;}
 
 #label {
 	color: #808080;
 	font-size: 10pt;
 	font-weight: 600;
 }
-
-#label[highlight=&quot;true&quot;] {
-	color: white;
-}
+#label[highlight=&quot;true&quot;] {color: white;}
 
 #drop_target {
 	border: 2px solid #2A2A2A;
@@ -146,7 +145,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>24</height>
+       <height>30</height>
       </size>
      </property>
      <layout class="QVBoxLayout" name="layout_chats">

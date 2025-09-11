@@ -26,24 +26,21 @@ class Ui_chat_widget(object):
         if not chat_widget.objectName():
             chat_widget.setObjectName(u"chat_widget")
         chat_widget.resize(208, 30)
-        chat_widget.setStyleSheet(u"#btn:hover {\n"
-"	background-color: #2A2A2A;\n"
-"	border-radius: 6px;\n"
-"}\n"
+        chat_widget.setStyleSheet(u"#btn {border-radius: 6px;}\n"
+"#btn:hover, #btn:focus {background-color: #2A2A2A;}\n"
 "\n"
 "#icon {\n"
 "	margin: 4px;\n"
+"	color: #808080;\n"
 "}\n"
+"#icon[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#label {\n"
 "	font-size: 11pt;\n"
 "	font-weight: 600;\n"
 "	color: #808080;\n"
 "}\n"
-"\n"
-"#label[highlight=\"true\"] {\n"
-"	color: white;\n"
-"}")
+"#label[highlight=\"true\"] {color: white;}")
         self.layout_widget = QVBoxLayout(chat_widget)
         self.layout_widget.setSpacing(0)
         self.layout_widget.setObjectName(u"layout_widget")

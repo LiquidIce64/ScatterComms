@@ -38,15 +38,18 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
 
     def update_dropdown(self):
         if self.btn.isChecked():
-            self.icon_dropdown.setIcon(Icons.ArrowUp)
+            self.icon_dropdown.setIcon(Icons.ArrowUp, override_color=True)
             self.frame_chats.show()
         else:
-            self.icon_dropdown.setIcon(Icons.ArrowDown)
+            self.icon_dropdown.setIcon(Icons.ArrowDown, override_color=True)
             self.frame_chats.hide()
 
     def update_highlight(self):
-        self.label.setProperty('highlight', self.btn.hasFocus() or self.btn.underMouse())
+        highlight = self.btn.hasFocus() or self.btn.underMouse()
+        self.label.setProperty('highlight', highlight)
         self.label.style().polish(self.label)
+        self.icon_dropdown.setProperty('highlight', highlight)
+        self.icon_dropdown.style().polish(self.icon_dropdown)
 
     def mouseMoveEvent(self, event):
         if self.btn.underMouse():

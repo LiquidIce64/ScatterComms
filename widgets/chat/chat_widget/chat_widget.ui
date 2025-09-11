@@ -14,24 +14,21 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#btn:hover {
-	background-color: #2A2A2A;
-	border-radius: 6px;
-}
+   <string notr="true">#btn {border-radius: 6px;}
+#btn:hover, #btn:focus {background-color: #2A2A2A;}
 
 #icon {
 	margin: 4px;
+	color: #808080;
 }
+#icon[highlight=&quot;true&quot;] {color: white;}
 
 #label {
 	font-size: 11pt;
 	font-weight: 600;
 	color: #808080;
 }
-
-#label[highlight=&quot;true&quot;] {
-	color: white;
-}</string>
+#label[highlight=&quot;true&quot;] {color: white;}</string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
    <property name="spacing">

@@ -125,6 +125,10 @@
 	background-color: #303030;
 }
 
+#btn_send {color: #A0A0A0;}
+#btn_send:disabled {color: #808080;}
+#btn_send:hover {color: white;}
+
 #btn_attachment:hover, #btn_emoji:hover, #btn_send:hover {
 	background-color: #454545;
 }
@@ -1034,11 +1038,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MaskedImage</class>
-   <extends>QLabel</extends>
-   <header>widgets.common</header>
-  </customwidget>
-  <customwidget>
    <class>FrameButton</class>
    <extends>QFrame</extends>
    <header>widgets.common</header>
@@ -1046,6 +1045,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
   </customwidget>
   <customwidget>
    <class>IconWidget</class>
+   <extends>QLabel</extends>
+   <header>widgets.common</header>
+  </customwidget>
+  <customwidget>
+   <class>MaskedImage</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>

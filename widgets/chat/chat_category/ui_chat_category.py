@@ -30,18 +30,17 @@ class Ui_chat_category_widget(object):
         chat_category_widget.setAcceptDrops(True)
         chat_category_widget.setWindowTitle(u"Form")
         chat_category_widget.setStyleSheet(u"#icon_dropdown {\n"
+"	color: #808080;\n"
 "	margin: 2px;\n"
 "}\n"
+"#icon_dropdown[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#label {\n"
 "	color: #808080;\n"
 "	font-size: 10pt;\n"
 "	font-weight: 600;\n"
 "}\n"
-"\n"
-"#label[highlight=\"true\"] {\n"
-"	color: white;\n"
-"}\n"
+"#label[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#drop_target {\n"
 "	border: 2px solid #2A2A2A;\n"
@@ -85,7 +84,7 @@ class Ui_chat_category_widget(object):
 
         self.frame_chats = QFrame(chat_category_widget)
         self.frame_chats.setObjectName(u"frame_chats")
-        self.frame_chats.setMinimumSize(QSize(0, 24))
+        self.frame_chats.setMinimumSize(QSize(0, 30))
         self.layout_chats = QVBoxLayout(self.frame_chats)
         self.layout_chats.setSpacing(3)
         self.layout_chats.setObjectName(u"layout_chats")
