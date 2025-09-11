@@ -12,7 +12,7 @@ class DraggableWidget(QWidget):
         super().__init__(*args, **kwargs)
         self.allow_drag = True
 
-    def drag_render_widget(self) -> Optional[QWidget]: pass
+    def drag_render_widget(self) -> Optional[QWidget]: return self
     def init_mime(self, mime: QMimeData): pass
 
     def drag_start(self):

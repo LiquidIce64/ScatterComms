@@ -1,47 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>chat_category_widget</class>
- <widget class="QWidget" name="chat_category_widget">
+ <class>chat_widget</class>
+ <widget class="QWidget" name="chat_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>208</width>
-    <height>150</height>
+    <height>30</height>
    </rect>
   </property>
-  <property name="mouseTracking">
-   <bool>true</bool>
-  </property>
-  <property name="acceptDrops">
-   <bool>true</bool>
-  </property>
   <property name="windowTitle">
-   <string notr="true">Form</string>
+   <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#icon_dropdown {
-	margin: 2px;
+   <string notr="true">#btn:hover {
+	background-color: #2A2A2A;
+	border-radius: 6px;
+}
+
+#icon {
+	margin: 4px;
 }
 
 #label {
-	color: #808080;
-	font-size: 10pt;
+	font-size: 11pt;
 	font-weight: 600;
+	color: #808080;
 }
 
 #label[highlight=&quot;true&quot;] {
 	color: white;
-}
-
-#drop_target {
-	border: 2px solid #2A2A2A;
-	border-radius: 6px;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="layout_chat_category">
+  <layout class="QVBoxLayout" name="layout_widget">
    <property name="spacing">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -57,18 +51,6 @@
    </property>
    <item>
     <widget class="FrameButton" name="btn">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>24</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>24</height>
-      </size>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
@@ -78,41 +60,41 @@
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::StrongFocus</enum>
      </property>
-     <layout class="QHBoxLayout" name="layout_frame">
+     <layout class="QHBoxLayout" name="layout_btn">
       <property name="spacing">
        <number>3</number>
       </property>
       <property name="leftMargin">
-       <number>6</number>
+       <number>3</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="rightMargin">
        <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <item>
-       <widget class="IconWidget" name="icon_dropdown">
+       <widget class="IconWidget" name="icon">
         <property name="minimumSize">
          <size>
-          <width>16</width>
-          <height>16</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>16</width>
-          <height>16</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
         <property name="text">
-         <string notr="true"/>
+         <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../../resources/index.qrc">:/icons/arrow_down</pixmap>
+         <pixmap resource="../../../resources/index.qrc">:/icons/text_chat</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -134,37 +116,10 @@
          </size>
         </property>
         <property name="text">
-         <string notr="true">Category</string>
+         <string notr="true">Chat</string>
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame_chats">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>24</height>
-      </size>
-     </property>
-     <layout class="QVBoxLayout" name="layout_chats">
-      <property name="spacing">
-       <number>3</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
      </layout>
     </widget>
    </item>

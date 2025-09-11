@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file alias="text_chat">icons/text_chat.svg</file>
     <file alias="avatar">icons/avatar.svg</file>
     <file alias="user">icons/user.svg</file>
     <file alias="save">icons/save.svg</file>

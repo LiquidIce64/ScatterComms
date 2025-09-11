@@ -15,7 +15,7 @@ class ChatList(QWidget):
         self.layout_chatlist = QVBoxLayout(self)
         self.layout_chatlist.setObjectName('layout_chatlist')
         self.layout_chatlist.setContentsMargins(6, 0, 6, 0)
-        self.layout_chatlist.setSpacing(6)
+        self.layout_chatlist.setSpacing(12)
 
         self.drop_target = QFrame()
         self.drop_target.setObjectName('drop_target')

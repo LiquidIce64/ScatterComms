@@ -18,6 +18,7 @@ class Icons:
     Save = QIcon(ICON_DIR + 'save.svg')
     Server = QIcon(ICON_DIR + 'server.svg')
     ServerFrame = QIcon(ICON_DIR + 'server_frame.svg')
+    TextChat = QIcon(ICON_DIR + 'text_chat.svg')
 
     class Status:
         Online = QIcon(ICON_DIR + 'status_online.svg')

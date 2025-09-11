@@ -27,18 +27,25 @@ class Ui_chat_category_widget(object):
             chat_category_widget.setObjectName(u"chat_category_widget")
         chat_category_widget.resize(208, 150)
         chat_category_widget.setMouseTracking(True)
+        chat_category_widget.setAcceptDrops(True)
         chat_category_widget.setWindowTitle(u"Form")
         chat_category_widget.setStyleSheet(u"#icon_dropdown {\n"
 "	margin: 2px;\n"
 "}\n"
 "\n"
 "#label {\n"
-"	color: #A0A0A0;\n"
+"	color: #808080;\n"
 "	font-size: 10pt;\n"
+"	font-weight: 600;\n"
 "}\n"
 "\n"
 "#label[highlight=\"true\"] {\n"
 "	color: white;\n"
+"}\n"
+"\n"
+"#drop_target {\n"
+"	border: 2px solid #2A2A2A;\n"
+"	border-radius: 6px;\n"
 "}")
         self.layout_chat_category = QVBoxLayout(chat_category_widget)
         self.layout_chat_category.setSpacing(3)
@@ -54,7 +61,7 @@ class Ui_chat_category_widget(object):
         self.layout_frame = QHBoxLayout(self.btn)
         self.layout_frame.setSpacing(3)
         self.layout_frame.setObjectName(u"layout_frame")
-        self.layout_frame.setContentsMargins(0, 0, 0, 0)
+        self.layout_frame.setContentsMargins(6, 0, 3, 0)
         self.icon_dropdown = IconWidget(self.btn)
         self.icon_dropdown.setObjectName(u"icon_dropdown")
         self.icon_dropdown.setMinimumSize(QSize(16, 16))
@@ -78,6 +85,7 @@ class Ui_chat_category_widget(object):
 
         self.frame_chats = QFrame(chat_category_widget)
         self.frame_chats.setObjectName(u"frame_chats")
+        self.frame_chats.setMinimumSize(QSize(0, 24))
         self.layout_chats = QVBoxLayout(self.frame_chats)
         self.layout_chats.setSpacing(3)
         self.layout_chats.setObjectName(u"layout_chats")
