@@ -21,12 +21,10 @@ class ServerListBase(QFrame):
         self.layout_frame.setSpacing(6)
 
     def add_server(self, server: ServerBackend.Server, index=-1):
-        state = randint(1, 3)
+        state = randint(1, 2)
         widget = ServerWidget(server, parent=self)
         if state == 2:
             widget.notification = True
-        if state == 3:
-            widget.selected = True
         widget.update_line()
         if index == -1:
             self.layout_frame.addWidget(widget)
@@ -126,7 +124,8 @@ class PinnedServerList(ServerListBase):
             saved_messages.icon.setPixmap(Icons.Save)
             saved_messages.setObjectName('saved_messages')
             saved_messages.setToolTip('Saved Messages')
-            ConfigBackend.session.selected_server = saved_messages.server
+            if ConfigBackend.session.selected_server is None:
+                saved_messages.click()
 
     def __drop_location(self, position: QPointF):
         y_pos = position.y()

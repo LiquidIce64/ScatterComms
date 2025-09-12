@@ -29,6 +29,7 @@ class Ui_chat_widget(object):
         chat_widget.setWindowTitle(u"Form")
         chat_widget.setStyleSheet(u"#btn {border-radius: 6px;}\n"
 "#btn:hover, #btn:focus {background-color: #2A2A2A;}\n"
+"#btn[checked=\"true\"] {background-color: #353535;}\n"
 "\n"
 "#icon {\n"
 "	margin: 4px;\n"
@@ -50,7 +51,7 @@ class Ui_chat_widget(object):
         self.btn.setObjectName(u"btn")
         self.btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn.setMouseTracking(True)
-        self.btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.btn.setFocusPolicy(Qt.FocusPolicy.TabFocus)
         self.layout_btn = QHBoxLayout(self.btn)
         self.layout_btn.setSpacing(3)
         self.layout_btn.setObjectName(u"layout_btn")

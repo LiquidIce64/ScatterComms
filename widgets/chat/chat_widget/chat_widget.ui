@@ -16,6 +16,7 @@
   <property name="styleSheet">
    <string notr="true">#btn {border-radius: 6px;}
 #btn:hover, #btn:focus {background-color: #2A2A2A;}
+#btn[checked=&quot;true&quot;] {background-color: #353535;}
 
 #icon {
 	margin: 4px;
@@ -55,7 +56,7 @@
       <bool>true</bool>
      </property>
      <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
+      <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
      <layout class="QHBoxLayout" name="layout_btn">
       <property name="spacing">

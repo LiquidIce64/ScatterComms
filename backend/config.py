@@ -31,6 +31,7 @@ class ConfigBackend:
                 self.__status = ProfileBackend.Status.Online
 
             if self.__profile is not None:
+                self.__profile.changed.connect(self.profile_changed)
                 self.__selected_server = ServerBackend.get_server(self.__profile.uuid, server_uuid)
             else:
                 self.__selected_server = None
@@ -43,17 +44,27 @@ class ConfigBackend:
         def selected_server(self): return self.__selected_server
 
         @profile.setter
-        def profile(self, new_value: ProfileBackend.Profile):
+        def profile(self, new_value: Optional[ProfileBackend.Profile]):
+            if self.__profile == new_value:
+                return
+            if self.__profile is not None:
+                self.__profile.changed.disconnect(self.profile_changed)
             self.__profile = new_value
+            if self.__profile is not None:
+                self.__profile.changed.connect(self.profile_changed)
             self.profile_changed.emit()
 
         @status.setter
         def status(self, new_value: ProfileBackend.Status):
+            if self.__status == new_value:
+                return
             self.__status = new_value
             self.profile_changed.emit()
 
         @selected_server.setter
         def selected_server(self, new_value: ServerBackend.Server):
+            if self.__selected_server == new_value:
+                return
             self.__selected_server = new_value
             self.server_changed.emit()
 

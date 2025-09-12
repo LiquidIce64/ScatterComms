@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from .ui_server_widget import Ui_widget_server
 from widgets.common import DraggableWidget
 from resources import Icons
-from backend import ServerBackend
+from backend import ServerBackend, ConfigBackend
 
 
 class ServerWidget(DraggableWidget, Ui_widget_server):
@@ -18,8 +18,9 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
         self.server = server
         self.update_server_info()
         self.server.changed.connect(self.update_server_info)
+        if self.server == ConfigBackend.session.selected_server:
+            ConfigBackend.session.server_changed.connect(self.on_server_change)
 
-        self.selected = False
         self.notification = False
 
         self.update_line()
@@ -31,7 +32,7 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
     def drag_render_widget(self): return self.icon
 
     def update_line(self):
-        if self.selected:
+        if self.server == ConfigBackend.session.selected_server:
             self.line.setFixedHeight(self.height())
             self.line.show()
         elif self.underMouse() or self.hasFocus():
@@ -44,7 +45,12 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
             self.line.hide()
 
     def click(self):
-        self.selected = True
+        ConfigBackend.session.selected_server = self.server
+        ConfigBackend.session.server_changed.connect(self.on_server_change)
+        self.update_line()
+
+    def on_server_change(self):
+        ConfigBackend.session.server_changed.disconnect(self.on_server_change)
         self.update_line()
 
     def enterEvent(self, event): self.update_line()

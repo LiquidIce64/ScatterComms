@@ -75,7 +75,7 @@
       <bool>true</bool>
      </property>
      <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::StrongFocus</enum>
+      <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
      <layout class="QHBoxLayout" name="layout_frame">
       <property name="spacing">

@@ -56,7 +56,7 @@ class Ui_chat_category_widget(object):
         self.btn.setMaximumSize(QSize(16777215, 24))
         self.btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn.setMouseTracking(True)
-        self.btn.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.btn.setFocusPolicy(Qt.FocusPolicy.TabFocus)
         self.layout_frame = QHBoxLayout(self.btn)
         self.layout_frame.setSpacing(3)
         self.layout_frame.setObjectName(u"layout_frame")

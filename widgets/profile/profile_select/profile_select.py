@@ -17,6 +17,7 @@ class ProfileSelect(QWidget, Ui_profile_select):
         self.setupUi(self)
         self.main_window = main_window
         ConfigBackend.session.profile = None
+        ConfigBackend.session.selected_server = None
 
         self.icon_create.setIcon(Icons.Plus)
         self.btn_create.clicked.connect(self.create_profile)
