@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QSizePolicy,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
 
 from widgets.common import (FrameButton, IconWidget)
 import index_rc
@@ -26,6 +26,8 @@ class Ui_chat_widget(object):
         if not chat_widget.objectName():
             chat_widget.setObjectName(u"chat_widget")
         chat_widget.resize(208, 30)
+        chat_widget.setMinimumSize(QSize(0, 30))
+        chat_widget.setMaximumSize(QSize(16777215, 30))
         chat_widget.setWindowTitle(u"Form")
         chat_widget.setStyleSheet(u"#btn {border-radius: 6px;}\n"
 "#btn:hover, #btn:focus {background-color: #2A2A2A;}\n"
@@ -42,7 +44,17 @@ class Ui_chat_widget(object):
 "	font-weight: 600;\n"
 "	color: #808080;\n"
 "}\n"
-"#label[highlight=\"true\"] {color: white;}")
+"#label[highlight=\"true\"] {color: white;}\n"
+"\n"
+"#btn_settings {\n"
+"	background: none;\n"
+"	border: none;\n"
+"	border-radius: 6px;\n"
+"}\n"
+"\n"
+"#btn_settings:hover, #btn_settings:focus {\n"
+"	background-color: #353535;\n"
+"}")
         self.layout_widget = QVBoxLayout(chat_widget)
         self.layout_widget.setSpacing(0)
         self.layout_widget.setObjectName(u"layout_widget")
@@ -74,6 +86,28 @@ class Ui_chat_widget(object):
 
         self.layout_btn.addWidget(self.label)
 
+        self.frame_buttons = QFrame(self.btn)
+        self.frame_buttons.setObjectName(u"frame_buttons")
+        self.layout_buttons = QHBoxLayout(self.frame_buttons)
+        self.layout_buttons.setSpacing(0)
+        self.layout_buttons.setObjectName(u"layout_buttons")
+        self.layout_buttons.setContentsMargins(0, 0, 0, 0)
+        self.btn_settings = QPushButton(self.frame_buttons)
+        self.btn_settings.setObjectName(u"btn_settings")
+        self.btn_settings.setMinimumSize(QSize(24, 24))
+        self.btn_settings.setMaximumSize(QSize(24, 24))
+        self.btn_settings.setText(u"")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/settings", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.btn_settings.setIcon(icon1)
+        self.btn_settings.setIconSize(QSize(12, 12))
+
+        self.layout_buttons.addWidget(self.btn_settings)
+
+
+        self.layout_btn.addWidget(self.frame_buttons)
+
+        self.layout_btn.setStretch(1, 1)
 
         self.layout_widget.addWidget(self.btn)
 

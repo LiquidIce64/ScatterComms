@@ -5,7 +5,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QPointF
 
 from .chat_category import ChatCategoryWidget
-from backend import ConfigBackend
+from backend import ConfigBackend, run_task, ChatBackend
 
 
 class ChatList(QWidget):
@@ -24,23 +24,26 @@ class ChatList(QWidget):
         self.spacer_chatlist = QSpacerItem(0, 0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
         self.layout_chatlist.addSpacerItem(self.spacer_chatlist)
 
-        # run_task(
-        #     ChatBackend.get_categories,
-        #     ConfigBackend.session.selected_server.uuid,
-        #     result_slot=self.add_categories
-        # )
+        self.reload_contents()
+        ConfigBackend.session.server_changed.connect(self.reload_contents)
 
-        # debug
-        self.add_category()
-        self.add_category()
-        self.add_category()
+    def reload_contents(self):
+        for i in range(self.layout_chatlist.count() - 1, -1, -1):
+            w = self.layout_chatlist.itemAt(i).widget()
+            if isinstance(w, ChatCategoryWidget):
+                w.deleteLater()
+        if ConfigBackend.session.selected_server is not None:
+            run_task(
+                ChatBackend.get_categories,
+                ConfigBackend.session.selected_server.uuid,
+                result_slot=self.add_categories
+            )
 
-    def add_category(self, category=None, index=0):
+    def add_category(self, category: ChatBackend.Category, index=-1):
         widget = ChatCategoryWidget(category, parent=self)
         if index == -1:
-            self.layout_chatlist.addWidget(widget)
-        else:
-            self.layout_chatlist.insertWidget(index, widget)
+            index = self.layout_chatlist.count() - 1
+        self.layout_chatlist.insertWidget(index, widget)
 
     def add_categories(self, categories):
         for category in categories:
@@ -53,8 +56,8 @@ class ChatList(QWidget):
                 return
             if name:
                 break
-        # category = ChatBackend.create_category(name, ConfigBackend.session.selected_server.uuid)
-        # self.add_category(category)
+        category = ChatBackend.create_category(ConfigBackend.session.selected_server.uuid, name)
+        self.add_category(category)
 
     def drag_end(self): self.drop_target.hide()
 
@@ -93,9 +96,9 @@ class ChatList(QWidget):
         if not isinstance(widget, ChatCategoryWidget):
             return
         self.layout_chatlist.insertWidget(self.__drop_location(event.position()), widget)
-        # categories = []
-        # for i in range(self.layout_chatlist.count()):
-        #     w = self.layout_chatlist.itemAt(i).widget()
-        #     if isinstance(w, ChatCategoryWidget):
-        #         categories.append(w.category.uuid)
-        # ChatBackend.reorder_categories(ConfigBackend.session.selected_server.uuid, categories)
+        categories = []
+        for i in range(self.layout_chatlist.count()):
+            w = self.layout_chatlist.itemAt(i).widget()
+            if isinstance(w, ChatCategoryWidget):
+                categories.append(w.category.uuid)
+        ChatBackend.reorder_category_list(ConfigBackend.session.selected_server.uuid, categories)

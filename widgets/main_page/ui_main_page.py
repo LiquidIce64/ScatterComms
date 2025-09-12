@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QLayout, QPushButton, QScrollArea,
-    QSizePolicy, QSpacerItem, QTextEdit, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLayout, QPushButton,
+    QScrollArea, QSizePolicy, QSpacerItem, QTextEdit,
+    QVBoxLayout, QWidget)
 
 from widgets.chat import ChatList
 from widgets.common import (FrameButton, IconWidget, MaskedImage, ScrollableFrame)
@@ -393,10 +393,14 @@ class Ui_main_page(object):
         self.scroll_chatlist.setFrameShape(QFrame.Shape.NoFrame)
         self.scroll_chatlist.setFrameShadow(QFrame.Shadow.Plain)
         self.scroll_chatlist.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_chatlist.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.scroll_chatlist.setWidgetResizable(True)
+        self.scroll_chatlist.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.scrollcontent_chatlist = QWidget()
         self.scrollcontent_chatlist.setObjectName(u"scrollcontent_chatlist")
         self.scrollcontent_chatlist.setGeometry(QRect(0, 0, 220, 540))
+        self.scrollcontent_chatlist.setMinimumSize(QSize(220, 0))
+        self.scrollcontent_chatlist.setMaximumSize(QSize(220, 16777215))
         self.layout_scroll_chatlist = QVBoxLayout(self.scrollcontent_chatlist)
         self.layout_scroll_chatlist.setSpacing(0)
         self.layout_scroll_chatlist.setObjectName(u"layout_scroll_chatlist")

@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>208</width>
-    <height>150</height>
+    <height>127</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="mouseTracking">
    <bool>true</bool>
@@ -36,6 +42,16 @@
 #drop_target {
 	border: 2px solid #2A2A2A;
 	border-radius: 6px;
+}
+
+#btn_settings, #btn_create_chat {
+	background: none;
+	border: none;
+	border-radius: 6px;
+}
+
+#btn_settings:hover, #btn_settings:focus, #btn_create_chat:hover, #btn_create_chat:focus {
+	background-color: #2A2A2A;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="layout_chat_category">
@@ -77,7 +93,7 @@
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
-     <layout class="QHBoxLayout" name="layout_frame">
+     <layout class="QHBoxLayout" name="layout_frame" stretch="0,1,0">
       <property name="spacing">
        <number>3</number>
       </property>
@@ -137,11 +153,96 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QFrame" name="frame_buttons">
+        <layout class="QHBoxLayout" name="layout_buttons">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btn_create_chat">
+           <property name="minimumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true"/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../resources/index.qrc">
+             <normaloff>:/icons/plus</normaloff>:/icons/plus</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_settings">
+           <property name="minimumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true"/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../resources/index.qrc">
+             <normaloff>:/icons/settings</normaloff>:/icons/settings</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QFrame" name="frame_chats">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>0</width>

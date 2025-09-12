@@ -21,8 +21,8 @@ class ProfileMenu(MenuWidget):
         self.divider.setStyleSheet('color: #353535;')
         self.layout_menu.addWidget(self.divider)
 
-        self.btn_edit_profile = self.add_button('Edit Profile', Icons.Edit, 2)
-        self.btn_change_profile = self.add_button('Change Profile', Icons.User, 2)
+        self.btn_edit_profile = self.add_button('Edit Profile', Icons.Edit)
+        self.btn_change_profile = self.add_button('Change Profile', Icons.User)
 
     def connect_button_signals(self, main_page):
         self.btn_change_profile.clicked.connect(

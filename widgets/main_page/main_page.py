@@ -42,6 +42,8 @@ class MainPage(QWidget, Ui_main_page):
             self.update_dropdown_menu(ServerMenu, self.btn_server_title),
             self.update_server_dropdown_icon()
         ))
+        self.update_server_title()
+        ConfigBackend.session.server_changed.connect(self.update_server_title)
 
         # Profile
         self.btn_profile.setCheckable(True)
@@ -67,6 +69,15 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_attachment.setIcon(Icons.Plus)
         self.btn_emoji.setIcon(Icons.Emoji)
         self.btn_send.setIcon(Icons.Send)
+
+    def update_server_title(self):
+        server = ConfigBackend.session.selected_server
+        if server is None:
+            return
+        name = server.name
+        if name == 'Saved Messages':
+            name = QCoreApplication.translate('main_page', 'Saved Messages')
+        self.label_servername.setText(name)
 
     def update_profile(self):
         profile = ConfigBackend.session.profile

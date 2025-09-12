@@ -32,7 +32,10 @@ class ConfigBackend:
 
             if self.__profile is not None:
                 self.__profile.changed.connect(self.profile_changed)
-                self.__selected_server = ServerBackend.get_server(self.__profile.uuid, server_uuid)
+                self.__selected_server: Optional[ServerBackend.Server] = (
+                    ServerBackend.get_server(self.__profile.uuid, server_uuid)
+                    or ServerBackend.get_saved_messages(self.__profile.uuid)
+                )
             else:
                 self.__selected_server = None
 
@@ -52,7 +55,9 @@ class ConfigBackend:
             self.__profile = new_value
             if self.__profile is not None:
                 self.__profile.changed.connect(self.profile_changed)
+                self.__selected_server = ServerBackend.get_saved_messages(self.__profile.uuid)
             self.profile_changed.emit()
+            self.server_changed.emit()
 
         @status.setter
         def status(self, new_value: ProfileBackend.Status):

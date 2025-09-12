@@ -19,7 +19,7 @@ class MenuWidget(QWidget, Ui_menu_widget):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
-    def add_button(self, label=None, icon=None, icon_margin=0):
+    def add_button(self, label=None, icon=None, icon_margin=2):
         btn = MenuButton(label, icon, invert_layout=self._left_side_icons)
         if icon_margin > 0:
             btn.icon.setStyleSheet(f'margin:{icon_margin}px;')

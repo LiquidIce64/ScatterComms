@@ -90,6 +90,7 @@ class Role(UUIDMixin, SortMixin, Base):
     name: Mapped[str] = mapped_column(nullable=False)
     color: Mapped[int] = mapped_column(nullable=False)
     public: Mapped[bool] = mapped_column(nullable=False, default=True)
+    pingable: Mapped[bool] = mapped_column(nullable=False, default=False)
 
     server_uuid: Mapped[UUID] = mapped_column(ForeignKey('servers.uuid'))
     server: Mapped['Server'] = relationship(back_populates='roles')
@@ -144,6 +145,7 @@ class ChatCategory(UUIDMixin, SortMixin, Base):
     __tablename__ = 'chat_categories'
 
     name: Mapped[str] = mapped_column(nullable=False)
+    collapsed: Mapped[bool] = mapped_column(nullable=False, default=False)
 
     server_uuid: Mapped[UUID] = mapped_column(ForeignKey('servers.uuid'))
     server: Mapped['Server'] = relationship(back_populates='chat_categories')

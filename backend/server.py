@@ -1,18 +1,23 @@
-from typing import Union
+from typing import Union, Optional
 from uuid import UUID
 from sqlalchemy import select
 
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QImage, QPixmap
 
-from database.models import ServerSortOrder
 from .multithreading import multithreaded
 from .storage import StorageBackend
 from .cached_object import CachedObject
-from database import Database, Server, ServerMember, User, Role
+from database import (
+    Database, Server, ServerSortOrder, ServerMember,
+    User, Role, ChatCategory, Chat
+)
 
 
 class ServerBackend:
     class Server(CachedObject):
+        selected_chat_changed = Signal()
+
         def __init__(self, server):
             if hasattr(self, '_initialized'):
                 return
@@ -20,13 +25,16 @@ class ServerBackend:
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.uuid)
+            self.__selected_chat_uuid: Optional[UUID] = server.selected_chat_uuid
             self._initialized = True
 
         def update(self, server):
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.uuid)
+            self.__selected_chat_uuid: Optional[UUID] = server.selected_chat_uuid
             self.changed.emit()
+            self.selected_chat_changed.emit()
 
         @property
         def uuid(self): return self.__uuid
@@ -34,6 +42,8 @@ class ServerBackend:
         def name(self): return self.__name
         @property
         def icon(self): return self.__icon
+        @property
+        def selected_chat_uuid(self): return self.__selected_chat_uuid
 
         @name.setter
         def name(self, new_value: str):
@@ -48,6 +58,14 @@ class ServerBackend:
             self.__icon = new_value
             StorageBackend.Server.set_icon(self.__uuid, new_value)
             self.changed.emit()
+
+        @selected_chat_uuid.setter
+        def selected_chat_uuid(self, new_value: UUID):
+            if self.__selected_chat_uuid == new_value:
+                return
+            self.__selected_chat_uuid = new_value
+            ServerBackend.edit_server(self.__uuid, selected_chat_uuid=new_value)
+            self.selected_chat_changed.emit()
 
     @staticmethod
     def get_server(profile_uuid: UUID, server_uuid):
@@ -64,6 +82,21 @@ class ServerBackend:
             ).one_or_none()
             if _server is None:
                 return None
+            server = ServerBackend.Server(_server)
+        return server
+
+    @staticmethod
+    def get_saved_messages(profile_uuid: UUID):
+        with Database.create_session() as session:
+            _server = session.scalar(
+                select(Server)
+                .join(
+                    ServerSortOrder,
+                    (Server.uuid == ServerSortOrder.server_uuid)
+                    & (ServerSortOrder.user_uuid == profile_uuid)
+                )
+                .where(ServerSortOrder.sort_order == 1)
+            )
             server = ServerBackend.Server(_server)
         return server
 
@@ -146,13 +179,31 @@ class ServerBackend:
                 user_uuid=profile_uuid,
                 sort_order=sort_order
             )
+
             profile = session.get(User, profile_uuid)
             server_member = ServerMember(server=_server, user=profile)
             owner_role = Role(
-                name='Owner', color=0xFFC814FF,
+                name='Owner', color=0xFFC814FF, pingable=True,
                 server=_server, users=[profile], sort_order=0
             )
-            session.add_all([server_sort_order, profile, server_member, owner_role])
+            everyone_role = Role(
+                name='everyone', color=0x808080FF, public=False, pingable=True,
+                server=_server, users=[profile], sort_order=1
+            )
+
+            category = ChatCategory(
+                name='Text Chats', server=_server,
+                sort_order=1, whitelisted_roles=[everyone_role]
+            )
+            chat = Chat(
+                name='general', category=category,
+                sort_order=1, whitelisted_roles=[everyone_role]
+            )
+
+            session.add_all([
+                server_sort_order, profile, server_member,
+                owner_role, everyone_role, category, chat
+            ])
             session.commit()
             server = ServerBackend.Server(_server)
         return server

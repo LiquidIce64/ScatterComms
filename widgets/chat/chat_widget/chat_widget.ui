@@ -10,6 +10,18 @@
     <height>30</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>30</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>30</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
@@ -29,7 +41,17 @@
 	font-weight: 600;
 	color: #808080;
 }
-#label[highlight=&quot;true&quot;] {color: white;}</string>
+#label[highlight=&quot;true&quot;] {color: white;}
+
+#btn_settings {
+	background: none;
+	border: none;
+	border-radius: 6px;
+}
+
+#btn_settings:hover, #btn_settings:focus {
+	background-color: #353535;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
    <property name="spacing">
@@ -58,7 +80,7 @@
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
-     <layout class="QHBoxLayout" name="layout_btn">
+     <layout class="QHBoxLayout" name="layout_btn" stretch="0,1,0">
       <property name="spacing">
        <number>3</number>
       </property>
@@ -116,6 +138,56 @@
         <property name="text">
          <string notr="true">Chat</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_buttons">
+        <layout class="QHBoxLayout" name="layout_buttons">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="btn_settings">
+           <property name="minimumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="text">
+            <string notr="true"/>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../resources/index.qrc">
+             <normaloff>:/icons/settings</normaloff>:/icons/settings</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>12</width>
+             <height>12</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
