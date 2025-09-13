@@ -34,24 +34,21 @@
 	margin: 4px;
 	color: #808080;
 }
-#icon[highlight=&quot;true&quot;] {color: white;}
 
 #label {
 	font-size: 11pt;
 	font-weight: 600;
 	color: #808080;
 }
-#label[highlight=&quot;true&quot;] {color: white;}
 
 #btn_settings {
+	color: #808080;
 	background: none;
 	border: none;
 	border-radius: 6px;
 }
 
-#btn_settings:hover, #btn_settings:focus {
-	background-color: #353535;
-}</string>
+#icon[highlight=&quot;true&quot;], #label[highlight=&quot;true&quot;], #btn_settings[highlight=&quot;true&quot;] {color: white;}</string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
    <property name="spacing">
@@ -159,7 +156,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="btn_settings">
+          <widget class="IconButton" name="btn_settings">
            <property name="minimumSize">
             <size>
              <width>24</width>
@@ -205,6 +202,11 @@
   <customwidget>
    <class>IconWidget</class>
    <extends>QLabel</extends>
+   <header>widgets.common</header>
+  </customwidget>
+  <customwidget>
+   <class>IconButton</class>
+   <extends>QPushButton</extends>
    <header>widgets.common</header>
   </customwidget>
  </customwidgets>

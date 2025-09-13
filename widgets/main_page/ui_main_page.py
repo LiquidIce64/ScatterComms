@@ -21,7 +21,8 @@ from PySide6.QtWidgets import (QAbstractScrollArea, QApplication, QFrame, QGridL
     QVBoxLayout, QWidget)
 
 from widgets.chat import ChatList
-from widgets.common import (FrameButton, IconWidget, MaskedImage, ScrollableFrame)
+from widgets.common import (FrameButton, IconButton, IconWidget, MaskedImage,
+    ScrollableFrame)
 from widgets.server import (PinnedServerList, ServerList)
 import index_rc
 
@@ -80,9 +81,11 @@ class Ui_main_page(object):
 "}\n"
 "\n"
 "#frame_serverlist #btn_create_server {\n"
+"	color: #808080;\n"
 "	background-color: #2A2A2A;\n"
 "	border-radius: 10px;\n"
 "}\n"
+"#frame_serverlist #btn_create_server[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#frame_serverlist #btn_create_server:hover {\n"
 "	background-color: #353535;\n"
@@ -124,15 +127,17 @@ class Ui_main_page(object):
 "}\n"
 "\n"
 "#btn_settings, #btn_search, #btn_attachment, #btn_emoji, #btn_send {\n"
-"	background: none;\n"
+"	background: none"
+                        ";\n"
 "	border: none;\n"
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#btn_server_title:hover, #btn_server_"
-                        "title:focus, #btn_server_title[checked=\"true\"],\n"
-"#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=\"true\"],\n"
-"#btn_search:hover, #btn_settings:hover {\n"
+"#btn_settings, #btn_search {color: #808080;}\n"
+"#btn_settings[highlight=\"true\"], #btn_search[highlight=\"true\"] {color: white;}\n"
+"\n"
+"#btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=\"true\"],\n"
+"#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=\"true\"] {\n"
 "	background-color: #303030;\n"
 "}\n"
 "\n"
@@ -346,7 +351,7 @@ class Ui_main_page(object):
 
         self.layout_controls.addWidget(self.btn_profile)
 
-        self.btn_search = QPushButton(self.frame_controls)
+        self.btn_search = IconButton(self.frame_controls)
         self.btn_search.setObjectName(u"btn_search")
         self.btn_search.setMinimumSize(QSize(38, 38))
         self.btn_search.setMaximumSize(QSize(38, 38))
@@ -360,7 +365,7 @@ class Ui_main_page(object):
 
         self.layout_controls.addWidget(self.btn_search)
 
-        self.btn_settings = QPushButton(self.frame_controls)
+        self.btn_settings = IconButton(self.frame_controls)
         self.btn_settings.setObjectName(u"btn_settings")
         self.btn_settings.setMinimumSize(QSize(38, 38))
         self.btn_settings.setMaximumSize(QSize(38, 38))

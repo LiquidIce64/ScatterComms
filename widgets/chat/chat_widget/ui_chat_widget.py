@@ -16,9 +16,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+    QSizePolicy, QVBoxLayout, QWidget)
 
-from widgets.common import (FrameButton, IconWidget)
+from widgets.common import (FrameButton, IconButton, IconWidget)
 import index_rc
 
 class Ui_chat_widget(object):
@@ -37,24 +37,21 @@ class Ui_chat_widget(object):
 "	margin: 4px;\n"
 "	color: #808080;\n"
 "}\n"
-"#icon[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#label {\n"
 "	font-size: 11pt;\n"
 "	font-weight: 600;\n"
 "	color: #808080;\n"
 "}\n"
-"#label[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#btn_settings {\n"
+"	color: #808080;\n"
 "	background: none;\n"
 "	border: none;\n"
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#btn_settings:hover, #btn_settings:focus {\n"
-"	background-color: #353535;\n"
-"}")
+"#icon[highlight=\"true\"], #label[highlight=\"true\"], #btn_settings[highlight=\"true\"] {color: white;}")
         self.layout_widget = QVBoxLayout(chat_widget)
         self.layout_widget.setSpacing(0)
         self.layout_widget.setObjectName(u"layout_widget")
@@ -92,7 +89,7 @@ class Ui_chat_widget(object):
         self.layout_buttons.setSpacing(0)
         self.layout_buttons.setObjectName(u"layout_buttons")
         self.layout_buttons.setContentsMargins(0, 0, 0, 0)
-        self.btn_settings = QPushButton(self.frame_buttons)
+        self.btn_settings = IconButton(self.frame_buttons)
         self.btn_settings.setObjectName(u"btn_settings")
         self.btn_settings.setMinimumSize(QSize(24, 24))
         self.btn_settings.setMaximumSize(QSize(24, 24))

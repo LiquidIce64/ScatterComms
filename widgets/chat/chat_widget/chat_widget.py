@@ -13,6 +13,7 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.icon.setIcon(Icons.TextChat, override_color=True)
+        self.btn_settings.setIcon(Icons.Settings)
 
         self.btn.setCheckable(True)
 

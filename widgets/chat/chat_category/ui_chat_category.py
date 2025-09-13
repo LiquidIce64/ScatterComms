@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QPushButton, QSizePolicy, QVBoxLayout, QWidget)
+    QSizePolicy, QVBoxLayout, QWidget)
 
-from widgets.common import (FrameButton, IconWidget)
+from widgets.common import (FrameButton, IconButton, IconWidget)
+import index_rc
 import index_rc
 
 class Ui_chat_category_widget(object):
@@ -38,14 +39,12 @@ class Ui_chat_category_widget(object):
 "	color: #808080;\n"
 "	margin: 2px;\n"
 "}\n"
-"#icon_dropdown[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#label {\n"
 "	color: #808080;\n"
 "	font-size: 10pt;\n"
 "	font-weight: 600;\n"
 "}\n"
-"#label[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#drop_target {\n"
 "	border: 2px solid #2A2A2A;\n"
@@ -53,13 +52,15 @@ class Ui_chat_category_widget(object):
 "}\n"
 "\n"
 "#btn_settings, #btn_create_chat {\n"
+"	color: #808080;\n"
 "	background: none;\n"
 "	border: none;\n"
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
-"#btn_settings:hover, #btn_settings:focus, #btn_create_chat:hover, #btn_create_chat:focus {\n"
-"	background-color: #2A2A2A;\n"
+"#icon_dropdown[highlight=\"true\"], #label[highlight=\"true\"],\n"
+"#btn_settings[highlight=\"true\"], #btn_create_chat[highlight=\"true\"] {\n"
+"	color: white;\n"
 "}")
         self.layout_chat_category = QVBoxLayout(chat_category_widget)
         self.layout_chat_category.setSpacing(3)
@@ -100,7 +101,7 @@ class Ui_chat_category_widget(object):
         self.layout_buttons.setSpacing(0)
         self.layout_buttons.setObjectName(u"layout_buttons")
         self.layout_buttons.setContentsMargins(0, 0, 0, 0)
-        self.btn_create_chat = QPushButton(self.frame_buttons)
+        self.btn_create_chat = IconButton(self.frame_buttons)
         self.btn_create_chat.setObjectName(u"btn_create_chat")
         self.btn_create_chat.setMinimumSize(QSize(24, 24))
         self.btn_create_chat.setMaximumSize(QSize(24, 24))
@@ -112,7 +113,7 @@ class Ui_chat_category_widget(object):
 
         self.layout_buttons.addWidget(self.btn_create_chat)
 
-        self.btn_settings = QPushButton(self.frame_buttons)
+        self.btn_settings = IconButton(self.frame_buttons)
         self.btn_settings.setObjectName(u"btn_settings")
         self.btn_settings.setMinimumSize(QSize(24, 24))
         self.btn_settings.setMaximumSize(QSize(24, 24))

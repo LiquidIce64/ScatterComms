@@ -30,14 +30,12 @@
 	color: #808080;
 	margin: 2px;
 }
-#icon_dropdown[highlight=&quot;true&quot;] {color: white;}
 
 #label {
 	color: #808080;
 	font-size: 10pt;
 	font-weight: 600;
 }
-#label[highlight=&quot;true&quot;] {color: white;}
 
 #drop_target {
 	border: 2px solid #2A2A2A;
@@ -45,13 +43,15 @@
 }
 
 #btn_settings, #btn_create_chat {
+	color: #808080;
 	background: none;
 	border: none;
 	border-radius: 6px;
 }
 
-#btn_settings:hover, #btn_settings:focus, #btn_create_chat:hover, #btn_create_chat:focus {
-	background-color: #2A2A2A;
+#icon_dropdown[highlight=&quot;true&quot;], #label[highlight=&quot;true&quot;],
+#btn_settings[highlight=&quot;true&quot;], #btn_create_chat[highlight=&quot;true&quot;] {
+	color: white;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="layout_chat_category">
@@ -172,7 +172,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QPushButton" name="btn_create_chat">
+          <widget class="IconButton" name="btn_create_chat">
            <property name="minimumSize">
             <size>
              <width>24</width>
@@ -201,7 +201,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_settings">
+          <widget class="IconButton" name="btn_settings">
            <property name="minimumSize">
             <size>
              <width>24</width>
@@ -282,8 +282,14 @@
    <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>
+  <customwidget>
+   <class>IconButton</class>
+   <extends>QPushButton</extends>
+   <header>widgets.common</header>
+  </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../../resources/index.qrc"/>
   <include location="../../../resources/index.qrc"/>
  </resources>
  <connections/>

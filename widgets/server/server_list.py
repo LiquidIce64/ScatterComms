@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QPointF
 
 from .server_widget import ServerWidget
-from widgets.common import IconWidget
+from widgets.common import IconWidget, IconButton
 from resources import Icons
 from backend import ServerBackend, run_task, ConfigBackend
 
@@ -52,10 +52,11 @@ class ServerList(ServerListBase):
         super().__init__(*args, **kwargs)
         self.setProperty('drag', False)
 
-        self.btn_create_server = QPushButton(self)
+        self.btn_create_server = IconButton(self)
         self.btn_create_server.setObjectName('btn_create_server')
         self.btn_create_server.setIcon(Icons.Plus)
         self.btn_create_server.setFixedSize(40, 40)
+        self.btn_create_server.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_create_server.clicked.connect(self.create_server)
         self.layout_frame.addWidget(self.btn_create_server, alignment=Qt.AlignmentFlag.AlignHCenter)
 

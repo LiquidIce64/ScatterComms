@@ -70,9 +70,11 @@
 }
 
 #frame_serverlist #btn_create_server {
+	color: #808080;
 	background-color: #2A2A2A;
 	border-radius: 10px;
 }
+#frame_serverlist #btn_create_server[highlight=&quot;true&quot;] {color: white;}
 
 #frame_serverlist #btn_create_server:hover {
 	background-color: #353535;
@@ -119,9 +121,11 @@
 	border-radius: 6px;
 }
 
+#btn_settings, #btn_search {color: #808080;}
+#btn_settings[highlight=&quot;true&quot;], #btn_search[highlight=&quot;true&quot;] {color: white;}
+
 #btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=&quot;true&quot;],
-#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=&quot;true&quot;],
-#btn_search:hover, #btn_settings:hover {
+#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=&quot;true&quot;] {
 	background-color: #303030;
 }
 
@@ -568,7 +572,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_search">
+       <widget class="IconButton" name="btn_search">
         <property name="minimumSize">
          <size>
           <width>38</width>
@@ -603,7 +607,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btn_settings">
+       <widget class="IconButton" name="btn_settings">
         <property name="minimumSize">
          <size>
           <width>38</width>
@@ -1064,6 +1068,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <customwidget>
    <class>IconWidget</class>
    <extends>QLabel</extends>
+   <header>widgets.common</header>
+  </customwidget>
+  <customwidget>
+   <class>IconButton</class>
+   <extends>QPushButton</extends>
    <header>widgets.common</header>
   </customwidget>
   <customwidget>

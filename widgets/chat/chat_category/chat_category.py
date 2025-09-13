@@ -14,6 +14,8 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
     def __init__(self, category: ChatBackend.Category, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self.btn_settings.setIcon(Icons.Settings)
+        self.btn_create_chat.setIcon(Icons.Plus)
 
         self.drop_target = QFrame()
         self.drop_target.setObjectName('drop_target')
