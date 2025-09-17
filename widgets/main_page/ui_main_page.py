@@ -97,6 +97,16 @@ class Ui_main_page(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
+"#icon_chat {\n"
+"	margin: 6px;\n"
+"	color: #808080;\n"
+"}\n"
+"\n"
+"#label_chatname {\n"
+"	font-size: 12pt;\n"
+"	font-weight: 700;\n"
+"}\n"
+"\n"
 "#scroll_chatlist, #scrollcontent_chatlist {\n"
 "	background-color: #252525;\n"
 "}\n"
@@ -122,18 +132,22 @@ class Ui_main_page(object):
 "\n"
 "#label_username {\n"
 "	margin-left: 1px;\n"
-"	font-size: 11pt;\n"
+"	"
+                        "font-size: 11pt;\n"
 "	font-weight: 600;\n"
 "}\n"
 "\n"
+"#btn_notifications, #btn_pinned_messages,\n"
 "#btn_settings, #btn_search, #btn_attachment, #btn_emoji, #btn_send {\n"
-"	background: none"
-                        ";\n"
+"	background: none;\n"
 "	border: none;\n"
 "	border-radius: 6px;\n"
 "}\n"
 "\n"
+"#btn_notifications, #btn_pinned_messages,\n"
 "#btn_settings, #btn_search {color: #808080;}\n"
+"\n"
+"#btn_notifications[highlight=\"true\"], #btn_pinned_messages[highlight=\"true\"],\n"
 "#btn_settings[highlight=\"true\"], #btn_search[highlight=\"true\"] {color: white;}\n"
 "\n"
 "#btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=\"true\"],\n"
@@ -149,7 +163,8 @@ class Ui_main_page(object):
 "	background-color: #454545;\n"
 "}\n"
 "\n"
-"#btn_search:checked {\n"
+"#btn_notifications:checked, #btn_pinned_messages:checked, #btn_s"
+                        "earch:checked {\n"
 "	background-color: #404040;\n"
 "}\n"
 "\n"
@@ -184,6 +199,46 @@ class Ui_main_page(object):
         self.layout_chat_title.setSpacing(3)
         self.layout_chat_title.setObjectName(u"layout_chat_title")
         self.layout_chat_title.setContentsMargins(6, 6, 6, 6)
+        self.icon_chat = IconWidget(self.frame_chat_title)
+        self.icon_chat.setObjectName(u"icon_chat")
+        self.icon_chat.setMinimumSize(QSize(32, 32))
+        self.icon_chat.setMaximumSize(QSize(32, 32))
+        self.icon_chat.setText(u"")
+        self.icon_chat.setPixmap(QPixmap(u":/icons/text_chat"))
+        self.icon_chat.setScaledContents(True)
+
+        self.layout_chat_title.addWidget(self.icon_chat)
+
+        self.label_chatname = QLabel(self.frame_chat_title)
+        self.label_chatname.setObjectName(u"label_chatname")
+        self.label_chatname.setText(u"Chat Name")
+
+        self.layout_chat_title.addWidget(self.label_chatname)
+
+        self.btn_notifications = IconButton(self.frame_chat_title)
+        self.btn_notifications.setObjectName(u"btn_notifications")
+        self.btn_notifications.setMinimumSize(QSize(32, 32))
+        self.btn_notifications.setMaximumSize(QSize(32, 32))
+        self.btn_notifications.setText(u"")
+        icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.AudioVolumeHigh))
+        self.btn_notifications.setIcon(icon)
+        self.btn_notifications.setIconSize(QSize(24, 24))
+        self.btn_notifications.setCheckable(True)
+
+        self.layout_chat_title.addWidget(self.btn_notifications)
+
+        self.btn_pinned_messages = IconButton(self.frame_chat_title)
+        self.btn_pinned_messages.setObjectName(u"btn_pinned_messages")
+        self.btn_pinned_messages.setMinimumSize(QSize(32, 32))
+        self.btn_pinned_messages.setMaximumSize(QSize(32, 32))
+        self.btn_pinned_messages.setText(u"")
+        icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MailAttachment))
+        self.btn_pinned_messages.setIcon(icon1)
+        self.btn_pinned_messages.setIconSize(QSize(24, 24))
+        self.btn_pinned_messages.setCheckable(True)
+
+        self.layout_chat_title.addWidget(self.btn_pinned_messages)
+
 
         self.layout_main_page.addWidget(self.frame_chat_title, 0, 2, 1, 1)
 
@@ -353,13 +408,13 @@ class Ui_main_page(object):
 
         self.btn_search = IconButton(self.frame_controls)
         self.btn_search.setObjectName(u"btn_search")
-        self.btn_search.setMinimumSize(QSize(38, 38))
-        self.btn_search.setMaximumSize(QSize(38, 38))
+        self.btn_search.setMinimumSize(QSize(32, 32))
+        self.btn_search.setMaximumSize(QSize(32, 32))
         self.btn_search.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_search.setText(u"")
-        icon = QIcon()
-        icon.addFile(u":/icons/search", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.btn_search.setIcon(icon)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/search", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.btn_search.setIcon(icon2)
         self.btn_search.setIconSize(QSize(24, 24))
         self.btn_search.setCheckable(True)
 
@@ -367,13 +422,13 @@ class Ui_main_page(object):
 
         self.btn_settings = IconButton(self.frame_controls)
         self.btn_settings.setObjectName(u"btn_settings")
-        self.btn_settings.setMinimumSize(QSize(38, 38))
-        self.btn_settings.setMaximumSize(QSize(38, 38))
+        self.btn_settings.setMinimumSize(QSize(32, 32))
+        self.btn_settings.setMaximumSize(QSize(32, 32))
         self.btn_settings.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_settings.setText(u"")
-        icon1 = QIcon()
-        icon1.addFile(u":/icons/settings", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.btn_settings.setIcon(icon1)
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/settings", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.btn_settings.setIcon(icon3)
         self.btn_settings.setIconSize(QSize(24, 24))
 
         self.layout_controls.addWidget(self.btn_settings)
@@ -483,9 +538,9 @@ class Ui_main_page(object):
         self.btn_attachment.setMaximumSize(QSize(32, 32))
         self.btn_attachment.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_attachment.setText(u"")
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/plus", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.btn_attachment.setIcon(icon2)
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/plus", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.btn_attachment.setIcon(icon4)
 
         self.layout_messagebox.addWidget(self.btn_attachment, 0, Qt.AlignmentFlag.AlignBottom)
 
@@ -523,9 +578,9 @@ class Ui_main_page(object):
         self.btn_emoji.setMaximumSize(QSize(32, 32))
         self.btn_emoji.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_emoji.setText(u"")
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/emoji", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.btn_emoji.setIcon(icon3)
+        icon5 = QIcon()
+        icon5.addFile(u":/icons/emoji", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.btn_emoji.setIcon(icon5)
         self.btn_emoji.setCheckable(True)
 
         self.layout_messagebox.addWidget(self.btn_emoji, 0, Qt.AlignmentFlag.AlignBottom)
@@ -537,9 +592,9 @@ class Ui_main_page(object):
         self.btn_send.setMaximumSize(QSize(32, 32))
         self.btn_send.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.btn_send.setText(u"")
-        icon4 = QIcon()
-        icon4.addFile(u":/icons/send", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
-        self.btn_send.setIcon(icon4)
+        icon6 = QIcon()
+        icon6.addFile(u":/icons/send", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.btn_send.setIcon(icon6)
 
         self.layout_messagebox.addWidget(self.btn_send, 0, Qt.AlignmentFlag.AlignBottom)
 

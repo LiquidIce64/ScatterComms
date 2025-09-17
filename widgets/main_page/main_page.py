@@ -69,6 +69,13 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_attachment.setIcon(Icons.Plus)
         self.btn_emoji.setIcon(Icons.Emoji)
         self.btn_send.setIcon(Icons.Send)
+        self.update_chat()
+        ConfigBackend.session.selected_server.selected_chat_changed.connect(self.update_chat)
+
+    def update_chat(self):
+        chat = ConfigBackend.session.selected_server.selected_chat
+        self.icon_chat.setIcon(Icons.TextChat, override_color=True)
+        self.label_chatname.setText(chat.name)
 
     def update_server_title(self):
         server = ConfigBackend.session.selected_server

@@ -86,6 +86,16 @@
 	font-weight: 700;
 }
 
+#icon_chat {
+	margin: 6px;
+	color: #808080;
+}
+
+#label_chatname {
+	font-size: 12pt;
+	font-weight: 700;
+}
+
 #scroll_chatlist, #scrollcontent_chatlist {
 	background-color: #252525;
 }
@@ -115,13 +125,17 @@
 	font-weight: 600;
 }
 
+#btn_notifications, #btn_pinned_messages,
 #btn_settings, #btn_search, #btn_attachment, #btn_emoji, #btn_send {
 	background: none;
 	border: none;
 	border-radius: 6px;
 }
 
+#btn_notifications, #btn_pinned_messages,
 #btn_settings, #btn_search {color: #808080;}
+
+#btn_notifications[highlight=&quot;true&quot;], #btn_pinned_messages[highlight=&quot;true&quot;],
 #btn_settings[highlight=&quot;true&quot;], #btn_search[highlight=&quot;true&quot;] {color: white;}
 
 #btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=&quot;true&quot;],
@@ -137,7 +151,7 @@
 	background-color: #454545;
 }
 
-#btn_search:checked {
+#btn_notifications:checked, #btn_pinned_messages:checked, #btn_search:checked {
 	background-color: #404040;
 }
 
@@ -212,6 +226,100 @@
       <property name="bottomMargin">
        <number>6</number>
       </property>
+      <item>
+       <widget class="IconWidget" name="icon_chat">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="../../resources/index.qrc">:/icons/text_chat</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_chatname">
+        <property name="text">
+         <string notr="true">Chat Name</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="IconButton" name="btn_notifications">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::AudioVolumeHigh"/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="IconButton" name="btn_pinned_messages">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::MailAttachment"/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -575,14 +683,14 @@
        <widget class="IconButton" name="btn_search">
         <property name="minimumSize">
          <size>
-          <width>38</width>
-          <height>38</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>38</width>
-          <height>38</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
         <property name="cursor">
@@ -610,14 +718,14 @@
        <widget class="IconButton" name="btn_settings">
         <property name="minimumSize">
          <size>
-          <width>38</width>
-          <height>38</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>38</width>
-          <height>38</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
         <property name="cursor">
