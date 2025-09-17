@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union
 from uuid import UUID
 from sqlalchemy import select
 
@@ -8,6 +8,7 @@ from PySide6.QtGui import QImage, QPixmap
 from .multithreading import multithreaded
 from .storage import StorageBackend
 from .cached_object import CachedObject
+from .chat import ChatBackend
 from database import (
     Database, Server, ServerSortOrder, ServerMember,
     User, Role, ChatCategory, Chat
@@ -24,15 +25,27 @@ class ServerBackend:
             super().__init__()
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
-            self.__icon = StorageBackend.Server.get_icon(self.uuid)
-            self.__selected_chat_uuid: Optional[UUID] = server.selected_chat_uuid
+            self.__icon = StorageBackend.Server.get_icon(self.__uuid)
+
+            chat = ChatBackend.get_chat(server.selected_chat_uuid)
+            if chat is None:
+                chat = ChatBackend.get_first_chat(self.__uuid)
+                ServerBackend.edit_server(self.__uuid, selected_chat_uuid=chat.uuid)
+            self.__selected_chat: ChatBackend.Chat = chat
+
             self._initialized = True
 
         def update(self, server):
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
-            self.__icon = StorageBackend.Server.get_icon(self.uuid)
-            self.__selected_chat_uuid: Optional[UUID] = server.selected_chat_uuid
+            self.__icon = StorageBackend.Server.get_icon(self.__uuid)
+
+            chat = ChatBackend.get_chat(server.selected_chat_uuid)
+            if chat is None:
+                chat = ChatBackend.get_first_chat(self.__uuid)
+                ServerBackend.edit_server(self.__uuid, selected_chat_uuid=chat.uuid)
+            self.__selected_chat: ChatBackend.Chat = chat
+
             self.changed.emit()
             self.selected_chat_changed.emit()
 
@@ -43,7 +56,7 @@ class ServerBackend:
         @property
         def icon(self): return self.__icon
         @property
-        def selected_chat_uuid(self): return self.__selected_chat_uuid
+        def selected_chat(self): return self.__selected_chat
 
         @name.setter
         def name(self, new_value: str):
@@ -59,12 +72,12 @@ class ServerBackend:
             StorageBackend.Server.set_icon(self.__uuid, new_value)
             self.changed.emit()
 
-        @selected_chat_uuid.setter
-        def selected_chat_uuid(self, new_value: UUID):
-            if self.__selected_chat_uuid == new_value:
+        @selected_chat.setter
+        def selected_chat(self, new_value: ChatBackend.Chat):
+            if self.__selected_chat == new_value:
                 return
-            self.__selected_chat_uuid = new_value
-            ServerBackend.edit_server(self.__uuid, selected_chat_uuid=new_value)
+            self.__selected_chat = new_value
+            ServerBackend.edit_server(self.__uuid, selected_chat_uuid=new_value.uuid)
             self.selected_chat_changed.emit()
 
     @staticmethod
@@ -187,7 +200,7 @@ class ServerBackend:
                 server=_server, users=[profile], sort_order=0
             )
             everyone_role = Role(
-                name='everyone', color=0x808080FF, public=False, pingable=True,
+                name='Everyone', color=0x808080FF, public=False, pingable=True,
                 server=_server, users=[profile], sort_order=1
             )
 
@@ -196,7 +209,7 @@ class ServerBackend:
                 sort_order=1, whitelisted_roles=[everyone_role]
             )
             chat = Chat(
-                name='general', category=category,
+                name='General', category=category,
                 sort_order=1, whitelisted_roles=[everyone_role]
             )
 

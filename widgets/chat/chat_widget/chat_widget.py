@@ -19,7 +19,7 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
         self.update_chat_info()
         self.chat.changed.connect(self.update_chat_info)
         server = ConfigBackend.session.selected_server
-        if self.chat.uuid == server.selected_chat_uuid:
+        if self.chat == server.selected_chat:
             server.selected_chat_changed.connect(self.on_deselect)
         self.update_highlight()
 
@@ -34,7 +34,7 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
 
     def on_click(self):
         server = ConfigBackend.session.selected_server
-        server.selected_chat_uuid = self.chat.uuid
+        server.selected_chat = self.chat
         server.selected_chat_changed.connect(self.on_deselect)
         self.update_highlight()
 
@@ -43,7 +43,7 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
         self.update_highlight()
 
     def update_highlight(self):
-        selected = (self.chat.uuid == ConfigBackend.session.selected_server.selected_chat_uuid)
+        selected = (self.chat == ConfigBackend.session.selected_server.selected_chat)
         highlight = self.btn.hasFocus() or self.btn.underMouse()
         self.btn.setProperty('checked', selected)
         self.btn.style().polish(self.btn)

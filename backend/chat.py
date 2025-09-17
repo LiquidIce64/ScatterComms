@@ -96,6 +96,33 @@ class ChatBackend:
         return chat_list
 
     @staticmethod
+    def get_chat(chat_uuid):
+        if not isinstance(chat_uuid, UUID):
+            try:
+                chat_uuid = UUID(str(chat_uuid))
+            except ValueError:
+                return None
+        with Database.create_session() as session:
+            _chat = session.get(Chat, chat_uuid)
+            if _chat is None:
+                return None
+            chat = ChatBackend.Chat(_chat)
+        return chat
+
+    @staticmethod
+    def get_first_chat(server_uuid: UUID):
+        with Database.create_session() as session:
+            _chat = session.scalar(
+                select(Chat)
+                .join(Chat.category)
+                .where(ChatCategory.server_uuid == server_uuid)
+                .order_by(ChatCategory.sort_order, Chat.sort_order)
+                .limit(1)
+            )
+            chat = ChatBackend.Chat(_chat)
+        return chat
+
+    @staticmethod
     @multithreaded
     def edit_category(uuid: UUID, **kwargs):
         with Database.create_session() as session:
