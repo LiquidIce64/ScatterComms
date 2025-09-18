@@ -22,6 +22,30 @@ class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
+user_roles = Table(
+    'user_roles',
+    Base.metadata,
+    Column('user_uuid', ForeignKey('users.uuid'), primary_key=True, nullable=False),
+    Column('role_uuid', ForeignKey('roles.uuid'), primary_key=True, nullable=False),
+)
+
+
+chat_category_roles = Table(
+    'chat_category_roles',
+    Base.metadata,
+    Column('category_uuid', ForeignKey('chat_categories.uuid'), primary_key=True, nullable=False),
+    Column('role_uuid', ForeignKey('roles.uuid'), primary_key=True, nullable=False),
+)
+
+
+chat_roles = Table(
+    'chat_roles',
+    Base.metadata,
+    Column('chat_uuid', ForeignKey('chats.uuid'), primary_key=True, nullable=False),
+    Column('role_uuid', ForeignKey('roles.uuid'), primary_key=True, nullable=False),
+)
+
+
 class User(UUIDMixin, TimestampMixin, Base):
     __tablename__ = 'users'
 
@@ -30,6 +54,7 @@ class User(UUIDMixin, TimestampMixin, Base):
     owned_by_me: Mapped[bool] = mapped_column(nullable=False, default=False)
 
     member_of: Mapped[List['ServerMember']] = relationship(back_populates='user')
+    roles: Mapped[List['Role']] = relationship(secondary=user_roles, back_populates='users')
 
 
 class Server(UUIDMixin, TimestampMixin, Base):
@@ -60,30 +85,6 @@ class ServerMember(TimestampMixin, Base):
     user: Mapped['User'] = relationship(back_populates='member_of')
 
 
-user_roles = Table(
-    'user_roles',
-    Base.metadata,
-    Column('user_uuid', ForeignKey('users.uuid'), primary_key=True, nullable=False),
-    Column('role_uuid', ForeignKey('roles.uuid'), primary_key=True, nullable=False),
-)
-
-
-chat_category_roles = Table(
-    'chat_category_roles',
-    Base.metadata,
-    Column('category_uuid', ForeignKey('chat_categories.uuid'), primary_key=True, nullable=False),
-    Column('role_uuid', ForeignKey('roles.uuid'), primary_key=True, nullable=False),
-)
-
-
-chat_roles = Table(
-    'chat_roles',
-    Base.metadata,
-    Column('chat_uuid', ForeignKey('chats.uuid'), primary_key=True, nullable=False),
-    Column('role_uuid', ForeignKey('roles.uuid'), primary_key=True, nullable=False),
-)
-
-
 class Role(UUIDMixin, SortMixin, Base):
     __tablename__ = 'roles'
 
@@ -94,7 +95,7 @@ class Role(UUIDMixin, SortMixin, Base):
 
     server_uuid: Mapped[UUID] = mapped_column(ForeignKey('servers.uuid'))
     server: Mapped['Server'] = relationship(back_populates='roles')
-    users: Mapped[List['User']] = relationship(secondary=user_roles)
+    users: Mapped[List['User']] = relationship(secondary=user_roles, back_populates='roles')
     role_permissions: Mapped[List['RolePermission']] = relationship(back_populates='role', cascade='all, delete-orphan')
 
 
@@ -158,6 +159,8 @@ class Message(UUIDMixin, TimestampMixin, Base):
 
     text: Mapped[str] = mapped_column(nullable=True)
 
+    author_uuid: Mapped[UUID] = mapped_column(ForeignKey('users.uuid'))
+    author: Mapped[User] = relationship()
     chat_uuid: Mapped[UUID] = mapped_column(ForeignKey('chats.uuid'))
     chat: Mapped['Chat'] = relationship(back_populates='messages')
     attachments: Mapped[List['Attachment']] = relationship(back_populates='message', cascade='all, delete-orphan')
