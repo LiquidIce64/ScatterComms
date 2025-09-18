@@ -28,16 +28,11 @@ class ChatList(QWidget):
         ConfigBackend.session.server_changed.connect(self.reload_contents)
 
     def reload_contents(self):
-        for i in range(self.layout_chatlist.count() - 1, -1, -1):
-            w = self.layout_chatlist.itemAt(i).widget()
-            if isinstance(w, ChatCategoryWidget):
-                w.deleteLater()
-        if ConfigBackend.session.selected_server is not None:
-            run_task(
-                ChatBackend.get_categories,
-                ConfigBackend.session.selected_server.uuid,
-                result_slot=self.add_categories
-            )
+        run_task(
+            ChatBackend.get_categories,
+            ConfigBackend.session.selected_server.uuid,
+            result_slot=self.add_categories
+        )
 
     def add_category(self, category: ChatBackend.Category, index=-1):
         widget = ChatCategoryWidget(category, parent=self)
@@ -46,6 +41,10 @@ class ChatList(QWidget):
         self.layout_chatlist.insertWidget(index, widget)
 
     def add_categories(self, categories):
+        for i in range(self.layout_chatlist.count() - 1, -1, -1):
+            w = self.layout_chatlist.itemAt(i).widget()
+            if isinstance(w, ChatCategoryWidget):
+                w.deleteLater()
         for category in categories:
             self.add_category(category)
 

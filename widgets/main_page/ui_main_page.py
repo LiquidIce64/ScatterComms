@@ -53,7 +53,7 @@ class Ui_main_page(object):
 "	background-color: #353535;\n"
 "}\n"
 "\n"
-"#scroll_chat, #scrollcontent_chat {\n"
+"#scrollcontent_chat {\n"
 "	background-color: #2A2A2A;\n"
 "}\n"
 "\n"
@@ -76,9 +76,9 @@ class Ui_main_page(object):
 "\n"
 "#frame_serverlist[drag=\"true\"] {\n"
 "	background-color: #202020;\n"
-"	border-radi"
-                        "us: 6px;\n"
-"}\n"
+"	border-radius: 6px;\n"
+"}"
+                        "\n"
 "\n"
 "#frame_serverlist #btn_create_server {\n"
 "	color: #808080;\n"
@@ -107,7 +107,7 @@ class Ui_main_page(object):
 "	font-weight: 700;\n"
 "}\n"
 "\n"
-"#scroll_chatlist, #scrollcontent_chatlist {\n"
+"#scrollcontent_chatlist, #scrollcontent_members {\n"
 "	background-color: #252525;\n"
 "}\n"
 "\n"
@@ -132,8 +132,8 @@ class Ui_main_page(object):
 "\n"
 "#label_username {\n"
 "	margin-left: 1px;\n"
-"	"
-                        "font-size: 11pt;\n"
+"	font-siz"
+                        "e: 11pt;\n"
 "	font-weight: 600;\n"
 "}\n"
 "\n"
@@ -163,8 +163,8 @@ class Ui_main_page(object):
 "	background-color: #454545;\n"
 "}\n"
 "\n"
-"#btn_notifications:checked, #btn_pinned_messages:checked, #btn_s"
-                        "earch:checked {\n"
+"#btn_notifications:checked, #btn_pinned_messages:checked, #btn_search:ch"
+                        "ecked {\n"
 "	background-color: #404040;\n"
 "}\n"
 "\n"
@@ -447,7 +447,7 @@ class Ui_main_page(object):
         self.layout_side_panel = QVBoxLayout(self.frame_side_panel)
         self.layout_side_panel.setSpacing(0)
         self.layout_side_panel.setObjectName(u"layout_side_panel")
-        self.layout_side_panel.setContentsMargins(0, 6, 0, 6)
+        self.layout_side_panel.setContentsMargins(0, 0, 0, 0)
         self.scroll_chatlist = QScrollArea(self.frame_side_panel)
         self.scroll_chatlist.setObjectName(u"scroll_chatlist")
         self.scroll_chatlist.setFrameShape(QFrame.Shape.NoFrame)
@@ -458,13 +458,13 @@ class Ui_main_page(object):
         self.scroll_chatlist.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.scrollcontent_chatlist = QWidget()
         self.scrollcontent_chatlist.setObjectName(u"scrollcontent_chatlist")
-        self.scrollcontent_chatlist.setGeometry(QRect(0, 0, 220, 540))
+        self.scrollcontent_chatlist.setGeometry(QRect(0, 0, 220, 552))
         self.scrollcontent_chatlist.setMinimumSize(QSize(220, 0))
         self.scrollcontent_chatlist.setMaximumSize(QSize(220, 16777215))
         self.layout_scroll_chatlist = QVBoxLayout(self.scrollcontent_chatlist)
         self.layout_scroll_chatlist.setSpacing(0)
         self.layout_scroll_chatlist.setObjectName(u"layout_scroll_chatlist")
-        self.layout_scroll_chatlist.setContentsMargins(0, 0, 0, 0)
+        self.layout_scroll_chatlist.setContentsMargins(0, 6, 0, 6)
         self.widget_chatlist = ChatList(self.scrollcontent_chatlist)
         self.widget_chatlist.setObjectName(u"widget_chatlist")
         self.widget_chatlist.setAcceptDrops(True)
@@ -487,11 +487,32 @@ class Ui_main_page(object):
         self.frame_members.setFrameShape(QFrame.Shape.NoFrame)
         self.frame_members.setFrameShadow(QFrame.Shadow.Raised)
         self.layout_members = QVBoxLayout(self.frame_members)
+        self.layout_members.setSpacing(0)
         self.layout_members.setObjectName(u"layout_members")
-        self.layout_members.setContentsMargins(6, 6, 6, 6)
-        self.spacer_members = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.layout_members.setContentsMargins(0, 0, 0, 0)
+        self.scroll_members = QScrollArea(self.frame_members)
+        self.scroll_members.setObjectName(u"scroll_members")
+        self.scroll_members.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_members.setFrameShadow(QFrame.Shadow.Plain)
+        self.scroll_members.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_members.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+        self.scroll_members.setWidgetResizable(True)
+        self.scroll_members.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
+        self.scrollcontent_members = QWidget()
+        self.scrollcontent_members.setObjectName(u"scrollcontent_members")
+        self.scrollcontent_members.setGeometry(QRect(0, 0, 258, 552))
+        self.scrollcontent_members.setMaximumSize(QSize(258, 16777215))
+        self.layout_memberlist = QVBoxLayout(self.scrollcontent_members)
+        self.layout_memberlist.setSpacing(12)
+        self.layout_memberlist.setObjectName(u"layout_memberlist")
+        self.layout_memberlist.setContentsMargins(6, 6, 6, 6)
+        self.spacer_members = QSpacerItem(20, 537, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.layout_members.addItem(self.spacer_members)
+        self.layout_memberlist.addItem(self.spacer_members)
+
+        self.scroll_members.setWidget(self.scrollcontent_members)
+
+        self.layout_members.addWidget(self.scroll_members)
 
 
         self.layout_main_page.addWidget(self.frame_members, 1, 3, 2, 1)

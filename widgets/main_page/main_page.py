@@ -5,8 +5,9 @@ from PySide6.QtCore import QCoreApplication
 from .ui_main_page import Ui_main_page
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
+from widgets.member import MemberCategoryWidget
 from resources import Icons
-from backend import ProfileBackend, ConfigBackend
+from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend
 
 if TYPE_CHECKING:
     from widgets import MainWindow
@@ -76,6 +77,18 @@ class MainPage(QWidget, Ui_main_page):
         chat = ConfigBackend.session.selected_server.selected_chat
         self.icon_chat.setIcon(Icons.TextChat, override_color=True)
         self.label_chatname.setText(chat.name)
+        run_task(
+            RoleBackend.get_chat_members, chat.uuid,
+            result_slot=self.update_chat_members
+        )
+
+    def update_chat_members(self, members):
+        for i in range(self.layout_memberlist.count() - 1, -1, -1):
+            w = self.layout_memberlist.itemAt(i).widget()
+            if isinstance(w, MemberCategoryWidget):
+                w.deleteLater()
+        for role, role_members in members:
+            self.layout_memberlist.insertWidget(0, MemberCategoryWidget(role, role_members))
 
     def update_server_title(self):
         server = ConfigBackend.session.selected_server

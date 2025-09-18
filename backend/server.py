@@ -206,11 +206,11 @@ class ServerBackend:
 
             category = ChatCategory(
                 name='Text Chats', server=_server,
-                sort_order=1, whitelisted_roles=[everyone_role]
+                sort_order=1, whitelisted_roles=[owner_role, everyone_role]
             )
             chat = Chat(
                 name='General', category=category,
-                sort_order=1, whitelisted_roles=[everyone_role]
+                sort_order=1, whitelisted_roles=[owner_role, everyone_role]
             )
 
             session.add_all([

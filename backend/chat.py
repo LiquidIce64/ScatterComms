@@ -3,7 +3,7 @@ from sqlalchemy import select, func
 
 from .multithreading import multithreaded
 from .cached_object import CachedObject
-from database import Database, ChatCategory, Chat
+from database import Database, ChatCategory, Chat, Role, chat_category_roles
 
 
 class ChatBackend:
@@ -178,9 +178,21 @@ class ChatBackend:
                 select(func.max(ChatCategory.sort_order))
                 .where(ChatCategory.server_uuid == server_uuid)
             ) or 0) + 1
+            whitelisted_roles = session.scalars(
+                select(Role)
+                .where(Role.server_uuid == server_uuid)
+                .where(
+                    (Role.sort_order == 0) | (Role.sort_order == (
+                        select(func.max(Role.sort_order))
+                        .where(Role.server_uuid == server_uuid)
+                        .scalar_subquery()
+                    ))
+                )
+            ).all()
             _category = ChatCategory(
                 server_uuid=server_uuid,
-                name=name, sort_order=sort_order
+                name=name, sort_order=sort_order,
+                whitelisted_roles=whitelisted_roles
             )
             session.add(_category)
             session.commit()
@@ -194,10 +206,19 @@ class ChatBackend:
                 select(func.max(Chat.sort_order))
                 .where(Chat.category_uuid == category_uuid)
             ) or 0) + 1
+            # noinspection PyTypeChecker
+            whitelisted_roles = session.scalars(
+                select(Role)
+                .join(chat_category_roles, (
+                    (chat_category_roles.c.role_uuid == Role.uuid)
+                    & (chat_category_roles.c.category_uuid == category_uuid)
+                ))
+            ).all()
             _chat = Chat(
                 category_uuid=category_uuid,
                 name=name, sort_order=sort_order,
-                voice_enabled=voice_enabled
+                voice_enabled=voice_enabled,
+                whitelisted_roles=whitelisted_roles
             )
             session.add(_chat)
             session.commit()

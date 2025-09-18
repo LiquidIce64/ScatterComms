@@ -6,15 +6,7 @@ from PySide6.QtGui import QColor
 from .multithreading import multithreaded
 from .cached_object import CachedObject
 from .profile import ProfileBackend
-from database import Database, Chat, ChatCategory, User, Role
-
-
-def select_whitelisted_roles(chat_uuid: UUID):
-    return (
-        select(Chat.whitelisted_roles.concat(ChatCategory.whitelisted_roles).distinct())
-        .join(ChatCategory, ChatCategory.uuid == Chat.category_uuid)
-        .where(Chat.uuid == chat_uuid)
-    )
+from database import Database, User, Role, chat_roles
 
 
 class RoleBackend:
@@ -64,18 +56,44 @@ class RoleBackend:
     @staticmethod
     def get_whitelisted_roles(chat_uuid: UUID):
         with Database.create_session() as session:
-            roles = session.scalars(select_whitelisted_roles(chat_uuid)).all()
-            role_list = [ProfileBackend.Profile(role) for role in roles]
+            # noinspection PyTypeChecker
+            roles = session.scalars(
+                select(Role)
+                .join(chat_roles, (
+                    (chat_roles.c.role_uuid == Role.uuid)
+                    & (chat_roles.c.chat_uuid == chat_uuid)
+                ))
+            ).all()
+            role_list = [RoleBackend.Role(role) for role in roles]
         return role_list
 
     @staticmethod
     def get_chat_members(chat_uuid: UUID):
         with Database.create_session() as session:
-            members = session.scalars(
-                select(User)
-                .where(User.roles.in_(select_whitelisted_roles(chat_uuid)))
+            # noinspection PyTypeChecker
+            result = session.execute(
+                select(User, Role)
+                .join(Role, User.roles)
+                .where(User.roles.any(
+                    Role.uuid.in_(
+                        select(chat_roles.c.role_uuid)
+                        .where(chat_roles.c.chat_uuid == chat_uuid)
+                    )
+                ))
+                .group_by(User)
+                .having(Role.sort_order == func.min(Role.sort_order))
+                .order_by(Role.sort_order)
             ).all()
-            member_list = [ProfileBackend.Profile(member) for member in members]
+
+            member_list: list[tuple[RoleBackend.Role, list[ProfileBackend.Profile]]] = []
+            last_role = None
+            for _member, role in result:
+                member = ProfileBackend.Profile(_member)
+                if role != last_role:
+                    last_role = role
+                    member_list.append((RoleBackend.Role(role), [member]))
+                else:
+                    member_list[-1][1].append(member)
         return member_list
 
     @staticmethod
