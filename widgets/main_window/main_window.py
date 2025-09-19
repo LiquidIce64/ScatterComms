@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('OpenComms')
+        self.setWindowTitle('ScatterComms')
 
         ConfigBackend.session = ConfigBackend.Session()
         ConfigBackend.session.setParent(self)

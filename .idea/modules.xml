@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/OpenComms.iml" filepath="$PROJECT_DIR$/.idea/OpenComms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ScatterComms.iml" filepath="$PROJECT_DIR$/.idea/ScatterComms.iml" />
     </modules>
   </component>
 </project>

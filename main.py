@@ -8,7 +8,7 @@ from widgets import MainWindow
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setApplicationName('OpenComms')
+    app.setApplicationName('ScatterComms')
 
     StorageBackend.init(test_mode='--test-appdata' in sys.argv)
     lockfile = QLockFile(StorageBackend.locate_appdata('.lock', allow_empty=False))
