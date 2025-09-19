@@ -552,13 +552,13 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>260</width>
+       <width>252</width>
        <height>46</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>260</width>
+       <width>252</width>
        <height>46</height>
       </size>
      </property>
@@ -872,13 +872,13 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>260</width>
+       <width>252</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>260</width>
+       <width>252</width>
        <height>16777215</height>
       </size>
      </property>
@@ -929,13 +929,13 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>258</width>
+           <width>250</width>
            <height>552</height>
           </rect>
          </property>
          <property name="maximumSize">
           <size>
-           <width>258</width>
+           <width>250</width>
            <height>16777215</height>
           </size>
          </property>
@@ -959,12 +959,6 @@
            <spacer name="spacer_members">
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>537</height>
-             </size>
             </property>
            </spacer>
           </item>
@@ -1015,7 +1009,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>460</width>
+           <width>468</width>
            <height>404</height>
           </rect>
          </property>

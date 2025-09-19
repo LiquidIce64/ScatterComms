@@ -169,7 +169,6 @@
      </layout>
      <zorder>icon_avatar</zorder>
      <zorder>icon_status</zorder>
-     <zorder>verticalLayoutWidget</zorder>
     </widget>
    </item>
   </layout>

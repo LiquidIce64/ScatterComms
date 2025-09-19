@@ -23,6 +23,11 @@ class Ui_member_category(object):
         if not member_category.objectName():
             member_category.setObjectName(u"member_category")
         member_category.resize(250, 150)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(member_category.sizePolicy().hasHeightForWidth())
+        member_category.setSizePolicy(sizePolicy)
         member_category.setWindowTitle(u"Form")
         member_category.setStyleSheet(u"#label_name, #label_count {\n"
 "	font-size: 10pt;\n"
@@ -48,6 +53,7 @@ class Ui_member_category(object):
 
         self.label_name = QLabel(member_category)
         self.label_name.setObjectName(u"label_name")
+        self.label_name.setIndent(3)
 
         self.layout_widget.addWidget(self.label_name, 0, 0, 1, 1)
 
