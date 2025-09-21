@@ -124,13 +124,12 @@ class ChatBackend:
     @staticmethod
     def get_first_chat(profile_uuid: UUID, server_uuid: UUID):
         with Database.create_session() as session:
-            _chat = session.scalar(
+            _chat = session.scalars(
                 select_with_whitelist(Chat, profile_uuid)
                 .join(Chat.category)
                 .where(ChatCategory.server_uuid == server_uuid)
                 .order_by(ChatCategory.sort_order, Chat.sort_order)
-                .limit(1)
-            )
+            ).first()
             chat = ChatBackend.Chat(_chat)
         return chat
 
