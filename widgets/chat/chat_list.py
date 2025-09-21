@@ -30,6 +30,7 @@ class ChatList(QWidget):
     def reload_contents(self):
         run_task(
             ChatBackend.get_categories,
+            ConfigBackend.session.profile.uuid,
             ConfigBackend.session.selected_server.uuid,
             result_slot=self.add_categories
         )

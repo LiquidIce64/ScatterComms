@@ -3,7 +3,16 @@ from sqlalchemy import select, func
 
 from .multithreading import multithreaded
 from .cached_object import CachedObject
-from database import Database, ChatCategory, Chat, Role, chat_category_roles
+from database import Database, ChatCategory, Chat, Role, chat_category_roles, User
+
+
+def select_with_whitelist(model, profile_uuid: UUID):
+    return (
+        select(model).distinct()
+        .join(Role, model.whitelisted_roles)
+        .join(User, Role.users)
+        .where(User.uuid == profile_uuid)
+    )
 
 
 class ChatBackend:
@@ -74,10 +83,10 @@ class ChatBackend:
             self.changed.emit()
 
     @staticmethod
-    def get_categories(server_uuid: UUID):
+    def get_categories(profile_uuid: UUID, server_uuid: UUID):
         with Database.create_session() as session:
             categories = session.scalars(
-                select(ChatCategory)
+                select_with_whitelist(ChatCategory, profile_uuid)
                 .where(ChatCategory.server_uuid == server_uuid)
                 .order_by(ChatCategory.sort_order)
             ).all()
@@ -85,10 +94,10 @@ class ChatBackend:
         return category_list
 
     @staticmethod
-    def get_chats(category_uuid: UUID):
+    def get_chats(profile_uuid: UUID, category_uuid: UUID):
         with Database.create_session() as session:
             chats = session.scalars(
-                select(Chat)
+                select_with_whitelist(Chat, profile_uuid)
                 .where(Chat.category_uuid == category_uuid)
                 .order_by(Chat.sort_order)
             ).all()
@@ -96,24 +105,27 @@ class ChatBackend:
         return chat_list
 
     @staticmethod
-    def get_chat(chat_uuid):
+    def get_chat(profile_uuid: UUID, chat_uuid):
         if not isinstance(chat_uuid, UUID):
             try:
                 chat_uuid = UUID(str(chat_uuid))
             except ValueError:
                 return None
         with Database.create_session() as session:
-            _chat = session.get(Chat, chat_uuid)
+            _chat = session.scalar(
+                select_with_whitelist(Chat, profile_uuid)
+                .where(Chat.uuid == chat_uuid)
+            )
             if _chat is None:
                 return None
             chat = ChatBackend.Chat(_chat)
         return chat
 
     @staticmethod
-    def get_first_chat(server_uuid: UUID):
+    def get_first_chat(profile_uuid: UUID, server_uuid: UUID):
         with Database.create_session() as session:
             _chat = session.scalar(
-                select(Chat)
+                select_with_whitelist(Chat, profile_uuid)
                 .join(Chat.category)
                 .where(ChatCategory.server_uuid == server_uuid)
                 .order_by(ChatCategory.sort_order, Chat.sort_order)

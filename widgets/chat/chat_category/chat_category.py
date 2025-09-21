@@ -5,7 +5,7 @@ from .ui_chat_category import Ui_chat_category_widget
 from widgets.common import DraggableWidget
 from widgets.chat.chat_widget import ChatWidget
 from resources import Icons
-from backend import run_task, ChatBackend
+from backend import run_task, ChatBackend, ConfigBackend
 
 
 class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
@@ -38,6 +38,7 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
 
         run_task(
             ChatBackend.get_chats,
+            ConfigBackend.session.profile.uuid,
             category.uuid,
             result_slot=self.add_chats
         )

@@ -79,6 +79,8 @@ class MainPage(QWidget, Ui_main_page):
 
     def update_chat(self):
         chat = ConfigBackend.session.selected_server.selected_chat
+        if chat is None:
+            return
         self.icon_chat.setIcon(Icons.TextChat, override_color=True)
         self.label_chatname.setText(chat.name)
         run_task(

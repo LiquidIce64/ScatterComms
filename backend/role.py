@@ -6,7 +6,7 @@ from PySide6.QtGui import QColor
 from .multithreading import multithreaded
 from .cached_object import CachedObject
 from .profile import ProfileBackend
-from database import Database, User, Role, chat_roles
+from database import Database, User, Role, chat_roles, ChatCategory, Chat
 
 
 class RoleBackend:
@@ -74,6 +74,12 @@ class RoleBackend:
             result = session.execute(
                 select(User, Role)
                 .join(Role, User.roles)
+                .where(Role.server_uuid == (
+                    select(ChatCategory.server_uuid)
+                    .join(Chat)
+                    .where(Chat.uuid == chat_uuid)
+                    .scalar_subquery()
+                ))
                 .where(User.roles.any(
                     Role.uuid.in_(
                         select(chat_roles.c.role_uuid)
@@ -82,7 +88,7 @@ class RoleBackend:
                 ))
                 .group_by(User)
                 .having(Role.sort_order == func.min(Role.sort_order))
-                .order_by(Role.sort_order)
+                .order_by(-Role.sort_order)
             ).all()
 
             member_list: list[tuple[RoleBackend.Role, list[ProfileBackend.Profile]]] = []
