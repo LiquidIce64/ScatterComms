@@ -162,7 +162,13 @@ class MainPage(QWidget, Ui_main_page):
         super().mousePressEvent(event)
 
     def deleteLater(self):
+        ConfigBackend.session.server_changed.disconnect(self.update_server_title)
+        ConfigBackend.session.profile.changed.disconnect(self.update_profile)
+        ConfigBackend.session.profile_changed.disconnect(self.update_status)
+        ConfigBackend.session.server_changed.disconnect(self.on_server_changed)
         for child in self.findChildren(QWidget):
             child.deleteLater()
-            del child
         super().deleteLater()
+
+    def __del__(self):
+        print('[DEBUG] Main page deleted')

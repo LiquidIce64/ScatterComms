@@ -42,3 +42,6 @@ class ProfileSelect(QWidget, Ui_profile_select):
     def select_profile(self, profile):
         ConfigBackend.session.profile = profile
         self.main_window.switch_to(self.main_window.Page.Main)
+
+    def __del__(self):
+        print('[DEBUG] Profile page deleted')
