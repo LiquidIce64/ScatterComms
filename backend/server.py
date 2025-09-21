@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 from uuid import UUID
 from sqlalchemy import select
 
@@ -26,27 +26,26 @@ class ServerBackend:
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
-
-            chat = ChatBackend.get_chat(server.selected_chat_uuid)
-            if chat is None:
-                chat = ChatBackend.get_first_chat(self.__uuid)
-                ServerBackend.edit_server(self.__uuid, selected_chat_uuid=chat.uuid)
-            self.__selected_chat: ChatBackend.Chat = chat
-
+            self.__selected_chat: Optional[ChatBackend.Chat] = None
+            self.__selected_chat_uuid: UUID = server.selected_chat_uuid
             self._initialized = True
 
         def update(self, server):
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
-
-            chat = ChatBackend.get_chat(server.selected_chat_uuid)
-            if chat is None:
-                chat = ChatBackend.get_first_chat(self.__uuid)
-                ServerBackend.edit_server(self.__uuid, selected_chat_uuid=chat.uuid)
-            self.__selected_chat: ChatBackend.Chat = chat
-
+            self.__selected_chat: Optional[ChatBackend.Chat] = None
+            self.__selected_chat_uuid: UUID = server.selected_chat_uuid
             self.changed.emit()
+
+        def update_selected_chat(self, profile_uuid: UUID):
+            chat = ChatBackend.get_chat(profile_uuid, self.__selected_chat_uuid)
+            if chat is None:
+                chat = ChatBackend.get_first_chat(profile_uuid, self.__uuid)
+                ServerBackend.edit_server(self.__uuid, selected_chat_uuid=chat.uuid)
+            if self.__selected_chat == chat:
+                return
+            self.__selected_chat: ChatBackend.Chat = chat
             self.selected_chat_changed.emit()
 
         @property
@@ -77,6 +76,7 @@ class ServerBackend:
             if self.__selected_chat == new_value:
                 return
             self.__selected_chat = new_value
+            self.__selected_chat_uuid = new_value.uuid
             ServerBackend.edit_server(self.__uuid, selected_chat_uuid=new_value.uuid)
             self.selected_chat_changed.emit()
 
@@ -96,6 +96,7 @@ class ServerBackend:
             if _server is None:
                 return None
             server = ServerBackend.Server(_server)
+            server.update_selected_chat(profile_uuid)
         return server
 
     @staticmethod
@@ -111,6 +112,7 @@ class ServerBackend:
                 .where(ServerSortOrder.sort_order == 1)
             )
             server = ServerBackend.Server(_server)
+            server.update_selected_chat(profile_uuid)
         return server
 
     @staticmethod
@@ -127,6 +129,8 @@ class ServerBackend:
                 .order_by(ServerSortOrder.sort_order)
             ).all()
             server_list = [ServerBackend.Server(server) for server in servers]
+            for server in server_list:
+                server.update_selected_chat(profile_uuid)
         return server_list
 
     @staticmethod
@@ -143,6 +147,8 @@ class ServerBackend:
                 .order_by(Server.created_at)
             ).all()
             server_list = [ServerBackend.Server(server) for server in servers]
+            for server in server_list:
+                server.update_selected_chat(profile_uuid)
         return server_list
 
     @staticmethod
@@ -219,4 +225,5 @@ class ServerBackend:
             ])
             session.commit()
             server = ServerBackend.Server(_server)
+            server.update_selected_chat(profile_uuid)
         return server
