@@ -37,6 +37,7 @@
 }
 
 #label_username {
+	color: black;
 	margin-left: 1px;
 	font-size: 11pt;
 	font-weight: 600;

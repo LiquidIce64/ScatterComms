@@ -92,6 +92,7 @@ class Role(UUIDMixin, SortMixin, Base):
     color: Mapped[int] = mapped_column(nullable=False)
     public: Mapped[bool] = mapped_column(nullable=False, default=True)
     pingable: Mapped[bool] = mapped_column(nullable=False, default=False)
+    grouped: Mapped[bool] = mapped_column(nullable=False, default=False)
 
     server_uuid: Mapped[UUID] = mapped_column(ForeignKey('servers.uuid'))
     server: Mapped['Server'] = relationship(back_populates='roles')

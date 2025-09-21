@@ -202,11 +202,11 @@ class ServerBackend:
             profile = session.get(User, profile_uuid)
             server_member = ServerMember(server=_server, user=profile)
             owner_role = Role(
-                name='Owner', color=0xFFC814FF, pingable=True,
+                name='Owner', color=0xFFFFC814, pingable=True,
                 server=_server, users=[profile], sort_order=0
             )
             everyone_role = Role(
-                name='Everyone', color=0x808080FF, public=False, pingable=True,
+                name='Everyone', color=0xFF808080, public=False, pingable=True,
                 server=_server, users=[profile], sort_order=1
             )
 

@@ -54,6 +54,22 @@ class RoleBackend:
             self.changed.emit()
 
     @staticmethod
+    def get_top_role(profile_uuid: UUID, server_uuid: UUID):
+        with Database.create_session() as session:
+            _role = session.scalars(
+                select(Role)
+                .join(User, Role.users)
+                .where(Role.public)
+                .where(User.uuid == profile_uuid)
+                .where(Role.server_uuid == server_uuid)
+                .order_by(Role.sort_order)
+            ).first()
+            if _role is None:
+                return None
+            role = RoleBackend.Role(_role)
+        return role
+
+    @staticmethod
     def get_whitelisted_roles(chat_uuid: UUID):
         with Database.create_session() as session:
             # noinspection PyTypeChecker
@@ -70,37 +86,56 @@ class RoleBackend:
     @staticmethod
     def get_chat_members(chat_uuid: UUID):
         with Database.create_session() as session:
-            # noinspection PyTypeChecker
+            user_whitelisted = User.roles.any(Role.uuid.in_(
+                select(Role.uuid)
+                .join_from(ChatCategory, Role, ChatCategory.whitelisted_roles)
+                .join(Chat)
+                .where(Chat.uuid == chat_uuid)
+                .intersect(
+                    select(Role.uuid)
+                    .join_from(Chat, Role, Chat.whitelisted_roles)
+                    .where(Chat.uuid == chat_uuid)
+                )
+            ))
+
+            # Get grouped roles and their members
             result = session.execute(
                 select(User, Role)
                 .join(Role, User.roles)
+                .where(Role.public & Role.grouped)
                 .where(Role.server_uuid == (
                     select(ChatCategory.server_uuid)
                     .join(Chat)
                     .where(Chat.uuid == chat_uuid)
                     .scalar_subquery()
                 ))
-                .where(User.roles.any(
-                    Role.uuid.in_(
-                        select(chat_roles.c.role_uuid)
-                        .where(chat_roles.c.chat_uuid == chat_uuid)
-                    )
-                ))
+                .where(user_whitelisted)
                 .group_by(User)
                 .having(Role.sort_order == func.min(Role.sort_order))
-                .order_by(-Role.sort_order)
+                .order_by(Role.sort_order, User.username, User.uuid)
             ).all()
 
-            member_list: list[tuple[RoleBackend.Role, list[ProfileBackend.Profile]]] = []
+            # Turn that into backend objects
+            member_uuids: list[UUID] = []
+            grouped_roles: list[tuple[RoleBackend.Role, list[ProfileBackend.Profile]]] = []
             last_role = None
             for _member, role in result:
+                member_uuids.append(_member.uuid)
                 member = ProfileBackend.Profile(_member)
                 if role != last_role:
                     last_role = role
-                    member_list.append((RoleBackend.Role(role), [member]))
+                    grouped_roles.append((RoleBackend.Role(role), [member]))
                 else:
-                    member_list[-1][1].append(member)
-        return member_list
+                    grouped_roles[-1][1].append(member)
+
+            # Get everyone else
+            _ungrouped = session.scalars(
+                select(User)
+                .where(User.uuid.not_in(member_uuids))
+                .where(user_whitelisted)
+            ).all()
+            ungrouped = [ProfileBackend.Profile(_member) for _member in _ungrouped]
+        return grouped_roles, ungrouped
 
     @staticmethod
     @multithreaded
@@ -127,8 +162,8 @@ class RoleBackend:
             everyone_role.sort_order += 1
             _role = Role(
                 server_uuid=server_uuid,
-                name=name, color=0x808080FF,
-                sort_order=sort_order
+                name=name, color=0xFF808080,
+                sort_order=sort_order, public=True
             )
             session.add(everyone_role, _role)
             session.commit()
