@@ -102,3 +102,7 @@ class ChatList(QWidget):
             if isinstance(w, ChatCategoryWidget):
                 categories.append(w.category.uuid)
         ChatBackend.reorder_category_list(ConfigBackend.session.selected_server.uuid, categories)
+
+    def deleteLater(self):
+        ConfigBackend.session.server_changed.disconnect(self.reload_contents)
+        super().deleteLater()
