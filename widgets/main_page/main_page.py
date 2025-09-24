@@ -8,7 +8,7 @@ from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from widgets.member import MemberCategoryWidget
 from widgets.message import MessageWidget
 from resources import Icons
-from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend
+from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend, MessageBackend
 
 if TYPE_CHECKING:
     from widgets import MainWindow
@@ -88,16 +88,18 @@ class MainPage(QWidget, Ui_main_page):
             RoleBackend.get_chat_members, chat.uuid,
             result_slot=self.update_chat_members
         )
+        run_task(
+            MessageBackend.get_messages, chat.uuid,
+            result_slot=self.update_chat_messages
+        )
 
-        self.update_chat_messages(None)
-
-    def update_chat_messages(self, messages):
+    def update_chat_messages(self, messages: list[MessageBackend.Message]):
         for i in range(self.layout_chat.count() - 1, -1, -1):
             w = self.layout_chat.itemAt(i).widget()
             if isinstance(w, MessageWidget):
                 w.deleteLater()
-
-        self.layout_chat.addWidget(MessageWidget(ConfigBackend.session.profile))
+        for message in messages:
+            self.layout_chat.addWidget(MessageWidget(message))
 
     def update_chat_members(self, result):
         for i in range(self.layout_memberlist.count() - 1, -1, -1):

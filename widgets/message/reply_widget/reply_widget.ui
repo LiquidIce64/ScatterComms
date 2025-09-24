@@ -20,19 +20,21 @@
 }
 
 #label_username {
+	margin-bottom: 0px;
 	font-size: 9pt;
 	font-weight: 600;
 	color: black;
 }
 
 #label_message {
+	color: #B0B0B0;
 	font-size: 9pt;
 }
 
-#line {
-	background-color: #808080;
-	margin-right: 3px;
-}</string>
+#label_message[highlight=&quot;true&quot;] {color: white;}
+
+#line {background-color: #808080;}
+#line[highlight=&quot;true&quot;] {background-color: white;}</string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
    <property name="spacing">
@@ -45,7 +47,7 @@
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>6</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>3</number>
@@ -54,6 +56,9 @@
     <widget class="FrameButton" name="btn">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="mouseTracking">
+      <bool>true</bool>
      </property>
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::TabFocus</enum>
@@ -66,7 +71,7 @@
      </property>
      <layout class="QHBoxLayout" name="layout_reply" stretch="0,0,0,1">
       <property name="spacing">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -82,10 +87,10 @@
       </property>
       <item>
        <widget class="Line" name="line">
-        <property name="minimumSize">
+        <property name="maximumSize">
          <size>
-          <width>3</width>
-          <height>0</height>
+          <width>1</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="orientation">
@@ -123,12 +128,24 @@
         <property name="text">
          <string notr="true">Username</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+        </property>
+        <property name="indent">
+         <number>0</number>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_message">
         <property name="text">
          <string notr="true">Message text</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+        </property>
+        <property name="indent">
+         <number>0</number>
         </property>
        </widget>
       </item>
