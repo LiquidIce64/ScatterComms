@@ -1,4 +1,5 @@
 from uuid import UUID
+from datetime import datetime, timezone
 from sqlalchemy import select
 
 from .multithreading import multithreaded
@@ -16,12 +17,28 @@ class MessageBackend:
             self.__uuid: UUID = message.uuid
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
+
+            self.__replying_to: MessageBackend.Message | None = None
+            if message.replying_to is not None:
+                self.__replying_to = MessageBackend.Message(message.replying_to)
+
+            self.__created_at: datetime = message.created_at
+            # Convert from UTC to local timezone
+            self.__created_at = self.__created_at.replace(tzinfo=timezone.utc).astimezone()
             self._initialized = True
 
         def update(self, message):
             self.__uuid: UUID = message.uuid
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
+
+            self.__replying_to: MessageBackend.Message | None = None
+            if message.replying_to is not None:
+                self.__replying_to = MessageBackend.Message(message.replying_to)
+
+            self.__created_at: datetime = message.created_at
+            # Convert from UTC to local timezone
+            self.__created_at = self.__created_at.replace(tzinfo=timezone.utc).astimezone()
             self.changed.emit()
 
         @property
@@ -30,6 +47,10 @@ class MessageBackend:
         def text(self): return self.__text
         @property
         def author(self): return self.__author
+        @property
+        def replying_to(self): return self.__replying_to
+        @property
+        def created_at(self): return self.__created_at
 
         @text.setter
         def text(self, new_value: str):

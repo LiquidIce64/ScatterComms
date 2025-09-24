@@ -158,8 +158,11 @@ class ChatCategory(UUIDMixin, SortMixin, Base):
 class Message(UUIDMixin, TimestampMixin, Base):
     __tablename__ = 'messages'
 
+    uuid: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
     text: Mapped[str] = mapped_column(nullable=True)
 
+    replying_to_uuid: Mapped[Optional[UUID]] = mapped_column(ForeignKey('messages.uuid'))
+    replying_to: Mapped[Optional['Message']] = relationship(remote_side=uuid)
     author_uuid: Mapped[UUID] = mapped_column(ForeignKey('users.uuid'))
     author: Mapped[User] = relationship()
     chat_uuid: Mapped[UUID] = mapped_column(ForeignKey('chats.uuid'))

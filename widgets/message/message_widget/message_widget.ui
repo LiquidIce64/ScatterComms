@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>40</height>
+    <height>44</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,16 +33,21 @@
 }
 
 #label_username {
+	margin-bottom: -2px;
 	font-size: 11pt;
 	font-weight: 600;
 	color: black;
 }
 
 #label_timestamp {
+	margin-bottom: -1px;
 	margin-left: 3px;
-	margin-bottom: -3px;
 	font-size: 9pt;
 	color: #808080;
+}
+
+#label_text {
+	font-size: 11pt;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
@@ -71,10 +76,10 @@
      </property>
      <layout class="QGridLayout" name="layout_frame" rowstretch="0,0,1" columnstretch="0,0,1" columnminimumwidth="48,0,0">
       <property name="leftMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>3</number>
+       <number>5</number>
       </property>
       <property name="rightMargin">
        <number>3</number>
@@ -87,26 +92,62 @@
       </property>
       <item row="1" column="1">
        <widget class="QLabel" name="label_username">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>14</height>
+         </size>
+        </property>
         <property name="text">
          <string notr="true">Username</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+        </property>
+        <property name="indent">
+         <number>0</number>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="label_timestamp">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>14</height>
+         </size>
+        </property>
         <property name="text">
-         <string notr="true">0:00</string>
+         <string notr="true">01/01/2000 0:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+        </property>
+        <property name="indent">
+         <number>0</number>
         </property>
        </widget>
       </item>
       <item row="2" column="1" colspan="2">
        <widget class="QFrame" name="frame_contents">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
         <layout class="QGridLayout" name="layout_contents">
          <property name="leftMargin">
           <number>0</number>
          </property>
          <property name="topMargin">
-          <number>3</number>
+          <number>0</number>
          </property>
          <property name="rightMargin">
           <number>0</number>
