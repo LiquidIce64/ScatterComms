@@ -960,6 +960,12 @@
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
             </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
            </spacer>
           </item>
          </layout>
@@ -1033,12 +1039,6 @@
            <spacer name="spacer_chat">
             <property name="orientation">
              <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>487</height>
-             </size>
             </property>
            </spacer>
           </item>
@@ -1226,6 +1226,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>MaskedImage</class>
+   <extends>QLabel</extends>
+   <header>widgets.common</header>
+  </customwidget>
+  <customwidget>
    <class>IconWidget</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
@@ -1233,11 +1238,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <customwidget>
    <class>IconButton</class>
    <extends>QPushButton</extends>
-   <header>widgets.common</header>
-  </customwidget>
-  <customwidget>
-   <class>MaskedImage</class>
-   <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>
   <customwidget>
