@@ -6,6 +6,7 @@ from .ui_main_page import Ui_main_page
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from widgets.member import MemberCategoryWidget
+from widgets.message import MessageWidget
 from resources import Icons
 from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend
 
@@ -87,6 +88,16 @@ class MainPage(QWidget, Ui_main_page):
             RoleBackend.get_chat_members, chat.uuid,
             result_slot=self.update_chat_members
         )
+
+        self.update_chat_messages(None)
+
+    def update_chat_messages(self, messages):
+        for i in range(self.layout_chat.count() - 1, -1, -1):
+            w = self.layout_chat.itemAt(i).widget()
+            if isinstance(w, MessageWidget):
+                w.deleteLater()
+
+        self.layout_chat.addWidget(MessageWidget(ConfigBackend.session.profile))
 
     def update_chat_members(self, result):
         for i in range(self.layout_memberlist.count() - 1, -1, -1):
