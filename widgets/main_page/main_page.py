@@ -71,6 +71,7 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_attachment.setIcon(Icons.Plus)
         self.btn_emoji.setIcon(Icons.Emoji)
         self.btn_send.setIcon(Icons.Send)
+        self.btn_send.clicked.connect(self.send_message)
         self.on_server_changed()
         ConfigBackend.session.server_changed.connect(self.on_server_changed)
 
@@ -143,6 +144,17 @@ class MainPage(QWidget, Ui_main_page):
         new_height = min(new_height, self.max_textbox_height)
         new_height = max(new_height, self.textbox.minimumHeight())
         self.textbox.setMaximumHeight(new_height)
+
+    def send_message(self):
+        session = ConfigBackend.session
+        message_text = self.textbox.document().toPlainText()
+        self.textbox.clear()
+        message = MessageBackend.create_message(
+            session.selected_server.selected_chat.uuid,
+            session.profile.uuid,
+            message_text
+        )
+        self.layout_chat.addWidget(MessageWidget(message))
 
     def update_dropdown_menu(self, menu_class, button):
         if button.isChecked():

@@ -1,5 +1,5 @@
-from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Qt
 
 from backend import MessageBackend
 from .message_content import MessageContent
@@ -12,5 +12,6 @@ class TextContent(MessageContent):
         label.setObjectName('label_text')
         label.setAlignment(Qt.AlignmentFlag.AlignTop and Qt.AlignmentFlag.AlignLeft)
         label.setOpenExternalLinks(True)
+        label.setWordWrap(True)
         label.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
         self.layout.addWidget(label)
