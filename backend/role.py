@@ -15,12 +15,13 @@ class RoleBackend:
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
+            self._initialized = True
+
             self.__uuid: UUID = role.uuid
             self.__name: str = role.name
             self.__color = QColor.fromRgba(role.color)
             self.__public: bool = role.public
             self.__pingable: bool = role.pingable
-            self._initialized = True
 
         def update(self, role):
             self.__uuid: UUID = role.uuid
