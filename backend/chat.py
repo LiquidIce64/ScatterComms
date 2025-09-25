@@ -21,10 +21,11 @@ class ChatBackend:
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
+            self._initialized = True
+
             self.__uuid: UUID = category.uuid
             self.__name: str = category.name
             self.__collapsed: bool = category.collapsed
-            self._initialized = True
 
         def update(self, category):
             self.__uuid: UUID = category.uuid
@@ -58,10 +59,11 @@ class ChatBackend:
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
+            self._initialized = True
+
             self.__uuid: UUID = chat.uuid
             self.__name: str = chat.name
             self.__voice_enabled: bool = chat.voice_enabled
-            self._initialized = True
 
         def update(self, chat):
             self.__uuid: UUID = chat.uuid

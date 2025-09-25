@@ -23,12 +23,13 @@ class ServerBackend:
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
+            self._initialized = True
+
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
             self.__selected_chat: Optional[ChatBackend.Chat] = None
             self.__selected_chat_uuid: UUID = server.selected_chat_uuid
-            self._initialized = True
 
         def update(self, server):
             self.__uuid: UUID = server.uuid

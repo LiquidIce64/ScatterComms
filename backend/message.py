@@ -14,6 +14,8 @@ class MessageBackend:
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
+            self._initialized = True
+
             self.__uuid: UUID = message.uuid
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
@@ -25,7 +27,6 @@ class MessageBackend:
             self.__created_at: datetime = message.created_at
             # Convert from UTC to local timezone
             self.__created_at = self.__created_at.replace(tzinfo=timezone.utc).astimezone()
-            self._initialized = True
 
         def update(self, message):
             self.__uuid: UUID = message.uuid

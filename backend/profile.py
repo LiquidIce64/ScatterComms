@@ -24,10 +24,11 @@ class ProfileBackend:
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
+            self._initialized = True
+
             self.__uuid: UUID = user.uuid
             self.__username: str = user.username
             self.__avatar = StorageBackend.Profile.get_avatar(self.uuid)
-            self._initialized = True
 
         def update(self, user):
             self.__uuid: UUID = user.uuid
