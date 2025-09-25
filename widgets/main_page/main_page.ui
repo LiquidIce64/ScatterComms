@@ -80,6 +80,8 @@
 	background-color: #353535;
 }
 
+#icon_server_dropdown {margin: 8px;}
+
 #label_servername {
 	margin-left: 4px;
 	font-size: 12pt;
@@ -105,13 +107,8 @@
 	border-radius: 6px;
 }
 
-#icon_userstatus {
-	padding: 2px;
-}
-
-#btn_profile {
-	border-radius: 6px;
-}
+#icon_userstatus {padding: 2px;}
+#btn_profile {border-radius: 6px;}
 
 #label_userstatus {
 	margin-left: 4px;
@@ -126,7 +123,8 @@
 }
 
 #btn_notifications, #btn_pinned_messages,
-#btn_settings, #btn_search, #btn_attachment, #btn_emoji, #btn_send {
+#btn_settings, #btn_search,
+#btn_attachment, #btn_emoji, #btn_send {
 	background: none;
 	border: none;
 	border-radius: 6px;
@@ -143,25 +141,17 @@
 	background-color: #303030;
 }
 
-#btn_send {color: #A0A0A0;}
-#btn_send:disabled {color: #808080;}
-#btn_send:hover {color: white;}
-
-#btn_attachment:hover, #btn_emoji:hover, #btn_send:hover {
-	background-color: #454545;
-}
-
 #btn_notifications:checked, #btn_pinned_messages:checked, #btn_search:checked {
 	background-color: #404040;
 }
 
-#btn_emoji:checked {
-	background-color: #555555;
-}
+#btn_attachment, #btn_emoji, #btn_send {color: white;}
+#btn_send:disabled {color: #808080;}
 
-#icon_server_dropdown {
-	margin: 8px;
-}
+#btn_attachment[highlight=&quot;true&quot;], #btn_emoji[highlight=&quot;true&quot;],
+#btn_send[highlight=&quot;true&quot;]:enabled {background-color: #454545;}
+
+#btn_attachment:checked, #btn_emoji:checked {background-color: #555555;}
 
 #textbox {
 	background-color: #353535;
@@ -1004,11 +994,14 @@
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
         </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
         <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft</set>
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
         </property>
         <widget class="QWidget" name="scrollcontent_chat">
          <property name="geometry">
@@ -1018,6 +1011,12 @@
            <width>468</width>
            <height>404</height>
           </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <layout class="QVBoxLayout" name="layout_chat">
           <property name="spacing">
@@ -1074,7 +1073,7 @@
         </property>
         <layout class="QHBoxLayout" name="layout_messagebox" stretch="0,1,0,0">
          <item alignment="Qt::AlignmentFlag::AlignBottom">
-          <widget class="QPushButton" name="btn_attachment">
+          <widget class="IconButton" name="btn_attachment">
            <property name="minimumSize">
             <size>
              <width>32</width>
@@ -1096,6 +1095,9 @@
            <property name="icon">
             <iconset resource="../../resources/index.qrc">
              <normaloff>:/icons/plus</normaloff>:/icons/plus</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1159,7 +1161,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </widget>
          </item>
          <item alignment="Qt::AlignmentFlag::AlignBottom">
-          <widget class="QPushButton" name="btn_emoji">
+          <widget class="IconButton" name="btn_emoji">
            <property name="minimumSize">
             <size>
              <width>32</width>
@@ -1188,7 +1190,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </widget>
          </item>
          <item alignment="Qt::AlignmentFlag::AlignBottom">
-          <widget class="QPushButton" name="btn_send">
+          <widget class="IconButton" name="btn_send">
            <property name="enabled">
             <bool>false</bool>
            </property>
