@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget
-from PySide6.QtCore import QCoreApplication
+from PySide6.QtCore import QCoreApplication, Qt
 
 from .ui_main_page import Ui_main_page
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from widgets.member import MemberCategoryWidget
 from widgets.message import MessageWidget
+from widgets.common.snapping_scrollbar import SnappingScrollBar
 from resources import Icons
 from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend, MessageBackend
 
@@ -63,6 +64,7 @@ class MainPage(QWidget, Ui_main_page):
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat
+        self.scroll_chat.setVerticalScrollBar(SnappingScrollBar(Qt.Orientation.Vertical, parent=self.scroll_chat))
         self.max_textbox_height = self.textbox.maximumHeight()
         self.textbox.document().documentLayout().documentSizeChanged.connect(self.update_textbox_height)
         self.textbox.textChanged.connect(lambda: (
