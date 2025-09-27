@@ -43,11 +43,11 @@
 	background-color: #353535;
 }
 
-#scrollcontent_chat {
+#scroll_chat, #scrollcontent_chat, #scroll_chat QScrollBar {
 	background-color: #2A2A2A;
 }
 
-#scrollcontent_servers {
+#scroll_servers, #scrollcontent_servers, #scroll_servers QScrollBar {
 	background-color: #151515;
 }
 
@@ -98,7 +98,8 @@
 	font-weight: 700;
 }
 
-#scrollcontent_chatlist, #scrollcontent_members {
+#scroll_chatlist, #scrollcontent_chatlist, #scroll_chatlist QScrollBar,
+#scroll_members, #scrollcontent_members, #scroll_members QScrollBar {
 	background-color: #252525;
 }
 
@@ -156,7 +157,20 @@
 #textbox {
 	background-color: #353535;
 	font-size: 11pt;
-}</string>
+}
+
+QScrollBar {border: none;}
+QScrollBar:vertical {width: 6px;}
+QScrollBar:horizontal {height: 6px;}
+QScrollBar::add-page, QScrollBar::sub-page {background: none;}
+QScrollBar::add-line, QScrollBar::sub-line {width: 0px; height: 0px;}
+QScrollBar::handle:vertical {margin-left: 2px; margin-right: 2px;}
+QScrollBar::handle:horizontal {margin-top: 2px; margin-bottom: 2px;}
+QScrollBar[show=&quot;true&quot;]::handle {background-color: #808080;}
+QScrollBar::handle {background: none; border-radius: 1px;}
+QScrollBar::handle:vertical:hover {margin-left: 1px; margin-right: 1px; border-radius: 2px;}
+QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border-radius: 2px;}
+</string>
   </property>
   <layout class="QGridLayout" name="layout_main_page" rowstretch="0,1,0" columnstretch="0,0,1,0">
    <property name="leftMargin">
@@ -810,18 +824,6 @@
            <height>552</height>
           </rect>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>220</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>220</width>
-           <height>16777215</height>
-          </size>
-         </property>
          <layout class="QVBoxLayout" name="layout_scroll_chatlist">
           <property name="spacing">
            <number>0</number>
@@ -922,12 +924,6 @@
            <width>250</width>
            <height>552</height>
           </rect>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
          </property>
          <layout class="QVBoxLayout" name="layout_memberlist">
           <property name="spacing">

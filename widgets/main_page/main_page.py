@@ -7,7 +7,7 @@ from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from widgets.member import MemberCategoryWidget
 from widgets.message import MessageWidget
-from widgets.common.snapping_scrollbar import SnappingScrollBar
+from widgets.common import CustomScrollBar
 from resources import Icons
 from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend, MessageBackend
 
@@ -64,7 +64,6 @@ class MainPage(QWidget, Ui_main_page):
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat
-        self.scroll_chat.setVerticalScrollBar(SnappingScrollBar(Qt.Orientation.Vertical, parent=self.scroll_chat))
         self.max_textbox_height = self.textbox.maximumHeight()
         self.textbox.document().documentLayout().documentSizeChanged.connect(self.update_textbox_height)
         self.textbox.textChanged.connect(lambda: (
@@ -76,6 +75,21 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_send.clicked.connect(self.send_message)
         self.on_server_changed()
         ConfigBackend.session.server_changed.connect(self.on_server_changed)
+
+        # Scrollbars
+        self.scroll_chatlist.setVerticalScrollBar(CustomScrollBar(
+            Qt.Orientation.Vertical,
+            parent=self.scroll_chatlist
+        ))
+        self.scroll_chat.setVerticalScrollBar(CustomScrollBar(
+            Qt.Orientation.Vertical,
+            parent=self.scroll_chat,
+            snap_to_bottom=True
+        ))
+        self.scroll_members.setVerticalScrollBar(CustomScrollBar(
+            Qt.Orientation.Vertical,
+            parent=self.scroll_members
+        ))
 
     def on_server_changed(self):
         self.update_chat()
