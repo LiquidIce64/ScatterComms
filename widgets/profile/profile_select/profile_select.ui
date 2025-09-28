@@ -39,12 +39,25 @@
 }
 #icon_create {margin: 16px;}
 
-QScrollBar {background-color: #252525; border: none; height: 6px;}
 QScrollBar::add-page, QScrollBar::sub-page {background: none;}
 QScrollBar::add-line, QScrollBar::sub-line {width: 0px; height: 0px;}
-QScrollBar::handle {background-color: #808080; border-radius: 1px; margin-top: 2px; margin-bottom: 2px;}
-QScrollBar::handle:hover {margin-top: 1px; margin-bottom: 1px; border-radius: 2px;}
-
+QScrollBar {
+	background-color: #252525;
+	border: none;
+	height: 6px;
+}
+QScrollBar::handle {
+	background-color: #808080;
+	border-radius: 1px;
+	min-width: 20px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+QScrollBar::handle:hover {
+	margin-top: 1px;
+	margin-bottom: 1px;
+	border-radius: 2px;
+}
 </string>
   </property>
   <layout class="QVBoxLayout" name="layout_widget">
