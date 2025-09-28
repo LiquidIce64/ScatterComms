@@ -64,8 +64,8 @@ class MainPage(QWidget, Ui_main_page):
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat
-        self.max_textbox_height = self.textbox.maximumHeight()
-        self.textbox.document().documentLayout().documentSizeChanged.connect(self.update_textbox_height)
+        self.textbox.save_max_height()
+        self.textbox.returnPressed.connect(self.send_message)
         self.textbox.textChanged.connect(lambda: (
             self.btn_send.setEnabled(not self.textbox.document().isEmpty())
         ))
@@ -155,16 +155,12 @@ class MainPage(QWidget, Ui_main_page):
         self.icon_userstatus.setIcon(status_icon)
         self.label_userstatus.setText(QCoreApplication.translate('main_page', ConfigBackend.session.status.value))
 
-    def update_textbox_height(self):
-        new_height = self.textbox.document().size().height()
-        new_height = min(new_height, self.max_textbox_height)
-        new_height = max(new_height, self.textbox.minimumHeight())
-        self.textbox.setMaximumHeight(new_height)
-
     def send_message(self):
         session = ConfigBackend.session
         message_text = self.textbox.document().toPlainText()
         self.textbox.clear()
+        if message_text == '':
+            return
         message = MessageBackend.create_message(
             session.selected_server.selected_chat.uuid,
             session.profile.uuid,

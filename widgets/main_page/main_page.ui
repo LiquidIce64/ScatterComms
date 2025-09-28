@@ -158,6 +158,7 @@
 	background-color: #353535;
 	font-size: 11pt;
 }
+#textbox QScrollBar {background-color: #353535;}
 
 QScrollBar {border: none;}
 QScrollBar:vertical {width: 6px;}
@@ -1098,9 +1099,9 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
           </widget>
          </item>
          <item>
-          <widget class="QTextEdit" name="textbox">
+          <widget class="MessageTextbox" name="textbox">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -1264,6 +1265,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <extends>QWidget</extends>
    <header>widgets.chat</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MessageTextbox</class>
+   <extends>QTextEdit</extends>
+   <header>widgets.common</header>
   </customwidget>
  </customwidgets>
  <tabstops>
