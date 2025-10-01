@@ -173,8 +173,8 @@ class Message(UUIDMixin, TimestampMixin, Base):
 class Attachment(UUIDMixin, SortMixin, Base):
     __tablename__ = 'attachments'
 
-    uri: Mapped[str] = mapped_column(nullable=False)
     filename: Mapped[str] = mapped_column(nullable=False)
+    filehash: Mapped[str] = mapped_column(nullable=False)
 
     message_uuid: Mapped[UUID] = mapped_column(ForeignKey('messages.uuid'))
     message: Mapped['Message'] = relationship(back_populates='attachments')

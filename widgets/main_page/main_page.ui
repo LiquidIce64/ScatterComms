@@ -152,7 +152,7 @@
 #btn_attachment[highlight=&quot;true&quot;], #btn_emoji[highlight=&quot;true&quot;],
 #btn_send[highlight=&quot;true&quot;]:enabled {background-color: #454545;}
 
-#btn_attachment:checked, #btn_emoji:checked {background-color: #555555;}
+#btn_emoji:checked {background-color: #555555;}
 
 #textbox {
 	background-color: #353535;
@@ -1010,7 +1010,7 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
           </rect>
          </property>
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Ignored" vsizetype="Minimum">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -1092,9 +1092,6 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
            <property name="icon">
             <iconset resource="../../resources/index.qrc">
              <normaloff>:/icons/plus</normaloff>:/icons/plus</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
            </property>
           </widget>
          </item>

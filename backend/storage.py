@@ -1,6 +1,6 @@
 import os
 from uuid import UUID
-from PySide6.QtCore import QStandardPaths
+from PySide6.QtCore import QStandardPaths, QFile
 from PySide6.QtGui import QImage
 
 
@@ -16,7 +16,7 @@ class StorageBackend:
     config_dir = ''
 
     @classmethod
-    def __init_image_dirs(cls, path: str):
+    def __init_dirs(cls, path: str):
         appdata = cls.appdata_dir + path
         cache = cls.cache_dir + path
         os.makedirs(appdata, exist_ok=True)
@@ -30,8 +30,9 @@ class StorageBackend:
         cls.appdata_dir = get_dir(QStandardPaths.StandardLocation.AppDataLocation)
         cls.config_dir = get_dir(QStandardPaths.StandardLocation.AppConfigLocation)
 
-        cls.Server.icon_dir, cls.Server.icon_cache = cls.__init_image_dirs('/server/icons')
-        cls.Profile.avatar_dir, cls.Profile.avatar_cache = cls.__init_image_dirs('/profile/avatars')
+        cls.Server.icon_dir, cls.Server.icon_cache = cls.__init_dirs('/server/icons')
+        cls.Profile.avatar_dir, cls.Profile.avatar_cache = cls.__init_dirs('/profile/avatars')
+        cls.Attachment.attachment_dir, cls.Attachment.attachment_cache = cls.__init_dirs('/attachments')
 
     @classmethod
     def locate_cache(cls, path: str, allow_empty=True):
@@ -87,3 +88,21 @@ class StorageBackend:
         @classmethod
         def set_avatar(cls, user_uuid: UUID, avatar: QImage, use_cache=False):
             return StorageBackend._set_image(cls.avatar_cache if use_cache else cls.avatar_dir, user_uuid, avatar)
+
+    class Attachment:
+        attachment_dir = ''
+        attachment_cache = ''
+
+        @classmethod
+        def get_attachment_file(cls, attachment_uuid: UUID, filename: str, use_cache=False):
+            extension = os.path.splitext(filename)[1]
+            directory = cls.attachment_cache if use_cache else cls.attachment_dir
+            path = directory + f'/{attachment_uuid}{extension}'
+            return path if os.path.isfile(path) else None
+
+        @classmethod
+        def add_attachment_file(cls, attachment_uuid: UUID, filepath: str, use_cache=False):
+            extension = os.path.splitext(filepath)[1]
+            directory = cls.attachment_cache if use_cache else cls.attachment_dir
+            path = directory + f'/{attachment_uuid}{extension}'
+            return path if QFile.copy(filepath, path) else None
