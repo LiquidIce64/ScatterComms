@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>600</height>
+    <width>960</width>
+    <height>540</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
-    <height>600</height>
+    <width>960</width>
+    <height>540</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -399,7 +399,7 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
            <x>0</x>
            <y>0</y>
            <width>52</width>
-           <height>586</height>
+           <height>526</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="layout_servers">
@@ -822,7 +822,7 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
            <x>0</x>
            <y>0</y>
            <width>220</width>
-           <height>552</height>
+           <height>492</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="layout_scroll_chatlist">
@@ -923,7 +923,7 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
            <x>0</x>
            <y>0</y>
            <width>250</width>
-           <height>552</height>
+           <height>492</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="layout_memberlist">
@@ -1005,8 +1005,8 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>468</width>
-           <height>404</height>
+           <width>428</width>
+           <height>344</height>
           </rect>
          </property>
          <property name="sizePolicy">
