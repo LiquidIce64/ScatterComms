@@ -5,6 +5,7 @@ from sqlalchemy import select
 from .multithreading import multithreaded
 from .cached_object import CachedObject
 from .profile import ProfileBackend
+from .attachment import AttachmentBackend
 from database import Database, Message
 
 
@@ -20,6 +21,7 @@ class MessageBackend:
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
 
+            self.__attachments = AttachmentBackend.get_attachments(self.__uuid)
             self.__replying_to: MessageBackend.Message | None = None
             if message.replying_to is not None:
                 self.__replying_to = MessageBackend.Message(message.replying_to)
@@ -33,6 +35,7 @@ class MessageBackend:
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
 
+            self.__attachments = AttachmentBackend.get_attachments(self.__uuid)
             self.__replying_to: MessageBackend.Message | None = None
             if message.replying_to is not None:
                 self.__replying_to = MessageBackend.Message(message.replying_to)
@@ -52,6 +55,11 @@ class MessageBackend:
         def replying_to(self): return self.__replying_to
         @property
         def created_at(self): return self.__created_at
+
+        @property
+        def attachments(self):
+            for attachment in self.__attachments:
+                yield attachment
 
         @text.setter
         def text(self, new_value: str):

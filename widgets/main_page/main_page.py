@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QFileDialog
 from PySide6.QtCore import QCoreApplication, Qt
 
 from .ui_main_page import Ui_main_page
@@ -73,6 +73,7 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_emoji.setIcon(Icons.Emoji)
         self.btn_send.setIcon(Icons.Send)
         self.btn_send.clicked.connect(self.send_message)
+        self.btn_attachment.clicked.connect(self.add_attachment)
         self.on_server_changed()
         ConfigBackend.session.server_changed.connect(self.on_server_changed)
 
@@ -154,6 +155,17 @@ class MainPage(QWidget, Ui_main_page):
             ConfigBackend.session.status = ProfileBackend.Status.Online
         self.icon_userstatus.setIcon(status_icon)
         self.label_userstatus.setText(QCoreApplication.translate('main_page', ConfigBackend.session.status.value))
+
+    def add_attachment(self):
+        filepath = QFileDialog.getOpenFileName(
+            parent=self,
+            caption='Select file to attach'
+        )[0]
+        if filepath == '':
+            return
+
+        # Debug
+        print(filepath)
 
     def send_message(self):
         session = ConfigBackend.session

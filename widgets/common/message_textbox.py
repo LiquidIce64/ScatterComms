@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QTextEdit
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QKeyEvent, QTextCharFormat
+from PySide6.QtGui import QKeyEvent
 
 from .custom_scrollbar import CustomScrollBar
 
