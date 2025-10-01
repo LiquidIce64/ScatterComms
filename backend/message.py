@@ -1,15 +1,47 @@
+import os
+import hashlib
 from uuid import UUID
 from datetime import datetime, timezone
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
+from . import StorageBackend
 from .multithreading import multithreaded
 from .cached_object import CachedObject
 from .profile import ProfileBackend
-from .attachment import AttachmentBackend
-from database import Database, Message
+from database import Database, Message, Attachment
 
 
 class MessageBackend:
+    class Attachment(CachedObject):
+        def __init__(self, attachment):
+            if hasattr(self, '_initialized'):
+                return
+            super().__init__()
+            self._initialized = True
+            self.__uuid: UUID = attachment.uuid
+            self.__filehash: str = attachment.filehash
+            self.__filename: str = attachment.filename
+
+        def update(self, attachment):
+            self.__uuid: UUID = attachment.uuid
+            self.__filehash: str = attachment.filehash
+            self.__filename: str = attachment.filename
+            self.changed.emit()
+
+        @property
+        def uuid(self): return self.__uuid
+        @property
+        def filehash(self): return self.__filehash
+        @property
+        def filename(self): return self.__filename
+
+        @property
+        def filepath(self): return (
+            StorageBackend.Attachment.get_attachment_file(self.__uuid, self.__filename)
+            or StorageBackend.Attachment.get_attachment_file(self.__uuid, self.__filename, use_cache=True)
+        )
+
     class Message(CachedObject):
         def __init__(self, message):
             if hasattr(self, '_initialized'):
@@ -21,7 +53,7 @@ class MessageBackend:
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
 
-            self.__attachments = AttachmentBackend.get_attachments(self.__uuid)
+            self.__attachments = [MessageBackend.Attachment(attachment) for attachment in message.attachments]
             self.__replying_to: MessageBackend.Message | None = None
             if message.replying_to is not None:
                 self.__replying_to = MessageBackend.Message(message.replying_to)
@@ -35,7 +67,7 @@ class MessageBackend:
             self.__text: str = message.text
             self.__author = ProfileBackend.Profile(message.author)
 
-            self.__attachments = AttachmentBackend.get_attachments(self.__uuid)
+            self.__attachments = [MessageBackend.Attachment(attachment) for attachment in message.attachments]
             self.__replying_to: MessageBackend.Message | None = None
             if message.replying_to is not None:
                 self.__replying_to = MessageBackend.Message(message.replying_to)
@@ -71,7 +103,7 @@ class MessageBackend:
     def get_messages(chat_uuid: UUID, offset=0, limit=50):
         with Database.create_session() as session:
             messages = session.scalars(
-                select(Message)
+                select(Message).options(selectinload(Message.attachments))
                 .where(Message.chat_uuid == chat_uuid)
                 .order_by(Message.created_at)
                 .offset(offset)
@@ -91,10 +123,33 @@ class MessageBackend:
             session.commit()
 
     @staticmethod
-    def create_message(chat_uuid: UUID, author_uuid: UUID, text: str):
+    def create_message(chat_uuid: UUID, author_uuid: UUID, text: str, attachment_filepaths: list[str]):
+        if text == '':
+            text = None
         with Database.create_session() as session:
-            _message = Message(chat_uuid=chat_uuid, author_uuid=author_uuid, text=text)
+            _attachments = [
+                Attachment(
+                    filename=os.path.basename(filepath),
+                    filehash=hashlib.file_digest(open(filepath, 'rb'), 'md5').hexdigest(),
+                    sort_order=i
+                ) for i, filepath in enumerate(attachment_filepaths)
+            ]
+
+            session.add_all(_attachments)
+            _message = Message(
+                chat_uuid=chat_uuid,
+                author_uuid=author_uuid,
+                text=text,
+                attachments=_attachments
+            )
             session.add(_message)
+            session.flush()
+
+            for attachment, filepath in zip(_attachments, attachment_filepaths):
+                session.refresh(attachment)
+                if StorageBackend.Attachment.add_attachment_file(attachment.uuid, filepath) is None:
+                    raise FileNotFoundError('Could not copy attached file to appdata')
+
             session.commit()
             message = MessageBackend.Message(_message)
         return message
