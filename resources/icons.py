@@ -13,6 +13,7 @@ class Icons:
     Edit = QIcon(ICON_DIR + 'edit.svg')
     User = QIcon(ICON_DIR + 'user.svg')
     Plus = QIcon(ICON_DIR + 'plus.svg')
+    Cross = QIcon(ICON_DIR + 'cross.svg')
     Emoji = QIcon(ICON_DIR + 'emoji.svg')
     Send = QIcon(ICON_DIR + 'send.svg')
     Save = QIcon(ICON_DIR + 'save.svg')

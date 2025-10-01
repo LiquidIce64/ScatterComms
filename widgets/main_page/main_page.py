@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget, QFileDialog
-from PySide6.QtCore import QCoreApplication, Qt
+from PySide6.QtCore import QCoreApplication, Qt, QFile
 
 from .ui_main_page import Ui_main_page
 from widgets.search_widget import SearchWidget
 from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from widgets.member import MemberCategoryWidget
 from widgets.message import MessageWidget
+from widgets.message.attachment import AttachmentPreview
 from widgets.common import CustomScrollBar
 from resources import Icons
 from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend, MessageBackend
@@ -66,14 +67,13 @@ class MainPage(QWidget, Ui_main_page):
         # Chat
         self.textbox.save_max_height()
         self.textbox.returnPressed.connect(self.send_message)
-        self.textbox.textChanged.connect(lambda: (
-            self.btn_send.setEnabled(not self.textbox.document().isEmpty())
-        ))
+        self.textbox.textChanged.connect(self.update_send_btn)
         self.btn_attachment.setIcon(Icons.Plus)
         self.btn_emoji.setIcon(Icons.Emoji)
         self.btn_send.setIcon(Icons.Send)
         self.btn_send.clicked.connect(self.send_message)
         self.btn_attachment.clicked.connect(self.add_attachment)
+        self.scroll_attachments.hide()
         self.on_server_changed()
         ConfigBackend.session.server_changed.connect(self.on_server_changed)
 
@@ -90,6 +90,10 @@ class MainPage(QWidget, Ui_main_page):
         self.scroll_members.setVerticalScrollBar(CustomScrollBar(
             Qt.Orientation.Vertical,
             parent=self.scroll_members
+        ))
+        self.scroll_attachments.setHorizontalScrollBar(CustomScrollBar(
+            Qt.Orientation.Horizontal,
+            parent=self.scroll_attachments
         ))
 
     def on_server_changed(self):
@@ -157,26 +161,45 @@ class MainPage(QWidget, Ui_main_page):
         self.label_userstatus.setText(QCoreApplication.translate('main_page', ConfigBackend.session.status.value))
 
     def add_attachment(self):
-        filepath = QFileDialog.getOpenFileName(
+        filepaths = QFileDialog.getOpenFileNames(
             parent=self,
             caption='Select file to attach'
         )[0]
-        if filepath == '':
-            return
+        for filepath in filepaths:
+            widget = AttachmentPreview(filepath, parent=self)
+            widget.destroyed.connect(self.on_attachment_removed)
+            if self.layout_attachments.count() == 1:
+                self.scroll_attachments.show()
+            self.layout_attachments.insertWidget(self.layout_attachments.count() - 1, widget)
+        self.update_send_btn()
 
-        # Debug
-        print(filepath)
+    def on_attachment_removed(self):
+        if self.layout_attachments.count() == 2:
+            self.scroll_attachments.hide()
+        self.update_send_btn()
+
+    def update_send_btn(self):
+        has_text = not self.textbox.document().isEmpty()
+        self.btn_send.setEnabled(has_text or self.layout_attachments.count() > 1)
 
     def send_message(self):
-        session = ConfigBackend.session
         message_text = self.textbox.document().toPlainText()
         self.textbox.clear()
-        if message_text == '':
+        attachment_filepaths: list[str] = []
+        for i in range(self.layout_attachments.count() - 1):
+            w = self.layout_attachments.itemAt(i).widget()
+            if isinstance(w, AttachmentPreview):
+                attachment_filepaths.append(w.filepath)
+                w.deleteLater()
+
+        if message_text == '' and not attachment_filepaths:
             return
+        session = ConfigBackend.session
         message = MessageBackend.create_message(
             session.selected_server.selected_chat.uuid,
             session.profile.uuid,
-            message_text
+            message_text,
+            attachment_filepaths
         )
         self.layout_chat.addWidget(MessageWidget(message))
 

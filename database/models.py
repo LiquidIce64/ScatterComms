@@ -167,7 +167,8 @@ class Message(UUIDMixin, TimestampMixin, Base):
     author: Mapped[User] = relationship()
     chat_uuid: Mapped[UUID] = mapped_column(ForeignKey('chats.uuid'))
     chat: Mapped['Chat'] = relationship(back_populates='messages')
-    attachments: Mapped[List['Attachment']] = relationship(back_populates='message', cascade='all, delete-orphan')
+    attachments: Mapped[List['Attachment']] = relationship(
+        back_populates='message', order_by='Attachment.sort_order', cascade='all, delete-orphan')
 
 
 class Attachment(UUIDMixin, SortMixin, Base):

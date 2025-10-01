@@ -28,8 +28,11 @@ class MaskedImage(QLabel):
             path -= status_path
 
     class RoundedRectMask(BaseMask):
+        def __init__(self, radius: int = None):
+            self.__radius = radius
+
         def apply(self, rect: QRect, path: QPainterPath):
-            radius = min(rect.width(), rect.height()) // 4
+            radius = self.__radius or min(rect.width(), rect.height()) // 4
             path.addRoundedRect(rect, radius, radius)
 
     def __init__(self, *args, **kwargs):
