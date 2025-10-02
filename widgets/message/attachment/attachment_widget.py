@@ -38,10 +38,10 @@ class AttachmentWidget:
     def __init__(self, attachment: MessageBackend.Attachment):
         self.attachment = attachment
 
-    def load_file(self):
+    def download(self):
         path = self.attachment.filepath
         if path is not None:
-            self.on_load(path)
+            self.on_downloaded(path)
         else:
             # Try to load file from network
             raise NotImplementedError
@@ -49,5 +49,5 @@ class AttachmentWidget:
     @staticmethod
     def get_thumbnail(filepath: str) -> QPixmap | QIcon: return QPixmap()
 
-    def on_load(self, filepath: str): pass
+    def on_downloaded(self, filepath: str): pass
     def on_load_failed(self): pass
