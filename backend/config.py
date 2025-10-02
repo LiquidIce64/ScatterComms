@@ -1,40 +1,50 @@
-from typing import Optional
+from typing import TYPE_CHECKING, cast, Optional
 
 from PySide6.QtCore import QSettings, QByteArray, QObject, Signal
 
-from .profile import ProfileBackend
-from .server import ServerBackend
+from .base import BaseBackend
 from .storage import StorageBackend
 
+if TYPE_CHECKING:
+    from .profile import ProfileBackend
+    from .server import ServerBackend
 
-class ConfigBackend:
+
+class ConfigBackend(BaseBackend):
     class Session(QObject):
         profile_changed = Signal()
         server_changed = Signal()
 
         def __init__(self):
             super().__init__()
+
+            profile_backend = BaseBackend.get_backend('ProfileBackend')
+            server_backend = BaseBackend.get_backend('ServerBackend')
+            if TYPE_CHECKING:
+                profile_backend = cast(ProfileBackend, profile_backend)
+                server_backend = cast(ServerBackend, server_backend)
+
             settings = ConfigBackend.get_settings('session.ini')
 
             profile_uuid = settings.value('profile/uuid', defaultValue='', type=str)
             server_uuid = settings.value('server/uuid', defaultValue='', type=str)
-            status = settings.value('profile/status', defaultValue=ProfileBackend.Status.Online, type=str)
+            status = settings.value('profile/status', defaultValue=profile_backend.Status.Online, type=str)
 
             self.geometry = settings.value('window/geometry', defaultValue=None, type=QByteArray)
             self.state = settings.value('window/state', defaultValue=None, type=QByteArray)
 
-            self.__profile = ProfileBackend.get_profile(profile_uuid)
+            self.__profile = profile_backend.get_profile(profile_uuid)
 
             try:
-                self.__status = ProfileBackend.Status(status)
+                self.__status = profile_backend.Status(status)
             except ValueError:
-                self.__status = ProfileBackend.Status.Online
+                self.__status = profile_backend.Status.Online
 
             if self.__profile is not None:
                 self.__profile.changed.connect(self.profile_changed)
-                self.__selected_server: Optional[ServerBackend.Server] = (
-                    ServerBackend.get_server(self.__profile.uuid, server_uuid)
-                    or ServerBackend.get_saved_messages(self.__profile.uuid)
+                self.__selected_server: Optional[server_backend.Server] = (
+                    server_backend.get_server(self.__profile.uuid, server_uuid)
+                    or server_backend.get_saved_messages(self.__profile.uuid)
                 )
             else:
                 self.__selected_server = None
@@ -47,7 +57,7 @@ class ConfigBackend:
         def selected_server(self): return self.__selected_server
 
         @profile.setter
-        def profile(self, new_value: Optional[ProfileBackend.Profile]):
+        def profile(self, new_value: Optional['ProfileBackend.Profile']):
             if self.__profile == new_value:
                 return
             if self.__profile is not None:
@@ -62,14 +72,14 @@ class ConfigBackend:
             self.server_changed.emit()
 
         @status.setter
-        def status(self, new_value: ProfileBackend.Status):
+        def status(self, new_value: 'ProfileBackend.Status'):
             if self.__status == new_value:
                 return
             self.__status = new_value
             self.profile_changed.emit()
 
         @selected_server.setter
-        def selected_server(self, new_value: Optional[ServerBackend.Server]):
+        def selected_server(self, new_value: Optional['ServerBackend.Server']):
             if self.__selected_server == new_value:
                 return
             self.__selected_server = new_value

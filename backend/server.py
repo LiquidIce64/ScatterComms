@@ -1,21 +1,24 @@
-from typing import Union, Optional
+from typing import TYPE_CHECKING, cast, Union, Optional
 from uuid import UUID
 from sqlalchemy import select
 
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QImage, QPixmap
 
+from .base import BaseBackend
 from .multithreading import multithreaded
-from .storage import StorageBackend
 from .cached_object import CachedObject
-from .chat import ChatBackend
+from .storage import StorageBackend
 from database import (
     Database, Server, ServerSortOrder, ServerMember,
     User, Role, ChatCategory, Chat
 )
 
+if TYPE_CHECKING:
+    from .chat import ChatBackend
 
-class ServerBackend:
+
+class ServerBackend(BaseBackend):
     class Server(CachedObject):
         selected_chat_changed = Signal()
 
@@ -28,25 +31,28 @@ class ServerBackend:
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
-            self.__selected_chat: Optional[ChatBackend.Chat] = None
+            self.__selected_chat: Optional['ChatBackend.Chat'] = None
             self.__selected_chat_uuid: UUID = server.selected_chat_uuid
 
         def update(self, server):
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
-            self.__selected_chat: Optional[ChatBackend.Chat] = None
+            self.__selected_chat: Optional['ChatBackend.Chat'] = None
             self.__selected_chat_uuid: UUID = server.selected_chat_uuid
             self.changed.emit()
 
         def update_selected_chat(self, profile_uuid: UUID):
-            chat = ChatBackend.get_chat(profile_uuid, self.__selected_chat_uuid)
+            backend = BaseBackend.get_backend('ChatBackend')
+            if TYPE_CHECKING:
+                backend = cast(ChatBackend, backend)
+            chat = backend.get_chat(profile_uuid, self.__selected_chat_uuid)
             if chat is None:
-                chat = ChatBackend.get_first_chat(profile_uuid, self.__uuid)
+                chat = backend.get_first_chat(profile_uuid, self.__uuid)
                 ServerBackend.edit_server(self.__uuid, selected_chat_uuid=chat.uuid)
             if self.__selected_chat == chat:
                 return
-            self.__selected_chat: ChatBackend.Chat = chat
+            self.__selected_chat: 'ChatBackend.Chat' = chat
             self.selected_chat_changed.emit()
 
         @property
@@ -73,7 +79,7 @@ class ServerBackend:
             self.changed.emit()
 
         @selected_chat.setter
-        def selected_chat(self, new_value: ChatBackend.Chat):
+        def selected_chat(self, new_value: 'ChatBackend.Chat'):
             if self.__selected_chat == new_value:
                 return
             self.__selected_chat = new_value

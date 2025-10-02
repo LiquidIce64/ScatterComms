@@ -1,18 +1,21 @@
-from typing import Union
+from typing import TYPE_CHECKING, cast, Union
 from enum import Enum
 from uuid import UUID
 from sqlalchemy import select
 
 from PySide6.QtGui import QImage, QPixmap
 
+from .base import BaseBackend
 from .cached_object import CachedObject
 from .multithreading import multithreaded
 from .storage import StorageBackend
-from .server import ServerBackend
 from database import Database, User
 
+if TYPE_CHECKING:
+    from .server import ServerBackend
 
-class ProfileBackend:
+
+class ProfileBackend(BaseBackend):
     class Status(Enum):
         Online = 'Online'
         Away = 'Away'
@@ -93,7 +96,11 @@ class ProfileBackend:
             session.add(user)
             session.commit()
             profile = ProfileBackend.Profile(user)
-            ServerBackend.create_server('Saved Messages', profile.uuid, sort_order=1)
+
+            server_backend = BaseBackend.get_backend('ServerBackend')
+            if TYPE_CHECKING:
+                server_backend = cast(ServerBackend, server_backend)
+            server_backend.create_server('Saved Messages', profile.uuid, sort_order=1)
         return profile
 
     @staticmethod

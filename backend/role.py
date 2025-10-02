@@ -1,15 +1,19 @@
+from typing import TYPE_CHECKING, cast
 from uuid import UUID
 from sqlalchemy import select, func
 
 from PySide6.QtGui import QColor
 
+from .base import BaseBackend
 from .multithreading import multithreaded
 from .cached_object import CachedObject
-from .profile import ProfileBackend
 from database import Database, User, Role, chat_roles, ChatCategory, Chat
 
+if TYPE_CHECKING:
+    from .profile import ProfileBackend
 
-class RoleBackend:
+
+class RoleBackend(BaseBackend):
     class Role(CachedObject):
         def __init__(self, role):
             if hasattr(self, '_initialized'):
@@ -117,12 +121,15 @@ class RoleBackend:
             ).all()
 
             # Turn that into backend objects
+            backend = BaseBackend.get_backend('ProfileBackend')
+            if TYPE_CHECKING:
+                backend = cast(ProfileBackend, backend)
             member_uuids: list[UUID] = []
-            grouped_roles: list[tuple[RoleBackend.Role, list[ProfileBackend.Profile]]] = []
+            grouped_roles: list[tuple[RoleBackend.Role, list[backend.Profile]]] = []
             last_role = None
             for _member, role in result:
                 member_uuids.append(_member.uuid)
-                member = ProfileBackend.Profile(_member)
+                member = backend.Profile(_member)
                 if role != last_role:
                     last_role = role
                     grouped_roles.append((RoleBackend.Role(role), [member]))
@@ -135,7 +142,7 @@ class RoleBackend:
                 .where(User.uuid.not_in(member_uuids))
                 .where(user_whitelisted)
             ).all()
-            ungrouped = [ProfileBackend.Profile(_member) for _member in _ungrouped]
+            ungrouped = [backend.Profile(_member) for _member in _ungrouped]
         return grouped_roles, ungrouped
 
     @staticmethod
