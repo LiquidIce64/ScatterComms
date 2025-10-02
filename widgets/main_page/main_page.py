@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 from PySide6.QtWidgets import QWidget, QFileDialog
-from PySide6.QtCore import QCoreApplication, Qt, QFile
+from PySide6.QtCore import QCoreApplication, Qt
 
 from .ui_main_page import Ui_main_page
 from widgets.search_widget import SearchWidget
@@ -8,7 +8,7 @@ from widgets.dropdown_menus import MenuWidget, ServerMenu, ProfileMenu
 from widgets.member import MemberCategoryWidget
 from widgets.message import MessageWidget
 from widgets.message.attachment import AttachmentPreview
-from widgets.common import CustomScrollBar
+from widgets.common import CustomScrollBar, AnchoredScrollBar
 from resources import Icons
 from backend import ProfileBackend, ConfigBackend, run_task, RoleBackend, MessageBackend
 
@@ -82,10 +82,9 @@ class MainPage(QWidget, Ui_main_page):
             Qt.Orientation.Vertical,
             parent=self.scroll_chatlist
         ))
-        self.scroll_chat.setVerticalScrollBar(CustomScrollBar(
-            Qt.Orientation.Vertical,
-            parent=self.scroll_chat,
-            snap_to_bottom=True
+        self.scroll_chat.setVerticalScrollBar(AnchoredScrollBar(
+            self.scroll_chat,
+            Qt.Orientation.Vertical
         ))
         self.scroll_members.setVerticalScrollBar(CustomScrollBar(
             Qt.Orientation.Vertical,
