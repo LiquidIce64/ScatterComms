@@ -8,4 +8,4 @@ from backend import MessageBackend
 class GenericFileWidget(QFrame, AttachmentWidget):
     def __init__(self, attachment: MessageBackend.Attachment):
         super().__init__(attachment=attachment)
-        self.load_file()
+        self.download()

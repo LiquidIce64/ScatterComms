@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QLabel, QSizePolicy
 from PySide6.QtCore import Qt, QSize, QPoint
-from PySide6.QtGui import QPixmap, QIcon, QPainter
+from PySide6.QtGui import QPixmap, QIcon, QPainter, QImage
 
 from .attachment_widget import AttachmentWidget, register
-from backend import MessageBackend
+from backend import MessageBackend, run_task
 
 
 @register(
@@ -20,7 +20,7 @@ class ImageWidget(QLabel, AttachmentWidget):
         policy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
         policy.setHeightForWidth(True)
         self.setSizePolicy(policy)
-        self.load_file()
+        self.download()
 
     @staticmethod
     def get_thumbnail(filepath: str) -> QPixmap | QIcon:
@@ -33,8 +33,15 @@ class ImageWidget(QLabel, AttachmentWidget):
         QPainter(cropped_pixmap).drawPixmap(QPoint(0, 0), pixmap, source_rect)
         return cropped_pixmap
 
-    def on_load(self, filepath: str):
-        pixmap = QPixmap(filepath)
+    def on_downloaded(self, filepath: str):
+        run_task(self.load_image, filepath, result_slot=self.on_image_loaded)
+
+    @staticmethod
+    def load_image(filepath: str):
+        return QImage(filepath)
+
+    def on_image_loaded(self, image: QImage):
+        pixmap = QPixmap(image)
         new_size = pixmap.size()
         if new_size.width() > self.MAX_IMAGE_SIZE.width() or new_size.height() > self.MAX_IMAGE_SIZE.height():
             new_size.scale(self.MAX_IMAGE_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
