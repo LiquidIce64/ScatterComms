@@ -135,6 +135,9 @@
         <property name="text">
          <string notr="true">Chat</string>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+        </property>
        </widget>
       </item>
       <item>

@@ -134,6 +134,9 @@
         <property name="indent">
          <number>0</number>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+        </property>
        </widget>
       </item>
       <item>
