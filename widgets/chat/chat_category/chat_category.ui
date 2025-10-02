@@ -151,6 +151,9 @@
         <property name="text">
          <string notr="true">Category</string>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+        </property>
        </widget>
       </item>
       <item>

@@ -262,6 +262,9 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
         <property name="text">
          <string notr="true">Chat Name</string>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+        </property>
        </widget>
       </item>
       <item>
@@ -518,6 +521,9 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
         <property name="text">
          <string notr="true">Server Name</string>
         </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+        </property>
        </widget>
       </item>
       <item>
@@ -644,12 +650,18 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
            <property name="text">
             <string notr="true">Username</string>
            </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextInteractionFlag::NoTextInteraction</set>
+           </property>
           </widget>
          </item>
          <item row="1" column="2">
           <widget class="QLabel" name="label_userstatus">
            <property name="text">
             <string>Online</string>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextInteractionFlag::NoTextInteraction</set>
            </property>
           </widget>
          </item>
@@ -1296,6 +1308,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
            </spacer>
           </item>
          </layout>
@@ -1315,11 +1333,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>MaskedImage</class>
-   <extends>QLabel</extends>
-   <header>widgets.common</header>
-  </customwidget>
-  <customwidget>
    <class>IconWidget</class>
    <extends>QLabel</extends>
    <header>widgets.common</header>
@@ -1327,6 +1340,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <customwidget>
    <class>IconButton</class>
    <extends>QPushButton</extends>
+   <header>widgets.common</header>
+  </customwidget>
+  <customwidget>
+   <class>MaskedImage</class>
+   <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>
   <customwidget>
