@@ -1,9 +1,10 @@
 from typing import TYPE_CHECKING, cast, Union, Optional
 from uuid import UUID
-from sqlalchemy import select
+from sqlalchemy import select, func
 
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QImage, QPixmap
+from sqlalchemy.orm import aliased
 
 from .base import BaseBackend
 from .multithreading import multithreaded
@@ -16,13 +17,14 @@ from database import (
 
 if TYPE_CHECKING:
     from .chat import ChatBackend
+    from .profile import ProfileBackend
 
 
 class ServerBackend(BaseBackend):
     class Server(CachedObject):
         selected_chat_changed = Signal()
 
-        def __init__(self, server):
+        def __init__(self, server, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -33,8 +35,9 @@ class ServerBackend(BaseBackend):
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
             self.__selected_chat: Optional['ChatBackend.Chat'] = None
             self.__selected_chat_uuid: UUID = server.selected_chat_uuid
+            self.__members: list['ProfileBackend.Profile'] | None = None
 
-        def update(self, server):
+        def update(self, server, **kwargs):
             self.__uuid: UUID = server.uuid
             self.__name: str = server.name
             self.__icon = StorageBackend.Server.get_icon(self.__uuid)
@@ -64,6 +67,15 @@ class ServerBackend(BaseBackend):
         @property
         def selected_chat(self): return self.__selected_chat
 
+        @property
+        def members(self):
+            if self.__members is None:
+                self.load_members()
+            return self.__members.copy()
+
+        def load_members(self):
+            self.__members = ServerBackend.get_server_members(self.__uuid)
+
         @name.setter
         def name(self, new_value: str):
             self.__name = new_value
@@ -86,6 +98,36 @@ class ServerBackend(BaseBackend):
             self.__selected_chat_uuid = new_value.uuid
             ServerBackend.edit_server(self.__uuid, selected_chat_uuid=new_value.uuid)
             self.selected_chat_changed.emit()
+
+    @staticmethod
+    def get_server_members(server_uuid: UUID):
+        with Database.create_session() as session:
+            top_roles = (
+                select(User.uuid.label('user_uuid'), Role)
+                .join(Role, User.roles)
+                .where(Role.server_uuid == server_uuid)
+                .where(Role.public)
+                .group_by(User)
+                .having(Role.sort_order == func.min(Role.sort_order))
+                .subquery()
+            )
+            TopRole = aliased(Role, top_roles)
+            # noinspection PyUnresolvedReferences
+            top_role_order = TopRole.sort_order.desc()
+
+            result = session.execute(
+                select(User, TopRole)
+                .outerjoin(top_roles, User.uuid == top_roles.c.user_uuid)
+                .join(ServerMember, User.member_of)
+                .where(ServerMember.server_uuid == server_uuid)
+                .order_by(top_role_order, User.username.desc(), User.uuid)
+            ).all()
+
+            backend = BaseBackend.get_backend('ProfileBackend')
+            if TYPE_CHECKING:
+                backend = cast(ProfileBackend, backend)
+            members = [backend.Profile(_member, top_role=top_role) for _member, top_role in result]
+        return members
 
     @staticmethod
     def get_server(profile_uuid: UUID, server_uuid):

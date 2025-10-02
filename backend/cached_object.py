@@ -8,18 +8,18 @@ class CachedObject(QObject):
 
     _cached_instances = {}
 
-    def __new__(cls, obj):
+    def __new__(cls, obj, **kwargs):
         key = cls.cache_key(obj)
         if key in cls._cached_instances:
             instance = cls._cached_instances[key]()
-            instance.update(obj)
+            instance.update(obj, **kwargs)
             return instance
         else:
             instance = super().__new__(cls)
             cls._cached_instances[key] = ref(instance)
             return instance
 
-    def update(self, obj): pass
+    def update(self, obj, **kwargs): pass
 
     @staticmethod
     def cache_key(obj) -> str: return getattr(obj, 'uuid')

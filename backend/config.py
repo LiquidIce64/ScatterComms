@@ -46,6 +46,7 @@ class ConfigBackend(BaseBackend):
                     server_backend.get_server(self.__profile.uuid, server_uuid)
                     or server_backend.get_saved_messages(self.__profile.uuid)
                 )
+                self.__selected_server.load_members()
             else:
                 self.__selected_server = None
 
@@ -65,11 +66,14 @@ class ConfigBackend(BaseBackend):
             self.__profile = new_value
             if self.__profile is not None:
                 self.__profile.changed.connect(self.profile_changed)
-                self.__selected_server = ServerBackend.get_saved_messages(self.__profile.uuid)
+                server_backend = BaseBackend.get_backend('ServerBackend')
+                if TYPE_CHECKING:
+                    server_backend = cast(ServerBackend, server_backend)
+                self.selected_server = server_backend.get_saved_messages(self.__profile.uuid)
             else:
                 self.__selected_server = None
+                self.server_changed.emit()
             self.profile_changed.emit()
-            self.server_changed.emit()
 
         @status.setter
         def status(self, new_value: 'ProfileBackend.Status'):
@@ -83,6 +87,7 @@ class ConfigBackend(BaseBackend):
             if self.__selected_server == new_value:
                 return
             self.__selected_server = new_value
+            self.__selected_server.load_members()
             self.server_changed.emit()
 
         def save(self):

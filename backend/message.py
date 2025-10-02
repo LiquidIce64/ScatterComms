@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class MessageBackend(BaseBackend):
     class Attachment(CachedObject):
-        def __init__(self, attachment):
+        def __init__(self, attachment, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -27,7 +27,7 @@ class MessageBackend(BaseBackend):
             self.__filehash: str = attachment.filehash
             self.__filename: str = attachment.filename
 
-        def update(self, attachment):
+        def update(self, attachment, **kwargs):
             self.__uuid: UUID = attachment.uuid
             self.__filehash: str = attachment.filehash
             self.__filename: str = attachment.filename
@@ -47,7 +47,7 @@ class MessageBackend(BaseBackend):
         )
 
     class Message(CachedObject):
-        def __init__(self, message):
+        def __init__(self, message, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -70,7 +70,7 @@ class MessageBackend(BaseBackend):
             # Convert from UTC to local timezone
             self.__created_at = self.__created_at.replace(tzinfo=timezone.utc).astimezone()
 
-        def update(self, message):
+        def update(self, message, **kwargs):
             self.__uuid: UUID = message.uuid
             self.__text: str = message.text
 
@@ -117,7 +117,7 @@ class MessageBackend(BaseBackend):
             messages = session.scalars(
                 select(Message).options(selectinload(Message.attachments))
                 .where(Message.chat_uuid == chat_uuid)
-                .order_by(Message.created_at)
+                .order_by(Message.created_at.desc())
                 .offset(offset)
                 .limit(limit)
             ).all()

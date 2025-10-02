@@ -18,7 +18,7 @@ def select_with_whitelist(model, profile_uuid: UUID):
 
 class ChatBackend(BaseBackend):
     class Category(CachedObject):
-        def __init__(self, category):
+        def __init__(self, category, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -28,7 +28,7 @@ class ChatBackend(BaseBackend):
             self.__name: str = category.name
             self.__collapsed: bool = category.collapsed
 
-        def update(self, category):
+        def update(self, category, **kwargs):
             self.__uuid: UUID = category.uuid
             self.__name: str = category.name
             self.__collapsed: bool = category.collapsed
@@ -56,7 +56,7 @@ class ChatBackend(BaseBackend):
             self.changed.emit()
 
     class Chat(CachedObject):
-        def __init__(self, chat):
+        def __init__(self, chat, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -66,7 +66,7 @@ class ChatBackend(BaseBackend):
             self.__name: str = chat.name
             self.__voice_enabled: bool = chat.voice_enabled
 
-        def update(self, chat):
+        def update(self, chat, **kwargs):
             self.__uuid: UUID = chat.uuid
             self.__name: str = chat.name
             self.__voice_enabled: bool = chat.voice_enabled

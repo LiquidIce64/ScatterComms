@@ -1,13 +1,14 @@
 from typing import TYPE_CHECKING, cast
 from uuid import UUID
 from sqlalchemy import select, func
+from sqlalchemy.orm import aliased
 
 from PySide6.QtGui import QColor
 
 from .base import BaseBackend
 from .multithreading import multithreaded
 from .cached_object import CachedObject
-from database import Database, User, Role, chat_roles, ChatCategory, Chat
+from database import Database, User, Role, chat_roles, ChatCategory, Chat, user_roles
 
 if TYPE_CHECKING:
     from .profile import ProfileBackend
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
 
 class RoleBackend(BaseBackend):
     class Role(CachedObject):
-        def __init__(self, role):
+        def __init__(self, role, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -27,7 +28,7 @@ class RoleBackend(BaseBackend):
             self.__public: bool = role.public
             self.__pingable: bool = role.pingable
 
-        def update(self, role):
+        def update(self, role, **kwargs):
             self.__uuid: UUID = role.uuid
             self.__name: str = role.name
             self.__color = QColor.fromRgba(role.color)
@@ -91,59 +92,55 @@ class RoleBackend(BaseBackend):
     @staticmethod
     def get_chat_members(chat_uuid: UUID):
         with Database.create_session() as session:
-            user_whitelisted = User.roles.any(Role.uuid.in_(
-                select(Role.uuid)
-                .join_from(ChatCategory, Role, ChatCategory.whitelisted_roles)
-                .join(Chat)
-                .where(Chat.uuid == chat_uuid)
-                .intersect(
+            role_whitelisted = (
+                Role.uuid.in_(
+                    select(Role.uuid)
+                    .join_from(ChatCategory, Role, ChatCategory.whitelisted_roles)
+                    .join(Chat)
+                    .where(Chat.uuid == chat_uuid)
+                ) & Role.uuid.in_(
                     select(Role.uuid)
                     .join_from(Chat, Role, Chat.whitelisted_roles)
                     .where(Chat.uuid == chat_uuid)
                 )
-            ))
+            )
 
-            # Get grouped roles and their members
-            result = session.execute(
-                select(User, Role)
+            group_roles = (
+                select(User.uuid.label('user_uuid'), Role)
                 .join(Role, User.roles)
-                .where(Role.public & Role.grouped)
-                .where(Role.server_uuid == (
-                    select(ChatCategory.server_uuid)
-                    .join(Chat)
-                    .where(Chat.uuid == chat_uuid)
-                    .scalar_subquery()
-                ))
-                .where(user_whitelisted)
+                .where(Role.public)
+                .where(Role.grouped)
+                .where(role_whitelisted)
                 .group_by(User)
                 .having(Role.sort_order == func.min(Role.sort_order))
-                .order_by(Role.sort_order, User.username, User.uuid)
+                .subquery()
+            )
+            GroupRole = aliased(Role, group_roles)
+            # noinspection PyUnresolvedReferences
+            group_role_order = GroupRole.sort_order.desc()
+
+            result = session.execute(
+                select(User, GroupRole)
+                .outerjoin(group_roles, User.uuid == group_roles.c.user_uuid)
+                .where(User.roles.any(role_whitelisted))
+                .order_by(group_role_order, User.username.desc(), User.uuid)
             ).all()
 
             # Turn that into backend objects
             backend = BaseBackend.get_backend('ProfileBackend')
             if TYPE_CHECKING:
                 backend = cast(ProfileBackend, backend)
-            member_uuids: list[UUID] = []
-            grouped_roles: list[tuple[RoleBackend.Role, list[backend.Profile]]] = []
-            last_role = None
-            for _member, role in result:
-                member_uuids.append(_member.uuid)
+            grouped_roles: list[tuple[RoleBackend.Role | None, list[backend.Profile]]] = []
+            last_role = -1
+            for _member, _group_role in result:
                 member = backend.Profile(_member)
-                if role != last_role:
-                    last_role = role
-                    grouped_roles.append((RoleBackend.Role(role), [member]))
+                if _group_role != last_role:
+                    last_role = _group_role
+                    role = RoleBackend.Role(_group_role) if _group_role is not None else None
+                    grouped_roles.append((role, [member]))
                 else:
                     grouped_roles[-1][1].append(member)
-
-            # Get everyone else
-            _ungrouped = session.scalars(
-                select(User)
-                .where(User.uuid.not_in(member_uuids))
-                .where(user_whitelisted)
-            ).all()
-            ungrouped = [backend.Profile(_member) for _member in _ungrouped]
-        return grouped_roles, ungrouped
+        return grouped_roles
 
     @staticmethod
     @multithreaded
