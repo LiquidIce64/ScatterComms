@@ -82,10 +82,11 @@ class MainPage(QWidget, Ui_main_page):
             Qt.Orientation.Vertical,
             parent=self.scroll_chatlist
         ))
-        self.scroll_chat.setVerticalScrollBar(AnchoredScrollBar(
+        self.scrollbar_chat = AnchoredScrollBar(
             self.scroll_chat,
             Qt.Orientation.Vertical
-        ))
+        )
+        self.scroll_chat.setVerticalScrollBar(self.scrollbar_chat)
         self.scroll_members.setVerticalScrollBar(CustomScrollBar(
             Qt.Orientation.Vertical,
             parent=self.scroll_members
@@ -115,6 +116,7 @@ class MainPage(QWidget, Ui_main_page):
         )
 
     def update_chat_messages(self, messages: list[MessageBackend.Message]):
+        self.scrollbar_chat.clear_anchor()
         for i in range(self.layout_chat.count() - 1, -1, -1):
             w = self.layout_chat.itemAt(i).widget()
             if isinstance(w, MessageWidget):

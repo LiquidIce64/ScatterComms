@@ -42,6 +42,9 @@ class AnchoredScrollBar(CustomScrollBar):
         else:
             return self.__scroll_area.viewport().width()
 
+    def clear_anchor(self):
+        self.__anchor = None
+
     def update_anchor(self):
         self.__at_bottom = self.value() == self.maximum()
         scroll_content = self.__scroll_area.widget()
