@@ -1,18 +1,22 @@
 import os
 import hashlib
+from typing import TYPE_CHECKING, cast
 from uuid import UUID
 from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from . import StorageBackend
+from .base import BaseBackend
 from .multithreading import multithreaded
 from .cached_object import CachedObject
-from .profile import ProfileBackend
+from .storage import StorageBackend
 from database import Database, Message, Attachment
 
+if TYPE_CHECKING:
+    from .profile import ProfileBackend
 
-class MessageBackend:
+
+class MessageBackend(BaseBackend):
     class Attachment(CachedObject):
         def __init__(self, attachment):
             if hasattr(self, '_initialized'):
@@ -51,7 +55,11 @@ class MessageBackend:
 
             self.__uuid: UUID = message.uuid
             self.__text: str = message.text
-            self.__author = ProfileBackend.Profile(message.author)
+
+            backend = BaseBackend.get_backend('ProfileBackend')
+            if TYPE_CHECKING:
+                backend = cast(ProfileBackend, backend)
+            self.__author = backend.Profile(message.author)
 
             self.__attachments = [MessageBackend.Attachment(attachment) for attachment in message.attachments]
             self.__replying_to: MessageBackend.Message | None = None
@@ -65,7 +73,11 @@ class MessageBackend:
         def update(self, message):
             self.__uuid: UUID = message.uuid
             self.__text: str = message.text
-            self.__author = ProfileBackend.Profile(message.author)
+
+            backend = BaseBackend.get_backend('ProfileBackend')
+            if TYPE_CHECKING:
+                backend = cast(ProfileBackend, backend)
+            self.__author = backend.Profile(message.author)
 
             self.__attachments = [MessageBackend.Attachment(attachment) for attachment in message.attachments]
             self.__replying_to: MessageBackend.Message | None = None

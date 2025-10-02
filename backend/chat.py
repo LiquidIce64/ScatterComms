@@ -1,6 +1,7 @@
 from uuid import UUID
 from sqlalchemy import select, func
 
+from .base import BaseBackend
 from .multithreading import multithreaded
 from .cached_object import CachedObject
 from database import Database, ChatCategory, Chat, Role, chat_category_roles, User
@@ -15,7 +16,7 @@ def select_with_whitelist(model, profile_uuid: UUID):
     )
 
 
-class ChatBackend:
+class ChatBackend(BaseBackend):
     class Category(CachedObject):
         def __init__(self, category):
             if hasattr(self, '_initialized'):

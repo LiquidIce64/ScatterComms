@@ -3,6 +3,8 @@ from uuid import UUID
 from PySide6.QtCore import QStandardPaths, QFile
 from PySide6.QtGui import QImage
 
+from .base import BaseBackend
+
 
 def get_dir(location: QStandardPaths.StandardLocation):
     path = QStandardPaths.writableLocation(location)
@@ -10,7 +12,7 @@ def get_dir(location: QStandardPaths.StandardLocation):
     return path
 
 
-class StorageBackend:
+class StorageBackend(BaseBackend):
     cache_dir = ''
     appdata_dir = ''
     config_dir = ''
