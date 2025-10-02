@@ -19,13 +19,19 @@ if __name__ == "__main__":
 
     if '--log-db' in sys.argv:
         import logging
+        from datetime import datetime
         logging.basicConfig()
         logger = logging.getLogger('sqlalchemy.engine')
         logger.setLevel(logging.INFO)
-        handler = logging.StreamHandler()
-        handler.setLevel(logging.INFO)
-        handler.addFilter(lambda record: record.getMessage().startswith('SELECT'))
-        logger.addHandler(handler)
+
+        class Handler(logging.StreamHandler):
+            def filter(self, record):
+                return record.getMessage().startswith('SELECT')
+
+            def format(self, record):
+                return f'\n{datetime.now()}\n{record.getMessage()}\n'
+
+        logger.addHandler(Handler())
         logger.propagate = False
     Database.init(StorageBackend.locate_appdata('app_database.db', allow_empty=False))
 
