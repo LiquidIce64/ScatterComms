@@ -115,7 +115,10 @@ class MessageBackend(BaseBackend):
     def get_messages(chat_uuid: UUID, offset=0, limit=50):
         with Database.create_session() as session:
             messages = session.scalars(
-                select(Message).options(selectinload(Message.attachments))
+                select(Message).options(
+                    selectinload(Message.attachments),
+                    selectinload(Message.replying_to)
+                )
                 .where(Message.chat_uuid == chat_uuid)
                 .order_by(Message.created_at.desc())
                 .offset(offset)
