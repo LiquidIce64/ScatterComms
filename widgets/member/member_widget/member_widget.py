@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget, QGraphicsColorizeEffect
 
 from .ui_member_widget import Ui_member_widget
 from resources import Icons
-from backend import ProfileBackend, RoleBackend, ConfigBackend
+from backend import ProfileBackend
 
 
 class MemberWidget(QWidget, Ui_member_widget):
@@ -18,23 +18,18 @@ class MemberWidget(QWidget, Ui_member_widget):
         self.profile = profile
         self.update_profile_info()
         profile.changed.connect(self.update_profile_info)
-
-        self.role: RoleBackend.Role | None = None
-        self.__connect_role(RoleBackend.get_top_role(profile.uuid, ConfigBackend.session.selected_server.uuid))
+        self.update_role_info()
+        self.profile.top_role_changed.connect(self.update_role_info)
 
         # Debug
         self.label_status.hide()
-
-    def __connect_role(self, role: RoleBackend.Role | None):
-        if role is None:
-            return
-        self.role = role
-        self.update_role_info()
-        role.changed.connect(self.update_role_info)
 
     def update_profile_info(self):
         self.icon_avatar.setPixmap(self.profile.avatar or Icons.Avatar)
         self.label_username.setText(self.profile.username)
 
     def update_role_info(self):
-        self.role_color_effect.setColor(self.role.color)
+        if self.profile.top_role is None:
+            self.role_color_effect.setColor(QColor.fromRgba(0xFF808080))
+        else:
+            self.role_color_effect.setColor(self.profile.top_role.color)

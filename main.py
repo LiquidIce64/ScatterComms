@@ -16,6 +16,17 @@ if __name__ == "__main__":
         pid = lockfile.getLockInfo()[0]
         print(f'Lockfile in use by process {pid}')
         exit(1)
+
+    if '--log-db' in sys.argv:
+        import logging
+        logging.basicConfig()
+        logger = logging.getLogger('sqlalchemy.engine')
+        logger.setLevel(logging.INFO)
+        handler = logging.StreamHandler()
+        handler.setLevel(logging.INFO)
+        handler.addFilter(lambda record: record.getMessage().startswith('SELECT'))
+        logger.addHandler(handler)
+        logger.propagate = False
     Database.init(StorageBackend.locate_appdata('app_database.db', allow_empty=False))
 
     window = MainWindow()

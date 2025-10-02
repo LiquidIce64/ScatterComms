@@ -1,8 +1,9 @@
-from typing import TYPE_CHECKING, cast, Union
+from typing import TYPE_CHECKING, cast, Union, Optional
 from enum import Enum
 from uuid import UUID
 from sqlalchemy import select
 
+from PySide6.QtCore import Signal
 from PySide6.QtGui import QImage, QPixmap
 
 from .base import BaseBackend
@@ -13,6 +14,7 @@ from database import Database, User
 
 if TYPE_CHECKING:
     from .server import ServerBackend
+    from .role import RoleBackend
 
 
 class ProfileBackend(BaseBackend):
@@ -23,7 +25,9 @@ class ProfileBackend(BaseBackend):
         Offline = 'Invisible'
 
     class Profile(CachedObject):
-        def __init__(self, user):
+        top_role_changed = Signal()
+
+        def __init__(self, user, **kwargs):
             if hasattr(self, '_initialized'):
                 return
             super().__init__()
@@ -33,10 +37,26 @@ class ProfileBackend(BaseBackend):
             self.__username: str = user.username
             self.__avatar = StorageBackend.Profile.get_avatar(self.uuid)
 
-        def update(self, user):
+            self.__top_role: Optional['RoleBackend.Role'] = None
+            top_role = kwargs.get('top_role', None)
+            if top_role is not None:
+                role_backend = BaseBackend.get_backend('RoleBackend')
+                if TYPE_CHECKING:
+                    role_backend = cast(RoleBackend, role_backend)
+                self.__top_role = role_backend.Role(top_role)
+
+        def update(self, user, **kwargs):
             self.__uuid: UUID = user.uuid
             self.__username: str = user.username
             self.__avatar = StorageBackend.Profile.get_avatar(self.uuid)
+            top_role = kwargs.get('top_role', -1)
+            if top_role is None:
+                self.top_role = None
+            elif top_role != -1:
+                role_backend = BaseBackend.get_backend('RoleBackend')
+                if TYPE_CHECKING:
+                    role_backend = cast(RoleBackend, role_backend)
+                self.top_role = role_backend.Role(top_role)
             self.changed.emit()
 
         @property
@@ -45,6 +65,8 @@ class ProfileBackend(BaseBackend):
         def username(self): return self.__username
         @property
         def avatar(self): return self.__avatar
+        @property
+        def top_role(self): return self.__top_role
 
         @username.setter
         def username(self, new_value: str):
@@ -59,6 +81,13 @@ class ProfileBackend(BaseBackend):
             self.__avatar = new_value
             StorageBackend.Profile.set_avatar(self.__uuid, new_value)
             self.changed.emit()
+
+        @top_role.setter
+        def top_role(self, new_value: 'RoleBackend.Role'):
+            if self.__top_role == new_value:
+                return
+            self.__top_role = new_value
+            self.top_role_changed.emit()
 
     @staticmethod
     def get_profiles():

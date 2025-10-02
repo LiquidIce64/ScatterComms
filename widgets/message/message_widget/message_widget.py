@@ -6,7 +6,7 @@ from .ui_message_widget import Ui_message_widget
 from widgets.message.reply_widget import ReplyWidget
 from widgets.message.attachment import get_attachment_widget
 from resources import Icons
-from backend import MessageBackend, RoleBackend, ConfigBackend
+from backend import MessageBackend
 
 
 class MessageWidget(QWidget, Ui_message_widget):
@@ -21,28 +21,23 @@ class MessageWidget(QWidget, Ui_message_widget):
         self.profile = message.author
         self.update_profile_info()
         self.profile.changed.connect(self.update_profile_info)
+        self.update_role_info()
+        self.profile.top_role_changed.connect(self.update_role_info)
         self.reload_contents()
         self.message.changed.connect(self.reload_contents)
         self.label_timestamp.setText(message.created_at.strftime('%H:%M %d.%m.%Y'))
         if (replying_to := message.replying_to) is not None:
             self.layout_reply.addWidget(ReplyWidget(replying_to))
 
-        self.role: RoleBackend.Role | None = None
-        self.__connect_role(RoleBackend.get_top_role(self.profile.uuid, ConfigBackend.session.selected_server.uuid))
-
-    def __connect_role(self, role: RoleBackend.Role | None):
-        if role is None:
-            return
-        self.role = role
-        self.update_role_info()
-        role.changed.connect(self.update_role_info)
-
     def update_profile_info(self):
         self.icon_avatar.setPixmap(self.profile.avatar or Icons.Avatar)
         self.label_username.setText(self.profile.username)
 
     def update_role_info(self):
-        self.role_color_effect.setColor(self.role.color)
+        if self.profile.top_role is None:
+            self.role_color_effect.setColor(QColor.fromRgba(0xFF808080))
+        else:
+            self.role_color_effect.setColor(self.profile.top_role.color)
 
     def reload_contents(self):
         for i in range(self.layout_contents.count() - 1, -1, -1):

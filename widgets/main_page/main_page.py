@@ -122,21 +122,21 @@ class MainPage(QWidget, Ui_main_page):
             if isinstance(w, MessageWidget):
                 w.deleteLater()
         for message in messages:
-            self.layout_chat.addWidget(MessageWidget(message))
+            self.layout_chat.insertWidget(1, MessageWidget(message))
 
-    def update_chat_members(self, result):
+    def update_chat_members(self, grouped_roles: list[tuple[RoleBackend.Role | None, list[ProfileBackend.Profile]]]):
         for i in range(self.layout_memberlist.count() - 1, -1, -1):
             w = self.layout_memberlist.itemAt(i).widget()
             if isinstance(w, MemberCategoryWidget):
                 w.deleteLater()
 
-        grouped_roles, ungrouped_members = result
-        if ungrouped_members:
-            online_category = MemberCategoryWidget(members=ungrouped_members)
-            online_category.label_name.setText(QCoreApplication.translate('member_category', 'Online'))
-            self.layout_memberlist.insertWidget(0, online_category)
         for role, role_members in grouped_roles[::-1]:
-            self.layout_memberlist.insertWidget(0, MemberCategoryWidget(role, role_members))
+            if role is not None:
+                self.layout_memberlist.insertWidget(0, MemberCategoryWidget(role, role_members))
+            else:
+                online_category = MemberCategoryWidget(members=role_members)
+                online_category.label_name.setText(QCoreApplication.translate('member_category', 'Online'))
+                self.layout_memberlist.insertWidget(0, online_category)
 
     def update_server_title(self):
         server = ConfigBackend.session.selected_server
