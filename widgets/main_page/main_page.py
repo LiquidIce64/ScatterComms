@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING
-from PySide6.QtWidgets import QWidget, QFileDialog
+from PySide6.QtWidgets import QWidget, QFileDialog, QApplication
 from PySide6.QtCore import QCoreApplication, Qt
 
 from .ui_main_page import Ui_main_page
@@ -164,7 +164,7 @@ class MainPage(QWidget, Ui_main_page):
     def add_attachment(self):
         filepaths = QFileDialog.getOpenFileNames(
             parent=self,
-            caption='Select file to attach'
+            caption=QApplication.translate('file_dialog', 'Attach file')
         )[0]
         for filepath in filepaths:
             widget = AttachmentPreview(filepath, parent=self)

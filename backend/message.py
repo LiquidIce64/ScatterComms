@@ -26,11 +26,13 @@ class MessageBackend(BaseBackend):
             self.__uuid: UUID = attachment.uuid
             self.__filehash: str = attachment.filehash
             self.__filename: str = attachment.filename
+            self.__filesize: str = attachment.filesize
 
         def update(self, attachment, **kwargs):
             self.__uuid: UUID = attachment.uuid
             self.__filehash: str = attachment.filehash
             self.__filename: str = attachment.filename
+            self.__filesize: str = attachment.filesize
             self.changed.emit()
 
         @property
@@ -39,6 +41,8 @@ class MessageBackend(BaseBackend):
         def filehash(self): return self.__filehash
         @property
         def filename(self): return self.__filename
+        @property
+        def filesize(self): return self.__filesize
 
         @property
         def filepath(self): return (
@@ -146,6 +150,7 @@ class MessageBackend(BaseBackend):
                 Attachment(
                     filename=os.path.basename(filepath),
                     filehash=hashlib.file_digest(open(filepath, 'rb'), 'md5').hexdigest(),
+                    filesize=os.path.getsize(filepath),
                     sort_order=i
                 ) for i, filepath in enumerate(attachment_filepaths)
             ]

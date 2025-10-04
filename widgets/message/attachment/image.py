@@ -17,7 +17,8 @@ class ImageWidget(QLabel, AttachmentWidget):
     def __init__(self, attachment: MessageBackend.Attachment):
         super().__init__(attachment=attachment)
         self.setScaledContents(True)
-        policy = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        self.setObjectName('image_widget')
+        policy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         policy.setHeightForWidth(True)
         self.setSizePolicy(policy)
         self.download()
