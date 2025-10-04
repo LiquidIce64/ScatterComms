@@ -1,3 +1,5 @@
+import os
+
 from PySide6.QtWidgets import QFrame
 from PySide6.QtCore import Qt, QSize
 
@@ -10,7 +12,9 @@ class AttachmentPreview(QFrame):
     def __init__(self, filepath: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filepath = filepath
+        filename = os.path.basename(filepath)
         self.setObjectName('attachment_preview')
+        self.setToolTip(filename)
         self.setFixedSize(64, 64)
         self.setStyleSheet(
             '#attachment_preview {border: 1px solid #808080; border-radius: 8px;}'

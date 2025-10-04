@@ -56,6 +56,8 @@ class MessageWidget(QWidget, Ui_message_widget):
             )
             label_text.setObjectName('label_text')
             self.layout_contents.addWidget(label_text)
+        else:
+            self.layout_contents.setContentsMargins(0, 6, 0, 0)
 
         for attachment in self.message.attachments:
             widget = get_attachment_widget(attachment)

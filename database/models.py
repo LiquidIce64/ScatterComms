@@ -176,6 +176,7 @@ class Attachment(UUIDMixin, SortMixin, Base):
 
     filename: Mapped[str] = mapped_column(nullable=False)
     filehash: Mapped[str] = mapped_column(nullable=False)
+    filesize: Mapped[int] = mapped_column(nullable=False)
 
     message_uuid: Mapped[UUID] = mapped_column(ForeignKey('messages.uuid'))
     message: Mapped['Message'] = relationship(back_populates='attachments')
