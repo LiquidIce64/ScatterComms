@@ -180,7 +180,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../resources/index.qrc"/>
+  <include location="../../../../resources/index.qrc"/>
  </resources>
  <connections/>
 </ui>
