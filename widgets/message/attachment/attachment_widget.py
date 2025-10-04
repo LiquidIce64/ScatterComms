@@ -28,10 +28,18 @@ def register(*extensions: str):
     def decorator(widget_class):
         def widget_func(attachment: MessageBackend.Attachment):
             return widget_class(attachment)
-        for ext in extensions:
-            registered_extensions[ext] = (widget_func, widget_class.get_thumbnail)
+        register_func(widget_func, widget_class.get_thumbnail, *extensions)
         return widget_class
     return decorator
+
+
+def register_func(
+    widget_func: Callable[[MessageBackend.Attachment], QWidget],
+    thumbnail_func: Callable[[str], QPixmap | QIcon],
+    *extensions: str
+):
+    for ext in extensions:
+        registered_extensions[ext] = (widget_func, thumbnail_func)
 
 
 class AttachmentWidget:

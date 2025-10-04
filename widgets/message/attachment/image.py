@@ -35,7 +35,12 @@ class ImageWidget(QLabel, AttachmentWidget):
         return cropped_pixmap
 
     def on_downloaded(self, filepath: str):
-        run_task(self.load_image, filepath, result_slot=self.on_image_loaded)
+        run_task(
+            self.load_image,
+            filepath,
+            result_slot=self.on_image_loaded,
+            error_slot=self.on_load_failed
+        )
 
     @staticmethod
     def load_image(filepath: str):
