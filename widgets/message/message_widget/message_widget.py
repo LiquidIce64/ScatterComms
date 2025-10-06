@@ -63,3 +63,10 @@ class MessageWidget(QWidget, Ui_message_widget):
             widget = get_attachment_widget(attachment)
             widget.setParent(self)
             self.layout_contents.addWidget(widget)
+
+    def deleteLater(self):
+        for i in range(self.layout_contents.count() - 1, -1, -1):
+            w = self.layout_contents.itemAt(i).widget()
+            if w is not None:
+                w.deleteLater()
+        super().deleteLater()
