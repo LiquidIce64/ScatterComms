@@ -1,9 +1,19 @@
 from PySide6.QtWidgets import QLabel, QSizePolicy
 from PySide6.QtCore import Qt, QSize, QPoint
-from PySide6.QtGui import QPixmap, QIcon, QPainter, QImage
+from PySide6.QtGui import QPixmap, QPainter, QImage
 
 from .attachment_widget import AttachmentWidget, register
 from backend import MessageBackend, run_task
+
+
+def crop_pixmap(pixmap: QPixmap):
+    square_size = min(pixmap.width(), pixmap.height())
+    cropped_pixmap = QPixmap(square_size, square_size)
+    cropped_pixmap.fill(Qt.GlobalColor.transparent)
+    source_rect = cropped_pixmap.rect()
+    source_rect.moveCenter(pixmap.rect().center())
+    QPainter(cropped_pixmap).drawPixmap(QPoint(0, 0), pixmap, source_rect)
+    return cropped_pixmap
 
 
 @register(
@@ -24,15 +34,8 @@ class ImageWidget(QLabel, AttachmentWidget):
         self.download()
 
     @staticmethod
-    def get_thumbnail(filepath: str) -> QPixmap | QIcon:
-        pixmap = QPixmap(filepath)
-        square_size = min(pixmap.width(), pixmap.height())
-        cropped_pixmap = QPixmap(square_size, square_size)
-        cropped_pixmap.fill(Qt.GlobalColor.transparent)
-        source_rect = cropped_pixmap.rect()
-        source_rect.moveCenter(pixmap.rect().center())
-        QPainter(cropped_pixmap).drawPixmap(QPoint(0, 0), pixmap, source_rect)
-        return cropped_pixmap
+    def get_thumbnail(filepath: str) -> QPixmap:
+        return crop_pixmap(QPixmap(filepath))
 
     def on_downloaded(self, filepath: str):
         run_task(
