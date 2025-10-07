@@ -7,8 +7,14 @@ def custom_event(index=0):
 
 class CustomEventType:
     MovieUpdateEvent = custom_event(0)
+    ScrollBarUpdateEvent = custom_event(1)
 
 
 class MovieUpdateEvent(QEvent):
     def __init__(self):
         super().__init__(CustomEventType.MovieUpdateEvent)
+
+
+class ScrollBarUpdateEvent(QEvent):
+    def __init__(self):
+        super().__init__(CustomEventType.ScrollBarUpdateEvent)

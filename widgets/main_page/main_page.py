@@ -17,6 +17,10 @@ if TYPE_CHECKING:
 
 
 class MainPage(QWidget, Ui_main_page):
+    CHAT_PAGE_SIZE = 25
+    CHAT_MAX_MESSAGES = 75
+    CHAT_PAGE_LOAD_MARGIN = 100
+
     def __init__(self, main_window: 'MainWindow', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
@@ -46,8 +50,6 @@ class MainPage(QWidget, Ui_main_page):
             self.update_dropdown_menu(ServerMenu, self.btn_server_title),
             self.update_server_dropdown_icon()
         ))
-        self.update_server_title()
-        ConfigBackend.session.server_changed.connect(self.update_server_title)
 
         # Profile
         self.btn_profile.setCheckable(True)
@@ -65,6 +67,17 @@ class MainPage(QWidget, Ui_main_page):
         self.icon_useravatar.painter_mask = self.icon_useravatar.AvatarMask(self.icon_userstatus.size())
 
         # Chat
+        self.scrollbar_chat = AnchoredScrollBar(
+            self.scroll_chat,
+            Qt.Orientation.Vertical
+        )
+        self.scrollbar_chat.valueChanged.connect(self.on_chat_scroll)
+        self.scrollbar_chat.sliderReleased.connect(self.on_chat_scroll)
+        self.scroll_chat.setVerticalScrollBar(self.scrollbar_chat)
+        self.chat_loading = True
+        self.chat_more_above = False
+        self.chat_more_below = False
+
         self.textbox.save_max_height()
         self.textbox.returnPressed.connect(self.send_message)
         self.textbox.textChanged.connect(self.update_send_btn)
@@ -77,16 +90,10 @@ class MainPage(QWidget, Ui_main_page):
         self.on_server_changed()
         ConfigBackend.session.server_changed.connect(self.on_server_changed)
 
-        # Scrollbars
         self.scroll_chatlist.setVerticalScrollBar(CustomScrollBar(
             Qt.Orientation.Vertical,
             parent=self.scroll_chatlist
         ))
-        self.scrollbar_chat = AnchoredScrollBar(
-            self.scroll_chat,
-            Qt.Orientation.Vertical
-        )
-        self.scroll_chat.setVerticalScrollBar(self.scrollbar_chat)
         self.scroll_members.setVerticalScrollBar(CustomScrollBar(
             Qt.Orientation.Vertical,
             parent=self.scroll_members
@@ -97,10 +104,19 @@ class MainPage(QWidget, Ui_main_page):
         ))
 
     def on_server_changed(self):
+        self.update_server_title()
         self.update_chat()
         ConfigBackend.session.selected_server.selected_chat_changed.connect(self.update_chat)
 
+    def clear_chat(self):
+        self.scrollbar_chat.clear_anchor()
+        for i in range(self.layout_chat.count() - 1, -1, -1):
+            w = self.layout_chat.itemAt(i).widget()
+            if isinstance(w, MessageWidget):
+                w.deleteLater()
+
     def update_chat(self):
+        self.clear_chat()
         chat = ConfigBackend.session.selected_server.selected_chat
         if chat is None:
             return
@@ -110,19 +126,84 @@ class MainPage(QWidget, Ui_main_page):
             RoleBackend.get_chat_members, chat.uuid,
             result_slot=self.update_chat_members
         )
+        self.chat_loading = True
         run_task(
-            MessageBackend.get_messages, chat.uuid,
-            result_slot=self.update_chat_messages
+            MessageBackend.get_messages, chat.uuid, self.CHAT_PAGE_SIZE,
+            result_slot=self.reload_messages
         )
 
-    def update_chat_messages(self, messages: list[MessageBackend.Message]):
-        self.scrollbar_chat.clear_anchor()
-        for i in range(self.layout_chat.count() - 1, -1, -1):
-            w = self.layout_chat.itemAt(i).widget()
-            if isinstance(w, MessageWidget):
-                w.deleteLater()
+    def on_chat_scroll(self, *_):
+        if self.chat_loading or self.scrollbar_chat.isSliderDown():
+            return
+        chat = ConfigBackend.session.selected_server.selected_chat
+        if chat is None:
+            return
+        new_value = self.scrollbar_chat.value()
+
+        if self.chat_more_above and new_value <= self.scrollbar_chat.minimum() + self.CHAT_PAGE_LOAD_MARGIN:
+            widget = self.layout_chat.itemAt(1).widget()
+            if not isinstance(widget, MessageWidget):
+                return
+            self.chat_loading = True
+            run_task(
+                MessageBackend.get_messages, chat.uuid, self.CHAT_PAGE_SIZE,
+                before=widget.message.created_at_utc,
+                result_slot=self.insert_messages,
+            )
+            return
+
+        if self.chat_more_below and new_value >= self.scrollbar_chat.maximum() - self.CHAT_PAGE_LOAD_MARGIN:
+            widget = self.layout_chat.itemAt(self.layout_chat.count() - 1).widget()
+            if not isinstance(widget, MessageWidget):
+                return
+            self.chat_loading = True
+            run_task(
+                MessageBackend.get_messages, chat.uuid, self.CHAT_PAGE_SIZE,
+                after=widget.message.created_at_utc,
+                result_slot=self.add_messages,
+            )
+            return
+
+    def add_messages(self, messages: list[MessageBackend.Message], /, detach=True):
+        self.chat_more_below = len(messages) == self.CHAT_PAGE_SIZE
+        self.chat_loading = False
+        del_count = max(0, self.layout_chat.count() - 1 + len(messages) - self.CHAT_MAX_MESSAGES)
+        if del_count > 0:
+            self.chat_more_above = True
+
+        for message in messages:
+            self.layout_chat.addWidget(MessageWidget(message))
+
+        for _ in range(del_count):
+            self.layout_chat.takeAt(1).widget().deleteLater()
+
+        if detach:
+            self.scrollbar_chat.detach_from_bottom()
+        self.scrollbar_chat.queue_update()
+
+    def insert_messages(self, messages: list[MessageBackend.Message]):
+        self.chat_more_above = len(messages) == self.CHAT_PAGE_SIZE
+        self.chat_loading = False
+        del_count = max(0, self.layout_chat.count() - 1 + len(messages) - self.CHAT_MAX_MESSAGES)
+        if del_count > 0:
+            self.chat_more_below = True
+
         for message in messages:
             self.layout_chat.insertWidget(1, MessageWidget(message))
+
+        for _ in range(del_count):
+            self.layout_chat.takeAt(self.layout_chat.count() - 1).widget().deleteLater()
+
+        self.scrollbar_chat.queue_update()
+
+    def reload_messages(self, messages: list[MessageBackend.Message]):
+        self.clear_chat()
+        self.chat_more_below = False
+        self.chat_more_above = len(messages) == self.CHAT_PAGE_SIZE
+        for message in messages:
+            self.layout_chat.insertWidget(1, MessageWidget(message))
+        self.scrollbar_chat.setValue(self.scrollbar_chat.maximum())
+        self.chat_loading = False
 
     def update_chat_members(self, grouped_roles: list[tuple[RoleBackend.Role | None, list[ProfileBackend.Profile]]]):
         for i in range(self.layout_memberlist.count() - 1, -1, -1):
@@ -196,13 +277,22 @@ class MainPage(QWidget, Ui_main_page):
         if message_text == '' and not attachment_filepaths:
             return
         session = ConfigBackend.session
+        chat_uuid = session.selected_server.selected_chat.uuid
         message = MessageBackend.create_message(
-            session.selected_server.selected_chat.uuid,
+            chat_uuid,
             session.profile.uuid,
             message_text,
             attachment_filepaths
         )
-        self.layout_chat.addWidget(MessageWidget(message))
+        if self.chat_more_below:
+            self.chat_loading = True
+            run_task(
+                MessageBackend.get_messages, chat_uuid, self.CHAT_PAGE_SIZE,
+                result_slot=self.reload_messages
+            )
+        else:
+            self.add_messages([message], detach=False)
+            self.scrollbar_chat.setValue(self.scrollbar_chat.maximum())
 
     def update_dropdown_menu(self, menu_class, button):
         if button.isChecked():
