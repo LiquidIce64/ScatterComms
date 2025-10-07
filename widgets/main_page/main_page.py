@@ -17,9 +17,8 @@ if TYPE_CHECKING:
 
 
 class MainPage(QWidget, Ui_main_page):
-    CHAT_PAGE_SIZE = 25
-    CHAT_MAX_MESSAGES = 75
-    CHAT_PAGE_LOAD_MARGIN = 100
+    CHAT_PAGE_SIZE = 20
+    CHAT_PAGE_LOAD_MARGIN = 150
 
     def __init__(self, main_window: 'MainWindow', *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -167,7 +166,7 @@ class MainPage(QWidget, Ui_main_page):
     def add_messages(self, messages: list[MessageBackend.Message], /, detach=True):
         self.chat_more_below = len(messages) == self.CHAT_PAGE_SIZE
         self.chat_loading = False
-        del_count = max(0, self.layout_chat.count() - 1 + len(messages) - self.CHAT_MAX_MESSAGES)
+        del_count = max(0, self.layout_chat.count() - 1 + len(messages) - self.CHAT_PAGE_SIZE * 3)
         if del_count > 0:
             self.chat_more_above = True
 
@@ -184,7 +183,7 @@ class MainPage(QWidget, Ui_main_page):
     def insert_messages(self, messages: list[MessageBackend.Message]):
         self.chat_more_above = len(messages) == self.CHAT_PAGE_SIZE
         self.chat_loading = False
-        del_count = max(0, self.layout_chat.count() - 1 + len(messages) - self.CHAT_MAX_MESSAGES)
+        del_count = max(0, self.layout_chat.count() - 1 + len(messages) - self.CHAT_PAGE_SIZE * 3)
         if del_count > 0:
             self.chat_more_below = True
 
