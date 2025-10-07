@@ -2,7 +2,7 @@ import os
 import hashlib
 from typing import TYPE_CHECKING, cast
 from uuid import UUID
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
@@ -71,8 +71,8 @@ class MessageBackend(BaseBackend):
                 self.__replying_to = MessageBackend.Message(message.replying_to)
 
             self.__created_at: datetime = message.created_at
-            # Convert from UTC to local timezone
-            self.__created_at = self.__created_at.replace(tzinfo=timezone.utc).astimezone()
+            # Manually set timezone
+            self.__created_at = self.__created_at.replace(tzinfo=timezone.utc)
 
         def update(self, message, **kwargs):
             self.__uuid: UUID = message.uuid
@@ -89,8 +89,8 @@ class MessageBackend(BaseBackend):
                 self.__replying_to = MessageBackend.Message(message.replying_to)
 
             self.__created_at: datetime = message.created_at
-            # Convert from UTC to local timezone
-            self.__created_at = self.__created_at.replace(tzinfo=timezone.utc).astimezone()
+            # Manually set timezone
+            self.__created_at = self.__created_at.replace(tzinfo=timezone.utc)
             self.changed.emit()
 
         @property
@@ -102,7 +102,9 @@ class MessageBackend(BaseBackend):
         @property
         def replying_to(self): return self.__replying_to
         @property
-        def created_at(self): return self.__created_at
+        def created_at(self): return self.__created_at.astimezone()
+        @property
+        def created_at_utc(self): return self.__created_at
 
         @property
         def attachments(self):
@@ -116,18 +118,34 @@ class MessageBackend(BaseBackend):
             self.changed.emit()
 
     @staticmethod
-    def get_messages(chat_uuid: UUID, offset=0, limit=50):
+    def get_messages(chat_uuid: UUID, limit=25, /, before: datetime = None, after: datetime = None):
         with Database.create_session() as session:
-            messages = session.scalars(
+            statement = (
                 select(Message).options(
                     selectinload(Message.attachments),
                     selectinload(Message.replying_to)
                 )
                 .where(Message.chat_uuid == chat_uuid)
-                .order_by(Message.created_at.desc())
-                .offset(offset)
                 .limit(limit)
-            ).all()
+            )
+            if before is not None:
+                statement = (
+                    statement
+                    .where(Message.created_at <= before - timedelta(microseconds=1))
+                    .order_by(Message.created_at.desc())
+                )
+            elif after is not None:
+                statement = (
+                    statement
+                    .where(Message.created_at >= after + timedelta(microseconds=1))
+                    .order_by(Message.created_at)
+                )
+            else:
+                statement = (
+                    statement
+                    .order_by(Message.created_at.desc())
+                )
+            messages = session.scalars(statement).all()
             messages_list = [MessageBackend.Message(message) for message in messages]
         return messages_list
 

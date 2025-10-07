@@ -1,5 +1,7 @@
 from PySide6.QtWidgets import QScrollBar, QScrollArea, QWidget
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QCoreApplication
+
+from widgets.internal import ScrollBarUpdateEvent
 
 
 class CustomScrollBar(QScrollBar):
@@ -45,6 +47,9 @@ class AnchoredScrollBar(CustomScrollBar):
     def clear_anchor(self):
         self.__anchor = None
 
+    def detach_from_bottom(self):
+        self.__at_bottom = False
+
     def update_anchor(self):
         self.__at_bottom = self.value() == self.maximum()
         scroll_content = self.__scroll_area.widget()
@@ -71,3 +76,10 @@ class AnchoredScrollBar(CustomScrollBar):
         elif self.__anchor is not None:
             self.setValue(self.__anchor.geometry().bottom() + self.__anchor_offset - self.__page_step())
         self.update_anchor()
+
+    def queue_update(self):
+        QCoreApplication.postEvent(self, ScrollBarUpdateEvent())
+
+    def customEvent(self, event):
+        if isinstance(event, ScrollBarUpdateEvent):
+            self.on_range_changed(self.minimum(), self.maximum())

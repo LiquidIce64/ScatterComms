@@ -1,5 +1,6 @@
 from .custom_events import (
     CustomEventType,
-    MovieUpdateEvent
+    MovieUpdateEvent,
+    ScrollBarUpdateEvent
 )
 from .animated_image import AnimatedImage
