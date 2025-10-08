@@ -1,8 +1,9 @@
 import os
 from typing import Callable
 
-from PySide6.QtWidgets import QWidget
-from PySide6.QtGui import QPixmap, QIcon
+from PySide6.QtWidgets import QWidget, QFileIconProvider
+from PySide6.QtCore import QFileInfo
+from PySide6.QtGui import QPixmap, QIcon, QImage
 
 from backend import MessageBackend
 
@@ -43,7 +44,7 @@ def register_func(
 
 
 class AttachmentWidget:
-    def __init__(self, attachment: MessageBackend.Attachment):
+    def __init__(self, attachment: MessageBackend.Attachment = None):
         self.attachment = attachment
 
     def download(self):
@@ -55,7 +56,8 @@ class AttachmentWidget:
             raise NotImplementedError
 
     @staticmethod
-    def get_thumbnail(filepath: str) -> QPixmap | QIcon: return QPixmap()
+    def get_thumbnail(filepath: str) -> QPixmap | QIcon:
+        return QFileIconProvider().icon(QFileInfo(filepath))
 
     def on_downloaded(self, filepath: str): pass
     def on_load_failed(self): pass

@@ -22,7 +22,7 @@ def crop_pixmap(pixmap: QPixmap):
     '.jpg', '.jpeg', '.jpe', '.jif', '.jfif', '.jfi',
 )
 class ImageWidget(QLabel, AttachmentWidget):
-    MAX_IMAGE_SIZE = QSize(1024, 400)
+    MAX_SIZE = QSize(1024, 400)
 
     def __init__(self, attachment: MessageBackend.Attachment):
         super().__init__(attachment=attachment)
@@ -52,8 +52,8 @@ class ImageWidget(QLabel, AttachmentWidget):
     def on_image_loaded(self, image: QImage):
         pixmap = QPixmap(image)
         new_size = pixmap.size()
-        if new_size.width() > self.MAX_IMAGE_SIZE.width() or new_size.height() > self.MAX_IMAGE_SIZE.height():
-            new_size.scale(self.MAX_IMAGE_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
+        if new_size.width() > self.MAX_SIZE.width() or new_size.height() > self.MAX_SIZE.height():
+            new_size.scale(self.MAX_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
         self.setMaximumSize(new_size)
         self.setPixmap(pixmap)
 
