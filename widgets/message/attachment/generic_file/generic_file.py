@@ -1,9 +1,8 @@
 import os
 import math
 
-from PySide6.QtWidgets import QFrame, QFileDialog, QApplication, QFileIconProvider
-from PySide6.QtCore import QFile, QStandardPaths, Qt, QFileInfo
-from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QFrame, QFileDialog, QApplication
+from PySide6.QtCore import QFile, QStandardPaths, Qt
 
 from .ui_generic_file import Ui_generic_file_widget
 from widgets.message.attachment.attachment_widget import AttachmentWidget, register
@@ -36,10 +35,6 @@ class GenericFileWidget(QFrame, AttachmentWidget, Ui_generic_file_widget):
             self.on_downloaded(path)
         else:
             self.btn_download.clicked.connect(self.download)
-
-    @staticmethod
-    def get_thumbnail(filepath: str) -> QIcon:
-        return QFileIconProvider().icon(QFileInfo(filepath))
 
     def on_downloaded(self, filepath: str):
         self.btn_download.deleteLater()

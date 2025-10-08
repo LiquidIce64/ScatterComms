@@ -12,7 +12,7 @@ from backend import MessageBackend
 
 @register('.gif', '.webp')
 class AnimatedImageWidget(QLabel, AttachmentWidget):
-    MAX_IMAGE_SIZE = QSize(350, 256)
+    MAX_SIZE = QSize(350, 256)
 
     def __init__(self, attachment: MessageBackend.Attachment):
         super().__init__(attachment=attachment)
@@ -30,8 +30,8 @@ class AnimatedImageWidget(QLabel, AttachmentWidget):
     def on_downloaded(self, filepath: str):
         movie = AnimatedImage(filepath, parent=self)
         new_size = movie.frameRect().size()
-        if new_size.width() > self.MAX_IMAGE_SIZE.width() or new_size.height() > self.MAX_IMAGE_SIZE.height():
-            new_size.scale(self.MAX_IMAGE_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
+        if new_size.width() > self.MAX_SIZE.width() or new_size.height() > self.MAX_SIZE.height():
+            new_size.scale(self.MAX_SIZE, Qt.AspectRatioMode.KeepAspectRatio)
         self.setMaximumSize(new_size)
         self.setMovie(movie)
         app = cast(QApplication, QApplication.instance())
