@@ -1,9 +1,11 @@
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QMainWindow
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QKeyEvent
 
 from backend import ConfigBackend
 from .ui_video_player import Ui_video_player
-from widgets.internal import HoverEventFilter, MouseClickEventFilter
+from widgets.internal import HoverEventFilter, MouseClickEventFilter, KeyEventFilter
 
 
 class VideoPlayer(QWidget, Ui_video_player):
@@ -39,6 +41,7 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.frame_volume.installEventFilter(self.__hover_filter)
         self.btn_volume.clicked.connect(self.toggle_mute)
 
+        self.__fullscreen_window: QMainWindow | None = None
         self.btn_fullscreen.clicked.connect(self.toggle_fullscreen)
 
     def jump_to_first_frame(self):
@@ -88,5 +91,20 @@ class VideoPlayer(QWidget, Ui_video_player):
             ConfigBackend.session.media_volume = volume_percent
 
     def toggle_fullscreen(self):
-        # TODO: Fullscreen window creation and widget transfer
-        pass
+        if self.__fullscreen_window is None:
+            self.__fullscreen_window = QMainWindow(parent=self)
+            self.__fullscreen_window.setCentralWidget(self.container)
+            event_filter = KeyEventFilter(parent=self.__fullscreen_window)
+            event_filter.keyReleased.connect(self.__fullscreen_keypress)
+            self.__fullscreen_window.installEventFilter(event_filter)
+            self.__fullscreen_window.showFullScreen()
+        else:
+            self.container.setParent(self)
+            self.layout_widget.addWidget(self.container)
+            self.__fullscreen_window.close()
+            self.__fullscreen_window = None
+
+    def __fullscreen_keypress(self, event: QKeyEvent):
+        if event.key() == Qt.Key.Key_Escape:
+            if self.__fullscreen_window is not None:
+                self.toggle_fullscreen()

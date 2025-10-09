@@ -1,5 +1,5 @@
 from PySide6.QtCore import QObject, Signal, QEvent
-from PySide6.QtGui import QMouseEvent, QEnterEvent
+from PySide6.QtGui import QMouseEvent, QEnterEvent, QKeyEvent
 
 
 class HoverEventFilter(QObject):
@@ -23,4 +23,16 @@ class MouseClickEventFilter(QObject):
             self.pressed.emit(event)
         elif event.type() == event.Type.MouseButtonRelease:
             self.released.emit(event)
+        return super().eventFilter(watched, event)
+
+
+class KeyEventFilter(QObject):
+    keyPressed = Signal(QKeyEvent)
+    keyReleased = Signal(QKeyEvent)
+
+    def eventFilter(self, watched, event):
+        if event.type() == event.Type.KeyPress:
+            self.keyPressed.emit(event)
+        elif event.type() == event.Type.KeyRelease:
+            self.keyReleased.emit(event)
         return super().eventFilter(watched, event)
