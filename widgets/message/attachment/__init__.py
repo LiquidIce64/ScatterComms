@@ -4,3 +4,4 @@ from .generic_file import GenericFileWidget
 from .image import ImageWidget
 from .image_animated import AnimatedImageWidget
 from .video import VideoWidget
+from .audio import AudioWidget

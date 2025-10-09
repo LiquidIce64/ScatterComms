@@ -1,14 +1,15 @@
-from PySide6.QtWidgets import QWidget, QMainWindow
+import os
+
+from PySide6.QtCore import QStandardPaths, QFile
+from PySide6.QtWidgets import QWidget, QFileDialog, QApplication
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QKeyEvent
 
 from backend import ConfigBackend
-from .ui_video_player import Ui_video_player
-from widgets.internal import HoverEventFilter, MouseClickEventFilter, KeyEventFilter
+from .ui_audio_player import Ui_audio_player
+from widgets.internal import HoverEventFilter
 
 
-class VideoPlayer(QWidget, Ui_video_player):
+class AudioPlayer(QWidget, Ui_audio_player):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
@@ -16,15 +17,10 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
         self.player.setAudioOutput(self.audio_output)
-        self.player.setVideoOutput(self.video)
         self.player.positionChanged.connect(self.__position_changed)
         self.player.durationChanged.connect(self.__duration_changed)
 
         self.btn_play.clicked.connect(self.toggle_play)
-        mouse_filter = MouseClickEventFilter(parent=self)
-        mouse_filter.released.connect(self.toggle_play)
-        self.video.installEventFilter(mouse_filter)
-
         self.__was_playing = False
         self.slider_playback.sliderMoved.connect(self.player.setPosition)
         self.slider_playback.sliderPressed.connect(self.__slider_pressed)
@@ -32,7 +28,7 @@ class VideoPlayer(QWidget, Ui_video_player):
 
         self.__skip_volume_save = False
         self.slider_volume.valueChanged.connect(self.set_volume)
-        self.slider_volume.setValue(ConfigBackend.session.video_volume)
+        self.slider_volume.setValue(ConfigBackend.session.audio_volume)
         self.slider_volume.hide()
 
         hover_filter = HoverEventFilter(parent=self)
@@ -41,13 +37,8 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.frame_volume.installEventFilter(hover_filter)
         self.btn_volume.clicked.connect(self.toggle_mute)
 
-        self.__fullscreen_window: QMainWindow | None = None
-        self.btn_fullscreen.clicked.connect(self.toggle_fullscreen)
-
-    def jump_to_first_frame(self):
-        self.player.setPosition(0)
-        self.player.play()
-        self.player.pause()
+        self.btn_file.clicked.connect(self.save_file)
+        self.btn_file.setEnabled(False)
 
     def toggle_play(self):
         if self.player.isPlaying():
@@ -81,30 +72,27 @@ class VideoPlayer(QWidget, Ui_video_player):
             self.__skip_volume_save = True
             self.slider_volume.setValue(0)
         else:
-            self.slider_volume.setValue(ConfigBackend.session.video_volume)
+            self.slider_volume.setValue(ConfigBackend.session.audio_volume)
 
     def set_volume(self, volume_percent: int):
         self.audio_output.setVolume(volume_percent / 100)
         if self.__skip_volume_save:
             self.__skip_volume_save = False
         else:
-            ConfigBackend.session.video_volume = volume_percent
+            ConfigBackend.session.audio_volume = volume_percent
 
-    def toggle_fullscreen(self):
-        if self.__fullscreen_window is None:
-            self.__fullscreen_window = QMainWindow(parent=self)
-            self.__fullscreen_window.setCentralWidget(self.container)
-            event_filter = KeyEventFilter(parent=self.__fullscreen_window)
-            event_filter.keyReleased.connect(self.__fullscreen_keypress)
-            self.__fullscreen_window.installEventFilter(event_filter)
-            self.__fullscreen_window.showFullScreen()
-        else:
-            self.container.setParent(self)
-            self.layout_widget.addWidget(self.container)
-            self.__fullscreen_window.close()
-            self.__fullscreen_window = None
+    def set_source(self, filepath: str):
+        self.player.setSource(filepath)
+        self.btn_file.setEnabled(True)
 
-    def __fullscreen_keypress(self, event: QKeyEvent):
-        if event.key() == Qt.Key.Key_Escape:
-            if self.__fullscreen_window is not None:
-                self.toggle_fullscreen()
+    def save_file(self):
+        if self.player.source() is None:
+            return
+        downloads_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DownloadLocation)
+        new_filepath = QFileDialog.getSaveFileName(
+            parent=self,
+            caption=QApplication.translate('file_dialog', 'Save file'),
+            dir=f'{downloads_dir}/{self.btn_file.text()}'
+        )[0]
+        if new_filepath:
+            QFile.copy(self.player.source().path(), new_filepath)
