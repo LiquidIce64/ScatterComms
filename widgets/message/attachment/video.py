@@ -1,10 +1,7 @@
 from PySide6.QtWidgets import QSizePolicy
-from PySide6.QtMultimedia import QMediaPlayer, QMediaFormat
-from PySide6.QtCore import Qt, QSize, QCoreApplication
-from PySide6.QtGui import QPixmap
+from PySide6.QtCore import Qt, QSize
 
 from .attachment_widget import AttachmentWidget, register
-from .image import crop_pixmap
 from widgets.common import VideoPlayer
 from backend import MessageBackend
 
@@ -26,17 +23,6 @@ class VideoWidget(VideoPlayer, AttachmentWidget):
         self.setSizePolicy(policy)
         self.setEnabled(False)
         self.download()
-
-    @staticmethod
-    def get_thumbnail(filepath: str) -> QPixmap:
-        player = QMediaPlayer()
-        player.setSource(filepath)
-        player.play()
-        player.pause()
-        QCoreApplication.processEvents()
-
-        frame = player.videoSink().videoFrame().toImage()
-        return crop_pixmap(QPixmap(frame))
 
     def on_downloaded(self, filepath: str):
         self.player.setSource(filepath)

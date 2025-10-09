@@ -33,7 +33,8 @@ class ConfigBackend(BaseBackend):
             self.geometry = settings.value('window/geometry', defaultValue=None, type=QByteArray)
             self.state = settings.value('window/state', defaultValue=None, type=QByteArray)
 
-            self.media_volume: int = cast(int, settings.value('media/volume', defaultValue=100, type=int))
+            self.video_volume: int = cast(int, settings.value('media/video_volume', defaultValue=100, type=int))
+            self.audio_volume: int = cast(int, settings.value('media/audio_volume', defaultValue=100, type=int))
 
             self.__profile = profile_backend.get_profile(profile_uuid)
 
@@ -99,7 +100,8 @@ class ConfigBackend(BaseBackend):
             settings.setValue('profile/uuid', self.__profile and str(self.__profile.uuid) or '')
             settings.setValue('profile/status', self.__status.value)
             settings.setValue('server/uuid', self.__selected_server and str(self.__selected_server.uuid) or '')
-            settings.setValue('media/volume', self.media_volume)
+            settings.setValue('media/video_volume', self.video_volume)
+            settings.setValue('media/audio_volume', self.audio_volume)
 
     session: Optional[Session] = None
 

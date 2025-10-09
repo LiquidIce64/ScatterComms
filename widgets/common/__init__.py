@@ -6,3 +6,4 @@ from .draggable_widget import DraggableWidget
 from .custom_scrollbar import CustomScrollBar, AnchoredScrollBar
 from .message_textbox import MessageTextbox
 from .video_player import VideoPlayer
+from .audio_player import AudioPlayer
