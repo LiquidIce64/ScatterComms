@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 
 from .ui_chat_widget import Ui_chat_widget
-from widgets.common import DraggableWidget
+from widgets.common import DraggableWidget, MenuWidget
 from resources import Icons
 from backend import ChatBackend, ConfigBackend
 
@@ -28,6 +28,7 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
         self.btn.hovered.connect(self.update_highlight)
         self.btn.hoverEnd.connect(self.update_highlight)
         self.btn.clicked.connect(self.on_click)
+        self.btn_settings.clicked.connect(self.chat_settings)
 
     def update_chat_info(self):
         self.label.setText(self.chat.name)
@@ -52,3 +53,18 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
         self.icon.setProperty('highlight', selected)
         self.icon.style().polish(self.icon)
         self.frame_buttons.setHidden(not highlight)
+
+    def contextMenuEvent(self, event):
+        menu = MenuWidget(parent=self, icons_on_left=False)
+
+        menu.add_button('Chat settings', Icons.Settings, 4, slot=self.chat_settings)
+        menu.addSeparator()
+        menu.add_button('Delete chat', Icons.Status.DoNotDisturb, 4, slot=self.delete_chat, danger=True)
+
+        menu.exec(event.globalPos())
+
+    def chat_settings(self):
+        pass
+
+    def delete_chat(self):
+        pass

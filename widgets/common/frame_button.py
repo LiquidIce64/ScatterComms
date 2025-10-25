@@ -40,18 +40,22 @@ class FrameButton(QFrame):
 
     def focusInEvent(self, event):
         self.focused.emit(event)
+        self.update()
         super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.focusLost.emit(event)
+        self.update()
         super().focusOutEvent(event)
 
     def enterEvent(self, event):
         self.hovered.emit(event)
+        self.update()
         super().enterEvent(event)
 
     def leaveEvent(self, event):
         self.hoverEnd.emit(event)
+        self.update()
         super().leaveEvent(event)
 
     def deleteLater(self):

@@ -7,3 +7,4 @@ from .custom_scrollbar import CustomScrollBar, AnchoredScrollBar
 from .message_textbox import MessageTextbox
 from .video_player import VideoPlayer
 from .audio_player import AudioPlayer
+from .menu import MenuWidget

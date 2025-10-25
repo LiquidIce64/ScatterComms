@@ -4,8 +4,10 @@ from .custom_events import (
     ScrollBarUpdateEvent,
 )
 from .event_filters import (
+    DebugEventFilter,
     MouseClickEventFilter,
     HoverEventFilter,
     KeyEventFilter,
+    ContextMenuEventFilter,
 )
 from .animated_image import AnimatedImage

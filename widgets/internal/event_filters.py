@@ -1,5 +1,12 @@
 from PySide6.QtCore import QObject, Signal, QEvent
-from PySide6.QtGui import QMouseEvent, QEnterEvent, QKeyEvent
+from PySide6.QtGui import QMouseEvent, QEnterEvent, QKeyEvent, QContextMenuEvent
+
+
+class DebugEventFilter(QObject):
+    def eventFilter(self, watched, event):
+        event_name = QEvent.Type(event.type()).name
+        print(f'[DEBUG] {watched.__class__.__name__} event: {event_name}')
+        return super().eventFilter(watched, event)
 
 
 class HoverEventFilter(QObject):
@@ -35,4 +42,13 @@ class KeyEventFilter(QObject):
             self.keyPressed.emit(event)
         elif event.type() == event.Type.KeyRelease:
             self.keyReleased.emit(event)
+        return super().eventFilter(watched, event)
+
+
+class ContextMenuEventFilter(QObject):
+    triggered = Signal(QContextMenuEvent)
+
+    def eventFilter(self, watched, event):
+        if event.type() == event.Type.ContextMenu:
+            self.triggered.emit(event)
         return super().eventFilter(watched, event)

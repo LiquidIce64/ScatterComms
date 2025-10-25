@@ -2,7 +2,8 @@ from PySide6.QtWidgets import QFrame, QInputDialog
 from PySide6.QtCore import Qt, QPointF
 
 from .ui_chat_category import Ui_chat_category_widget
-from widgets.common import DraggableWidget
+from widgets.common import DraggableWidget, MenuWidget
+from widgets.internal import ContextMenuEventFilter
 from widgets.chat.chat_widget import ChatWidget
 from resources import Icons
 from backend import run_task, ChatBackend, ConfigBackend
@@ -34,7 +35,13 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
         self.btn.hovered.connect(self.update_highlight)
         self.btn.hoverEnd.connect(self.update_highlight)
         self.btn.toggled.connect(self.update_dropdown)
+
         self.btn_create_chat.clicked.connect(self.create_chat)
+        self.btn_settings.clicked.connect(self.category_settings)
+
+        event_filter = ContextMenuEventFilter(parent=self)
+        event_filter.triggered.connect(self.contextMenuEvent)
+        self.btn.installEventFilter(event_filter)
 
         run_task(
             ChatBackend.get_chats,
@@ -42,6 +49,23 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
             category.uuid,
             result_slot=self.add_chats
         )
+
+    def contextMenuEvent(self, event):
+        menu = MenuWidget(parent=self, icons_on_left=False)
+
+        menu.add_button('Create chat', Icons.Plus, 4, slot=self.create_chat)
+        menu.addSeparator()
+        menu.add_button('Category settings', Icons.Settings, 4, slot=self.category_settings)
+        menu.addSeparator()
+        menu.add_button('Delete category', Icons.Status.DoNotDisturb, 4, slot=self.delete_category, danger=True)
+
+        menu.exec(event.globalPos())
+
+    def category_settings(self):
+        pass
+
+    def delete_category(self):
+        pass
 
     def add_chat(self, chat: ChatBackend.Chat, index=-1):
         widget = ChatWidget(chat, parent=self)
@@ -65,7 +89,9 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
         self.add_chat(category)
 
     def update_category_info(self):
-        self.label.setText(self.category.name)
+        category_name = self.category.name
+        self.label.setText(category_name)
+        self.label.setToolTip(category_name)
         self.btn.setChecked(not self.category.collapsed)
 
     def drag_render_widget(self): return self.btn

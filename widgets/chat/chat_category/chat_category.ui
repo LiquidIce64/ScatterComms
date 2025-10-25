@@ -19,6 +19,9 @@
   <property name="mouseTracking">
    <bool>true</bool>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
+  </property>
   <property name="acceptDrops">
    <bool>true</bool>
   </property>
@@ -92,6 +95,9 @@
      </property>
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::TabFocus</enum>
+     </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
      </property>
      <layout class="QHBoxLayout" name="layout_frame" stretch="0,1,0">
       <property name="spacing">
@@ -188,6 +194,9 @@
              <height>24</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>Add chat</string>
+           </property>
            <property name="text">
             <string notr="true"/>
            </property>
@@ -216,6 +225,9 @@
              <width>24</width>
              <height>24</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>Edit category</string>
            </property>
            <property name="text">
             <string notr="true"/>
