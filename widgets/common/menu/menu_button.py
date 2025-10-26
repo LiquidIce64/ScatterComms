@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QMenu
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel
 from PySide6.QtCore import Qt, QCoreApplication
 from PySide6.QtGui import QCursor, QIcon
 
@@ -8,7 +8,7 @@ from widgets.common import IconWidget
 class MenuButton(QFrame):
     def __init__(
         self, text: str, icon: QIcon = None,
-        icon_margin=0, icon_on_left=True
+        icon_margin=0, icon_on_left=True, override_icon_color=True
     ):
         super().__init__()
         self.setObjectName('menu_btn')
@@ -39,7 +39,7 @@ class MenuButton(QFrame):
             icon_margin, icon_margin, icon_margin, icon_margin
         )
         if icon is not None:
-            self.icon.setIcon(icon, True)
+            self.icon.setIcon(icon, override_icon_color)
 
         if icon_on_left:
             self.layout_btn.addWidget(self.icon)

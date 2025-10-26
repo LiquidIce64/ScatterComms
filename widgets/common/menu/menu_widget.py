@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QMenu, QWidgetAction
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QMouseEvent
 
 from .menu_button import MenuButton
 
@@ -24,8 +24,14 @@ class MenuWidget(QMenu):
             }
         ''')
 
-    def add_button(self, text: str, icon: QIcon = None, icon_margin=0, /, slot=None, danger=False):
-        btn = MenuButton(text, icon, icon_margin, self.__icons_on_left)
+    def add_button(
+        self, text: str, icon: QIcon = None, icon_margin=0, /,
+        slot=None, danger=False, override_icon_color=True
+    ):
+        btn = MenuButton(
+            text, icon, icon_margin,
+            self.__icons_on_left, override_icon_color
+        )
         btn.setParent(self)
         if danger:
             btn.setProperty('danger', True)
@@ -34,4 +40,14 @@ class MenuWidget(QMenu):
         if slot is not None:
             action.triggered.connect(slot)
         self.addAction(action)
-        return btn
+        return btn, action
+
+    def mousePressEvent(self, event: QMouseEvent):
+        if self.geometry().contains(event.globalPos()):
+            super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event: QMouseEvent):
+        if self.geometry().contains(event.globalPos()):
+            super().mouseReleaseEvent(event)
+        else:
+            self.hide()

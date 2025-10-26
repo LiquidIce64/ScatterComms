@@ -16,6 +16,9 @@
     <height>540</height>
    </size>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::FocusPolicy::ClickFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -137,12 +140,13 @@
 #btn_notifications[highlight=&quot;true&quot;], #btn_pinned_messages[highlight=&quot;true&quot;],
 #btn_settings[highlight=&quot;true&quot;], #btn_search[highlight=&quot;true&quot;] {color: white;}
 
-#btn_server_title:hover, #btn_server_title:focus, #btn_server_title[checked=&quot;true&quot;],
-#btn_profile:hover, #btn_profile:focus, #btn_profile[checked=&quot;true&quot;] {
+#btn_server_title:hover, #btn_server_title:focus,
+#btn_profile:hover, #btn_profile:focus {
 	background-color: #303030;
 }
 
-#btn_notifications:checked, #btn_pinned_messages:checked, #btn_search:checked {
+#btn_notifications:checked, #btn_pinned_messages:checked, #btn_search:checked,
+#btn_server_title[checked=&quot;true&quot;], #btn_profile[checked=&quot;true&quot;] {
 	background-color: #404040;
 }
 

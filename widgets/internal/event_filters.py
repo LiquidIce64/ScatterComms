@@ -8,6 +8,10 @@ class DebugEventFilter(QObject):
         print(f'[DEBUG] {watched.__class__.__name__} event: {event_name}')
         return super().eventFilter(watched, event)
 
+    @staticmethod
+    def listen(obj: QObject):
+        obj.installEventFilter(DebugEventFilter(parent=obj))
+
 
 class HoverEventFilter(QObject):
     hoverEnter = Signal(QEnterEvent)

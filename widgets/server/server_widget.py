@@ -32,7 +32,7 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
     def drag_render_widget(self): return self.icon
 
     def update_line(self):
-        if self.server == ConfigBackend.session.selected_server:
+        if ConfigBackend.session and self.server == ConfigBackend.session.selected_server:
             self.line.setFixedHeight(self.height())
             self.line.show()
         elif self.underMouse() or self.hasFocus():
