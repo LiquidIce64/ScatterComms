@@ -28,6 +28,7 @@ class AttachmentPreview(QFrame):
         self.icon_preview.setPixmap(get_file_thumbnail(filepath))
         self.remove_btn = IconButton(parent=self)
         self.remove_btn.setObjectName('btn_remove')
+        self.remove_btn.setToolTip('Remove')
         self.remove_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.remove_btn.setGeometry(48, 0, 16, 16)
         self.remove_btn.setIconSize(QSize(8, 8))

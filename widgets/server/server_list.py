@@ -54,6 +54,7 @@ class ServerList(ServerListBase):
 
         self.btn_create_server = IconButton(self)
         self.btn_create_server.setObjectName('btn_create_server')
+        self.btn_create_server.setToolTip('Create server')
         self.btn_create_server.setIcon(Icons.Plus)
         self.btn_create_server.setFixedSize(40, 40)
         self.btn_create_server.setCursor(Qt.CursorShape.PointingHandCursor)

@@ -91,6 +91,9 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="text">
       <string>Filename</string>
      </property>
@@ -169,13 +172,13 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>IconButton</class>
-   <extends>QPushButton</extends>
+   <class>IconWidget</class>
+   <extends>QLabel</extends>
    <header>widgets.common</header>
   </customwidget>
   <customwidget>
-   <class>IconWidget</class>
-   <extends>QLabel</extends>
+   <class>IconButton</class>
+   <extends>QPushButton</extends>
    <header>widgets.common</header>
   </customwidget>
  </customwidgets>
