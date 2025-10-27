@@ -31,7 +31,9 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
         self.btn_settings.clicked.connect(self.chat_settings)
 
     def update_chat_info(self):
-        self.label.setText(self.chat.name)
+        chat_name = self.chat.name
+        self.label.setText(chat_name)
+        self.label.setToolTip(chat_name)
 
     def on_click(self):
         server = ConfigBackend.session.selected_server

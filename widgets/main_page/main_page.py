@@ -140,7 +140,7 @@ class MainPage(QWidget, Ui_main_page):
 
         add_status_button('Online', Icons.Status.Online, ProfileBackend.Status.Online)
         add_status_button('Away', Icons.Status.Away, ProfileBackend.Status.Away)
-        add_status_button('Do Not Disturb', Icons.Status.DoNotDisturb, ProfileBackend.Status.DoNotDisturb)
+        add_status_button('Do not disturb', Icons.Status.DoNotDisturb, ProfileBackend.Status.DoNotDisturb)
         add_status_button('Invisible', Icons.Status.Offline, ProfileBackend.Status.Offline)
         menu.addSeparator()
         menu.add_button('Edit profile', Icons.Edit, 4, slot=self.edit_profile)
@@ -286,6 +286,7 @@ class MainPage(QWidget, Ui_main_page):
         if name == 'Saved Messages':
             name = QCoreApplication.translate('main_page', 'Saved Messages')
         self.label_servername.setText(name)
+        self.label_servername.setToolTip(name)
 
     def update_profile(self):
         profile = ConfigBackend.session.profile

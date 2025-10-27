@@ -172,6 +172,9 @@
              <height>24</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>Edit chat</string>
+           </property>
            <property name="text">
             <string notr="true"/>
            </property>
