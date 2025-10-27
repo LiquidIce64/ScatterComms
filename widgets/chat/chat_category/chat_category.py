@@ -57,9 +57,10 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
         menu.addSeparator()
         menu.add_button('Category settings', Icons.Settings, 4, slot=self.category_settings)
         menu.addSeparator()
-        menu.add_button('Delete category', Icons.Status.DoNotDisturb, 4, slot=self.delete_category, danger=True)
+        menu.add_button('Delete category', Icons.Cross, 4, slot=self.delete_category, danger=True)
 
         menu.exec(event.globalPos())
+        menu.deleteLater()
 
     def category_settings(self):
         pass

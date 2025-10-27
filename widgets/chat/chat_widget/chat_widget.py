@@ -59,9 +59,10 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
 
         menu.add_button('Chat settings', Icons.Settings, 4, slot=self.chat_settings)
         menu.addSeparator()
-        menu.add_button('Delete chat', Icons.Status.DoNotDisturb, 4, slot=self.delete_chat, danger=True)
+        menu.add_button('Delete chat', Icons.Cross, 4, slot=self.delete_chat, danger=True)
 
         menu.exec(event.globalPos())
+        menu.deleteLater()
 
     def chat_settings(self):
         pass
