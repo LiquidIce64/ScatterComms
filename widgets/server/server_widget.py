@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 
 from .ui_server_widget import Ui_widget_server
-from widgets.common import DraggableWidget
+from widgets.common import DraggableWidget, MenuWidget
 from resources import Icons
 from backend import ServerBackend, ConfigBackend
 
@@ -24,6 +24,24 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
         self.notification = False
 
         self.update_line()
+
+    def contextMenuEvent(self, event):
+        menu = MenuWidget(parent=self, icons_on_left=False)
+
+        menu.add_button('Server settings', Icons.Settings, 4, slot=self.server_settings)
+
+        if self.server.name != 'Saved Messages':
+            menu.addSeparator()
+            menu.add_button('Leave server', Icons.Cross, 4, slot=self.leave_server, danger=True)
+
+        menu.exec(event.globalPos())
+        menu.deleteLater()
+
+    def server_settings(self):
+        pass
+
+    def leave_server(self):
+        pass
 
     def update_server_info(self):
         self.setToolTip(self.server.name)

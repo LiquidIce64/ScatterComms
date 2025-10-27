@@ -498,6 +498,9 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
      <property name="focusPolicy">
       <enum>Qt::FocusPolicy::StrongFocus</enum>
      </property>
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Shape::NoFrame</enum>
      </property>
@@ -607,6 +610,9 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
         </property>
         <property name="focusPolicy">
          <enum>Qt::FocusPolicy::StrongFocus</enum>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
         </property>
         <layout class="QGridLayout" name="layout_profile" rowstretch="1,0" columnstretch="0,0,1">
          <property name="leftMargin">

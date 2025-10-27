@@ -43,10 +43,12 @@ class MainPage(QWidget, Ui_main_page):
         self.btn_server_title.setCheckable(True)
         self.icon_server_dropdown.setIcon(Icons.ArrowDown, override_color=True)
         self.btn_server_title.clicked.connect(self.server_menu)
+        self.btn_server_title.customContextMenuRequested.connect(self.server_menu)
 
         # Profile
         self.btn_profile.setCheckable(True)
         self.btn_profile.clicked.connect(self.profile_menu)
+        self.btn_profile.customContextMenuRequested.connect(self.profile_menu)
         self.update_profile()
         self.update_status()
         ConfigBackend.session.profile.changed.connect(self.update_profile)
@@ -91,14 +93,17 @@ class MainPage(QWidget, Ui_main_page):
         ))
 
     def server_menu(self):
+        self.btn_server_title.setChecked(True)
         self.icon_server_dropdown.setIcon(Icons.ArrowUp, override_color=True)
         menu = MenuWidget(parent=self, icons_on_left=False)
 
         menu.add_button('Create category', Icons.Plus, 4, slot=self.widget_chatlist.create_category)
         menu.addSeparator()
         menu.add_button('Server settings', Icons.Settings, 4, slot=self.server_settings)
-        menu.addSeparator()
-        menu.add_button('Leave server', Icons.Status.DoNotDisturb, 4, slot=self.leave_server, danger=True)
+
+        if ConfigBackend.session.selected_server.name != 'Saved Messages':
+            menu.addSeparator()
+            menu.add_button('Leave server', Icons.Cross, 4, slot=self.leave_server, danger=True)
 
         pos = self.mapToGlobal(self.btn_server_title.geometry().bottomLeft())
         pos += QPoint(4, 5)
@@ -117,6 +122,7 @@ class MainPage(QWidget, Ui_main_page):
         pass
 
     def profile_menu(self):
+        self.btn_profile.setChecked(True)
         menu = MenuWidget(parent=self)
 
         def add_status_button(name, icon, status):
