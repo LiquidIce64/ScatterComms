@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>256</width>
+    <width>320</width>
     <height>56</height>
    </rect>
   </property>
@@ -25,6 +25,11 @@ QPushButton {
 	color: #808080;
 }
 QPushButton[highlight=&quot;true&quot;] {color: white;}
+
+#label_time {
+	font-size: 9pt;
+	font-weight: 600;
+}
 
 #btn_file {
 	padding-left: 5px;
@@ -87,7 +92,7 @@ QSlider::handle {
      </property>
      <property name="minimumSize">
       <size>
-       <width>256</width>
+       <width>320</width>
        <height>56</height>
       </size>
      </property>
@@ -113,7 +118,7 @@ QSlider::handle {
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="1" column="1">
+      <item row="1" column="2">
        <widget class="QSlider" name="slider_playback">
         <property name="maximumSize">
          <size>
@@ -129,7 +134,60 @@ QSlider::handle {
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
+      <item row="0" column="0" colspan="4">
+       <widget class="QPushButton" name="btn_file">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string notr="true">Filename</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="IconButton" name="btn_play">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
        <widget class="QFrame" name="frame_volume">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -209,56 +267,16 @@ QSlider::handle {
         </layout>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="IconButton" name="btn_play">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_time">
         <property name="text">
-         <string notr="true"/>
+         <string notr="true">0:00 / 0:00</string>
         </property>
-        <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QPushButton" name="btn_file">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="text">
-         <string notr="true">Filename</string>
+        <property name="textInteractionFlags">
+         <set>Qt::TextInteractionFlag::NoTextInteraction</set>
         </property>
        </widget>
       </item>

@@ -1,17 +1,18 @@
-from PySide6.QtWidgets import QWidget, QMainWindow
+from PySide6.QtWidgets import QWidget, QMainWindow, QApplication
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QKeyEvent
 
 from backend import ConfigBackend
 from .ui_video_player import Ui_video_player
-from widgets.internal import HoverEventFilter, MouseClickEventFilter, KeyEventFilter
+from widgets.internal import HoverEventFilter, MouseClickEventFilter, KeyEventFilter, ms_to_timestamp
 
 
 class VideoPlayer(QWidget, Ui_video_player):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+        self._duration_repr = '0:00'
 
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
@@ -29,6 +30,7 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.slider_playback.sliderMoved.connect(self.player.setPosition)
         self.slider_playback.sliderPressed.connect(self.__slider_pressed)
         self.slider_playback.sliderReleased.connect(self.__slider_released)
+        self.slider_playback.valueChanged.connect(self.__slider_value_changed)
 
         self.__skip_volume_save = False
         self.slider_volume.valueChanged.connect(self.set_volume)
@@ -60,12 +62,19 @@ class VideoPlayer(QWidget, Ui_video_player):
 
     def __position_changed(self, position: int):
         self.slider_playback.setValue(position)
+        self.label_time.setText(f'{ms_to_timestamp(self.player.position())} / {self._duration_repr}')
 
     def __duration_changed(self, duration: int):
         self.slider_playback.setRange(0, duration)
-        step = max(60, self.player.duration() // 60)
-        self.slider_playback.setSingleStep(step)
-        self.slider_playback.setPageStep(step * 10)
+        self.slider_playback.setSingleStep(1000 / QApplication.wheelScrollLines())
+        self.slider_playback.setPageStep(max(10000, duration // 10))
+        self._duration_repr = ms_to_timestamp(duration)
+        self.label_time.setText(f'{ms_to_timestamp(self.player.position())} / {self._duration_repr}')
+
+    def __slider_value_changed(self, position: int):
+        if self.player.isPlaying():
+            return
+        self.player.setPosition(position)
 
     def __slider_pressed(self):
         self.__was_playing = self.player.isPlaying()
@@ -84,7 +93,9 @@ class VideoPlayer(QWidget, Ui_video_player):
             self.slider_volume.setValue(ConfigBackend.session.video_volume)
 
     def set_volume(self, volume_percent: int):
-        self.audio_output.setVolume(volume_percent / 100)
+        volume = volume_percent / 100
+        volume *= volume  # Squared for better volume control
+        self.audio_output.setVolume(volume)
         if self.__skip_volume_save:
             self.__skip_volume_save = False
         else:

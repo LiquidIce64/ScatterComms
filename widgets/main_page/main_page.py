@@ -322,7 +322,7 @@ class MainPage(QWidget, Ui_main_page):
 
     def update_send_btn(self):
         has_text = not self.textbox.document().isEmpty()
-        self.btn_send.setEnabled(has_text or self.layout_attachments.count() > 1)
+        self.btn_send.setEnabled(has_text or self.scroll_attachments.isVisible())
 
     def send_message(self):
         message_text = self.textbox.document().toPlainText()
