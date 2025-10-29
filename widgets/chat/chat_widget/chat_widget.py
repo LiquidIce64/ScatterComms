@@ -12,7 +12,8 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
     def __init__(self, chat: ChatBackend.Chat, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.icon.setIcon(Icons.Server.TextChat, override_color=True)
+        chat_icon = Icons.Media.Volume if chat.voice_enabled else Icons.Server.TextChat
+        self.icon.setIcon(chat_icon, override_color=True)
         self.btn_settings.setIcon(Icons.Generic.Settings)
 
         self.chat = chat

@@ -183,7 +183,8 @@ QSlider::handle {
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
+         <iconset resource="../../../resources/icons.qrc">
+          <normaloff>:/Media/Pause</normaloff>:/Media/Pause</iconset>
         </property>
        </widget>
       </item>
@@ -260,7 +261,8 @@ QSlider::handle {
             <string notr="true"/>
            </property>
            <property name="icon">
-            <iconset theme="QIcon::ThemeIcon::AudioVolumeHigh"/>
+            <iconset resource="../../../resources/icons.qrc">
+             <normaloff>:/Media/Volume</normaloff>:/Media/Volume</iconset>
            </property>
           </widget>
          </item>
@@ -292,6 +294,8 @@ QSlider::handle {
    <header>widgets.common</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../resources/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

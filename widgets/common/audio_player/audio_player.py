@@ -4,7 +4,8 @@ from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 
 from backend import ConfigBackend
 from .ui_audio_player import Ui_audio_player
-from widgets.internal import HoverEventFilter, ms_to_timestamp
+from widgets.internal import HoverEventFilter, ms_to_timestamp, get_volume_icon
+from resources import Icons
 
 
 class AudioPlayer(QWidget, Ui_audio_player):
@@ -19,6 +20,7 @@ class AudioPlayer(QWidget, Ui_audio_player):
         self.player.positionChanged.connect(self.__position_changed)
         self.player.durationChanged.connect(self.__duration_changed)
 
+        self.btn_play.setIcon(Icons.Media.Play)
         self.btn_play.clicked.connect(self.toggle_play)
         self.__was_playing = False
         self.slider_playback.sliderMoved.connect(self.player.setPosition)
@@ -43,11 +45,13 @@ class AudioPlayer(QWidget, Ui_audio_player):
     def toggle_play(self):
         if self.player.isPlaying():
             self.player.pause()
+            self.btn_play.setIcon(Icons.Media.Play)
         else:
             pos = self.slider_playback.value()
             if self.player.position() != pos:
                 self.player.setPosition(pos)
             self.player.play()
+            self.btn_play.setIcon(Icons.Media.Pause)
 
     def __position_changed(self, position: int):
         self.slider_playback.setValue(position)
@@ -82,6 +86,7 @@ class AudioPlayer(QWidget, Ui_audio_player):
             self.slider_volume.setValue(ConfigBackend.session.audio_volume)
 
     def set_volume(self, volume_percent: int):
+        self.btn_volume.setIcon(get_volume_icon(volume_percent))
         volume = volume_percent / 100
         volume *= volume  # Squared for better volume control
         self.audio_output.setVolume(volume)

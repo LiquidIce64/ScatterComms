@@ -7,6 +7,7 @@ from PySide6.QtCore import QFile, QStandardPaths, Qt
 from .ui_generic_file import Ui_generic_file_widget
 from widgets.message.attachment.attachment_widget import AttachmentWidget, register
 from backend import MessageBackend
+from resources import Icons
 
 
 def format_file_size(size: int):
@@ -25,6 +26,7 @@ class GenericFileWidget(QFrame, AttachmentWidget, Ui_generic_file_widget):
     def __init__(self, attachment: MessageBackend.Attachment):
         super().__init__(attachment=attachment)
         self.setupUi(self)
+        self.btn_download.setIcon(Icons.Generic.Download)
         filename = attachment.filename
         self.btn_file.setText(filename)
         self.btn_file.setToolTip(filename)

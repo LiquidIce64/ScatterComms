@@ -55,6 +55,7 @@ class IconButton(QPushButton):
 
     def setIcon(self, icon):
         self.__icon = icon
+        self.update()
 
     def update_highlight(self):
         self.setProperty('highlight', self.isChecked() or self.hasFocus() or self.underMouse())
