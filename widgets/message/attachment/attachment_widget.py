@@ -3,7 +3,7 @@ from typing import Callable
 
 from PySide6.QtWidgets import QWidget, QFileIconProvider
 from PySide6.QtCore import QFileInfo
-from PySide6.QtGui import QPixmap, QIcon, QImage
+from PySide6.QtGui import QPixmap, QIcon
 
 from backend import MessageBackend
 

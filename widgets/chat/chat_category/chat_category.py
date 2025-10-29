@@ -15,8 +15,8 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
     def __init__(self, category: ChatBackend.Category, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.btn_settings.setIcon(Icons.Settings)
-        self.btn_create_chat.setIcon(Icons.Plus)
+        self.btn_settings.setIcon(Icons.Generic.Settings)
+        self.btn_create_chat.setIcon(Icons.Generic.Plus)
 
         self.drop_target = QFrame()
         self.drop_target.setObjectName('drop_target')
@@ -53,11 +53,11 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
     def contextMenuEvent(self, event):
         menu = MenuWidget(parent=self, icons_on_left=False)
 
-        menu.add_button('Create chat', Icons.Plus, 4, slot=self.create_chat)
+        menu.add_button('Create chat', Icons.Generic.Plus, 4, slot=self.create_chat)
         menu.addSeparator()
-        menu.add_button('Category settings', Icons.Settings, 4, slot=self.category_settings)
+        menu.add_button('Category settings', Icons.Generic.Settings, 4, slot=self.category_settings)
         menu.addSeparator()
-        menu.add_button('Delete category', Icons.Cross, 4, slot=self.delete_category, danger=True)
+        menu.add_button('Delete category', Icons.Generic.Cross, 4, slot=self.delete_category, danger=True)
 
         menu.exec(event.globalPos())
         menu.deleteLater()
@@ -99,11 +99,11 @@ class ChatCategoryWidget(DraggableWidget, Ui_chat_category_widget):
 
     def update_dropdown(self):
         if self.btn.isChecked():
-            self.icon_dropdown.setIcon(Icons.ArrowUp, override_color=True)
+            self.icon_dropdown.setIcon(Icons.Generic.ArrowUp, override_color=True)
             self.frame_chats.show()
             self.category.collapsed = False
         else:
-            self.icon_dropdown.setIcon(Icons.ArrowDown, override_color=True)
+            self.icon_dropdown.setIcon(Icons.Generic.ArrowDown, override_color=True)
             self.frame_chats.hide()
             self.category.collapsed = True
 

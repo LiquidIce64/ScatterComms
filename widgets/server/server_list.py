@@ -1,7 +1,7 @@
 from random import randint
 
 from PySide6.QtWidgets import (
-    QFrame, QVBoxLayout, QPushButton,
+    QFrame, QVBoxLayout,
     QSpacerItem, QSizePolicy, QInputDialog
 )
 from PySide6.QtCore import Qt, QPointF
@@ -55,7 +55,7 @@ class ServerList(ServerListBase):
         self.btn_create_server = IconButton(self)
         self.btn_create_server.setObjectName('btn_create_server')
         self.btn_create_server.setToolTip('Create server')
-        self.btn_create_server.setIcon(Icons.Plus)
+        self.btn_create_server.setIcon(Icons.Generic.Plus)
         self.btn_create_server.setFixedSize(40, 40)
         self.btn_create_server.setCursor(Qt.CursorShape.PointingHandCursor)
         self.btn_create_server.clicked.connect(self.create_server)
@@ -105,7 +105,7 @@ class PinnedServerList(ServerListBase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.drop_target = IconWidget()
-        self.drop_target.setIcon(Icons.ServerFrame)
+        self.drop_target.setIcon(Icons.Server.Frame)
         self.drop_target.setObjectName('drop_target')
         self.drop_target.setFixedSize(40, 40)
 
@@ -123,7 +123,7 @@ class PinnedServerList(ServerListBase):
             saved_messages = saved_messages.widget()
         if isinstance(saved_messages, ServerWidget):
             saved_messages.allow_drag = False
-            saved_messages.icon.setPixmap(Icons.Save)
+            saved_messages.icon.setPixmap(Icons.Generic.Save)
             saved_messages.setObjectName('saved_messages')
             saved_messages.setToolTip('Saved Messages')
             if ConfigBackend.session.selected_server is None:

@@ -111,7 +111,7 @@
          <string notr="true"/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../../../resources/index.qrc">:/icons/text_chat</pixmap>
+         <pixmap resource="../../../resources/icons.qrc">:/Server/TextChat</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -179,8 +179,8 @@
             <string notr="true"/>
            </property>
            <property name="icon">
-            <iconset resource="../../../resources/index.qrc">
-             <normaloff>:/icons/settings</normaloff>:/icons/settings</iconset>
+            <iconset resource="../../../resources/icons.qrc">
+             <normaloff>:/Generic/Settings</normaloff>:/Generic/Settings</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -217,7 +217,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../resources/index.qrc"/>
+  <include location="../../../resources/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

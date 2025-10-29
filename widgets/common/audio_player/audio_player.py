@@ -1,5 +1,3 @@
-import os
-
 from PySide6.QtCore import QStandardPaths, QFile
 from PySide6.QtWidgets import QWidget, QFileDialog, QApplication
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput

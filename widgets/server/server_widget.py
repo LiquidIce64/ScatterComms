@@ -28,11 +28,11 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
     def contextMenuEvent(self, event):
         menu = MenuWidget(parent=self, icons_on_left=False)
 
-        menu.add_button('Server settings', Icons.Settings, 4, slot=self.server_settings)
+        menu.add_button('Server settings', Icons.Generic.Settings, 4, slot=self.server_settings)
 
         if self.server.name != 'Saved Messages':
             menu.addSeparator()
-            menu.add_button('Leave server', Icons.Cross, 4, slot=self.leave_server, danger=True)
+            menu.add_button('Leave server', Icons.Generic.Cross, 4, slot=self.leave_server, danger=True)
 
         menu.exec(event.globalPos())
         menu.deleteLater()
@@ -45,7 +45,7 @@ class ServerWidget(DraggableWidget, Ui_widget_server):
 
     def update_server_info(self):
         self.setToolTip(self.server.name)
-        self.icon.setPixmap(self.server.icon or Icons.Server)
+        self.icon.setPixmap(self.server.icon or Icons.Server.Server)
 
     def drag_render_widget(self): return self.icon
 

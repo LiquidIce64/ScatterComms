@@ -12,8 +12,8 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
     def __init__(self, chat: ChatBackend.Chat, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.icon.setIcon(Icons.TextChat, override_color=True)
-        self.btn_settings.setIcon(Icons.Settings)
+        self.icon.setIcon(Icons.Server.TextChat, override_color=True)
+        self.btn_settings.setIcon(Icons.Generic.Settings)
 
         self.chat = chat
         self.update_chat_info()
@@ -59,9 +59,9 @@ class ChatWidget(DraggableWidget, Ui_chat_widget):
     def contextMenuEvent(self, event):
         menu = MenuWidget(parent=self, icons_on_left=False)
 
-        menu.add_button('Chat settings', Icons.Settings, 4, slot=self.chat_settings)
+        menu.add_button('Chat settings', Icons.Generic.Settings, 4, slot=self.chat_settings)
         menu.addSeparator()
-        menu.add_button('Delete chat', Icons.Cross, 4, slot=self.delete_chat, danger=True)
+        menu.add_button('Delete chat', Icons.Generic.Cross, 4, slot=self.delete_chat, danger=True)
 
         menu.exec(event.globalPos())
         menu.deleteLater()
