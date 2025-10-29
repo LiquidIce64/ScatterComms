@@ -292,7 +292,8 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::AudioVolumeHigh"/>
+         <iconset resource="../../resources/icons.qrc">
+          <normaloff>:/Server/Notifications</normaloff>:/Server/Notifications</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -326,7 +327,8 @@ QScrollBar::handle:horizontal:hover {margin-top: 1px; margin-bottom: 1px; border
          <string notr="true"/>
         </property>
         <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::MailAttachment"/>
+         <iconset resource="../../resources/icons.qrc">
+          <normaloff>:/Message/Pin</normaloff>:/Message/Pin</iconset>
         </property>
         <property name="iconSize">
          <size>
