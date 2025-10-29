@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QMainWindow, QApplication
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QKeyEvent
+from PySide6.QtGui import QKeyEvent, QMouseEvent
 
 from backend import ConfigBackend
 from .ui_video_player import Ui_video_player
@@ -25,7 +25,7 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.btn_play.setIcon(Icons.Media.Play)
         self.btn_play.clicked.connect(self.toggle_play)
         mouse_filter = MouseClickEventFilter(parent=self)
-        mouse_filter.released.connect(self.toggle_play)
+        mouse_filter.released.connect(self.__video_clicked)
         self.video.installEventFilter(mouse_filter)
 
         self.__was_playing = False
@@ -53,6 +53,10 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.player.setPosition(0)
         self.player.play()
         self.player.pause()
+
+    def __video_clicked(self, event: QMouseEvent):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.toggle_play()
 
     def toggle_play(self):
         if self.player.isPlaying():
