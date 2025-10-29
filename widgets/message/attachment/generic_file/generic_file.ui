@@ -164,7 +164,14 @@
       <string notr="true"/>
      </property>
      <property name="icon">
-      <iconset theme="QIcon::ThemeIcon::GoDown"/>
+      <iconset resource="../../../../resources/icons.qrc">
+       <normaloff>:/Generic/Download</normaloff>:/Generic/Download</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>24</width>
+       <height>24</height>
+      </size>
      </property>
     </widget>
    </item>
@@ -172,16 +179,18 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>IconWidget</class>
-   <extends>QLabel</extends>
-   <header>widgets.common</header>
-  </customwidget>
-  <customwidget>
    <class>IconButton</class>
    <extends>QPushButton</extends>
    <header>widgets.common</header>
   </customwidget>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QLabel</extends>
+   <header>widgets.common</header>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../resources/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

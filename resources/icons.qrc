@@ -8,6 +8,16 @@
     <file alias="Save">icons/generic/save.svg</file>
     <file alias="Search">icons/generic/search.svg</file>
     <file alias="Settings">icons/generic/settings.svg</file>
+    <file alias="Download">icons/generic/download.svg</file>
+  </qresource>
+  <qresource prefix="Media">
+    <file alias="Play">icons/media/play.svg</file>
+    <file alias="Pause">icons/media/pause.svg</file>
+    <file alias="Fullscreen">icons/media/fullscreen.svg</file>
+    <file alias="Volume">icons/media/volume.svg</file>
+    <file alias="VolumeMedium">icons/media/volume_medium.svg</file>
+    <file alias="VolumeLow">icons/media/volume_low.svg</file>
+    <file alias="VolumeMute">icons/media/volume_mute.svg</file>
   </qresource>
   <qresource prefix="Profile">
     <file alias="User">icons/profile/user.svg</file>

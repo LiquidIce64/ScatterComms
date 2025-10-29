@@ -42,9 +42,14 @@ for filepath in working_directory.rglob('*.qrc'):
         new_contents = 'from PySide6.QtGui import QIcon\n\n\nICON_DIR = \'resources/icons/\'\n\n\nclass Icons:'
         for resource_match in re.finditer(r'<qresource prefix=\"(\w+)\">[\s\S]*?</qresource>', text):
             prefix = resource_match.group(1)
-            new_contents += f'\n    class {prefix}:\n'
+            prefix_added = False
             for file_match in re.finditer(r'<file alias=\"(\w+)\">icons/(\S+)</file>', resource_match.group()):
                 alias, path = file_match.groups()
+                if not path.endswith('.svg'):
+                    continue
+                if not prefix_added:
+                    new_contents += f'\n    class {prefix}:\n'
+                    prefix_added = True
                 new_contents += f'        {alias} = QIcon(ICON_DIR + \'{path}\')\n'
         with open('resources/icons.py', 'w') as f:
             f.write(new_contents)

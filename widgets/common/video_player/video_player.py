@@ -5,7 +5,8 @@ from PySide6.QtGui import QKeyEvent
 
 from backend import ConfigBackend
 from .ui_video_player import Ui_video_player
-from widgets.internal import HoverEventFilter, MouseClickEventFilter, KeyEventFilter, ms_to_timestamp
+from widgets.internal import HoverEventFilter, MouseClickEventFilter, KeyEventFilter, ms_to_timestamp, get_volume_icon
+from resources import Icons
 
 
 class VideoPlayer(QWidget, Ui_video_player):
@@ -21,6 +22,7 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.player.positionChanged.connect(self.__position_changed)
         self.player.durationChanged.connect(self.__duration_changed)
 
+        self.btn_play.setIcon(Icons.Media.Play)
         self.btn_play.clicked.connect(self.toggle_play)
         mouse_filter = MouseClickEventFilter(parent=self)
         mouse_filter.released.connect(self.toggle_play)
@@ -44,6 +46,7 @@ class VideoPlayer(QWidget, Ui_video_player):
         self.btn_volume.clicked.connect(self.toggle_mute)
 
         self.__fullscreen_window: QMainWindow | None = None
+        self.btn_fullscreen.setIcon(Icons.Media.Fullscreen)
         self.btn_fullscreen.clicked.connect(self.toggle_fullscreen)
 
     def jump_to_first_frame(self):
@@ -54,11 +57,13 @@ class VideoPlayer(QWidget, Ui_video_player):
     def toggle_play(self):
         if self.player.isPlaying():
             self.player.pause()
+            self.btn_play.setIcon(Icons.Media.Play)
         else:
             pos = self.slider_playback.value()
             if self.player.position() != pos:
                 self.player.setPosition(pos)
             self.player.play()
+            self.btn_play.setIcon(Icons.Media.Pause)
 
     def __position_changed(self, position: int):
         self.slider_playback.setValue(position)
@@ -93,6 +98,7 @@ class VideoPlayer(QWidget, Ui_video_player):
             self.slider_volume.setValue(ConfigBackend.session.video_volume)
 
     def set_volume(self, volume_percent: int):
+        self.btn_volume.setIcon(get_volume_icon(volume_percent))
         volume = volume_percent / 100
         volume *= volume  # Squared for better volume control
         self.audio_output.setVolume(volume)

@@ -179,7 +179,8 @@ class MainPage(QWidget, Ui_main_page):
         chat = ConfigBackend.session.selected_server.selected_chat
         if chat is None:
             return
-        self.icon_chat.setIcon(Icons.Server.TextChat, override_color=True)
+        chat_icon = Icons.Media.Volume if chat.voice_enabled else Icons.Server.TextChat
+        self.icon_chat.setIcon(chat_icon, override_color=True)
         self.label_chatname.setText(chat.name)
         run_task(
             RoleBackend.get_chat_members, chat.uuid,
