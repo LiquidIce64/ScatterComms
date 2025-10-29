@@ -24,6 +24,7 @@
     <file alias="Avatar">icons/profile/avatar.svg</file>
   </qresource>
   <qresource prefix="Message">
+    <file alias="Pin">icons/message/pin.svg</file>
     <file alias="Emoji">icons/message/emoji.svg</file>
     <file alias="Send">icons/message/send.svg</file>
   </qresource>
@@ -31,6 +32,7 @@
     <file alias="Server">icons/server/server.svg</file>
     <file alias="Frame">icons/server/frame.svg</file>
     <file alias="TextChat">icons/server/text_chat.svg</file>
+    <file alias="Notifications">icons/server/notifications.svg</file>
   </qresource>
   <qresource prefix="Status">
     <file alias="Online">icons/status/online.svg</file>

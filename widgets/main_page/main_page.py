@@ -70,11 +70,16 @@ class MainPage(QWidget, Ui_main_page):
         self.textbox.save_max_height()
         self.textbox.returnPressed.connect(self.send_message)
         self.textbox.textChanged.connect(self.update_send_btn)
+
         self.btn_attachment.setIcon(Icons.Generic.Plus)
         self.btn_emoji.setIcon(Icons.Message.Emoji)
         self.btn_send.setIcon(Icons.Message.Send)
+        self.btn_notifications.setIcon(Icons.Server.Notifications)
+        self.btn_pinned_messages.setIcon(Icons.Message.Pin)
+
         self.btn_send.clicked.connect(self.send_message)
         self.btn_attachment.clicked.connect(self.add_attachment)
+
         self.scroll_attachments.hide()
         self.on_server_changed()
         ConfigBackend.session.server_changed.connect(self.on_server_changed)
