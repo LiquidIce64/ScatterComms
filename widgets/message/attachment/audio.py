@@ -16,7 +16,9 @@ class AudioWidget(AudioPlayer, AttachmentWidget):
         self.attachment = attachment
         self.setObjectName('video_widget')
         self.setFixedWidth(350)
-        self.btn_file.setText(self.attachment.filename)
+        filename = self.attachment.filename
+        self.btn_file.setText(filename)
+        self.btn_file.setToolTip(filename)
         self.setEnabled(False)
         self.download()
 
