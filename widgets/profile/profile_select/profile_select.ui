@@ -186,7 +186,7 @@ QScrollBar::handle:hover {
                 <string notr="true"/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../../../resources/index.qrc">:/icons/plus</pixmap>
+                <pixmap resource="../../../resources/icons.qrc">:/Generic/Plus</pixmap>
                </property>
                <property name="scaledContents">
                 <bool>true</bool>
@@ -246,8 +246,7 @@ QScrollBar::handle:hover {
   <tabstop>btn_create</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../resources/index.qrc"/>
-  <include location="../../../resources/index.qrc"/>
+  <include location="../../../resources/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

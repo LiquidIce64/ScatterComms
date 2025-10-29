@@ -1,0 +1,34 @@
+<RCC>
+  <qresource prefix="Generic">
+    <file alias="ArrowDown">icons/generic/arrow_down.svg</file>
+    <file alias="ArrowUp">icons/generic/arrow_up.svg</file>
+    <file alias="Cross">icons/generic/cross.svg</file>
+    <file alias="Edit">icons/generic/edit.svg</file>
+    <file alias="Plus">icons/generic/plus.svg</file>
+    <file alias="Save">icons/generic/save.svg</file>
+    <file alias="Search">icons/generic/search.svg</file>
+    <file alias="Settings">icons/generic/settings.svg</file>
+  </qresource>
+  <qresource prefix="Profile">
+    <file alias="User">icons/profile/user.svg</file>
+    <file alias="Avatar">icons/profile/avatar.svg</file>
+  </qresource>
+  <qresource prefix="Message">
+    <file alias="Emoji">icons/message/emoji.svg</file>
+    <file alias="Send">icons/message/send.svg</file>
+  </qresource>
+  <qresource prefix="Server">
+    <file alias="Server">icons/server/server.svg</file>
+    <file alias="Frame">icons/server/frame.svg</file>
+    <file alias="TextChat">icons/server/text_chat.svg</file>
+  </qresource>
+  <qresource prefix="Status">
+    <file alias="Online">icons/status/online.svg</file>
+    <file alias="Away">icons/status/away.svg</file>
+    <file alias="DoNotDisturb">icons/status/do_not_disturb.svg</file>
+    <file alias="Offline">icons/status/offline.svg</file>
+  </qresource>
+  <qresource prefix="Debug">
+    <file alias="Test">icons/test.png</file>
+  </qresource>
+</RCC>

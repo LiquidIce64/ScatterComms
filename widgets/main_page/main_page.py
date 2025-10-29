@@ -25,7 +25,7 @@ class MainPage(QWidget, Ui_main_page):
         self.main_window = main_window
 
         # Settings
-        self.btn_settings.setIcon(Icons.Settings)
+        self.btn_settings.setIcon(Icons.Generic.Settings)
 
         # Search
         self.search_widget = SearchWidget(self)
@@ -34,14 +34,14 @@ class MainPage(QWidget, Ui_main_page):
             self.search_widget.toggle(),
             self.btn_search.isChecked() and self.btn_profile.setChecked(False)
         ))
-        self.btn_search.setIcon(Icons.Search)
+        self.btn_search.setIcon(Icons.Generic.Search)
 
         # Server list
         self.frame_servers.scrolled.connect(self.scroll_servers.scroll)
 
         # Server title
         self.btn_server_title.setCheckable(True)
-        self.icon_server_dropdown.setIcon(Icons.ArrowDown, override_color=True)
+        self.icon_server_dropdown.setIcon(Icons.Generic.ArrowDown, override_color=True)
         self.btn_server_title.clicked.connect(self.server_menu)
         self.btn_server_title.customContextMenuRequested.connect(self.server_menu)
 
@@ -70,9 +70,9 @@ class MainPage(QWidget, Ui_main_page):
         self.textbox.save_max_height()
         self.textbox.returnPressed.connect(self.send_message)
         self.textbox.textChanged.connect(self.update_send_btn)
-        self.btn_attachment.setIcon(Icons.Plus)
-        self.btn_emoji.setIcon(Icons.Emoji)
-        self.btn_send.setIcon(Icons.Send)
+        self.btn_attachment.setIcon(Icons.Generic.Plus)
+        self.btn_emoji.setIcon(Icons.Message.Emoji)
+        self.btn_send.setIcon(Icons.Message.Send)
         self.btn_send.clicked.connect(self.send_message)
         self.btn_attachment.clicked.connect(self.add_attachment)
         self.scroll_attachments.hide()
@@ -94,16 +94,16 @@ class MainPage(QWidget, Ui_main_page):
 
     def server_menu(self):
         self.btn_server_title.setChecked(True)
-        self.icon_server_dropdown.setIcon(Icons.ArrowUp, override_color=True)
+        self.icon_server_dropdown.setIcon(Icons.Generic.ArrowUp, override_color=True)
         menu = MenuWidget(parent=self, icons_on_left=False)
 
-        menu.add_button('Create category', Icons.Plus, 4, slot=self.widget_chatlist.create_category)
+        menu.add_button('Create category', Icons.Generic.Plus, 4, slot=self.widget_chatlist.create_category)
         menu.addSeparator()
-        menu.add_button('Server settings', Icons.Settings, 4, slot=self.server_settings)
+        menu.add_button('Server settings', Icons.Generic.Settings, 4, slot=self.server_settings)
 
         if ConfigBackend.session.selected_server.name != 'Saved Messages':
             menu.addSeparator()
-            menu.add_button('Leave server', Icons.Cross, 4, slot=self.leave_server, danger=True)
+            menu.add_button('Leave server', Icons.Generic.Cross, 4, slot=self.leave_server, danger=True)
 
         pos = self.mapToGlobal(self.btn_server_title.geometry().bottomLeft())
         pos += QPoint(4, 5)
@@ -113,7 +113,7 @@ class MainPage(QWidget, Ui_main_page):
         menu.deleteLater()
 
         self.btn_server_title.setChecked(False)
-        self.icon_server_dropdown.setIcon(Icons.ArrowDown, override_color=True)
+        self.icon_server_dropdown.setIcon(Icons.Generic.ArrowDown, override_color=True)
 
     def server_settings(self):
         pass
@@ -143,8 +143,8 @@ class MainPage(QWidget, Ui_main_page):
         add_status_button('Do not disturb', Icons.Status.DoNotDisturb, ProfileBackend.Status.DoNotDisturb)
         add_status_button('Invisible', Icons.Status.Offline, ProfileBackend.Status.Offline)
         menu.addSeparator()
-        menu.add_button('Edit profile', Icons.Edit, 4, slot=self.edit_profile)
-        _, profile_action = menu.add_button('Change profile', Icons.User, 4, slot=self.change_profile)
+        menu.add_button('Edit profile', Icons.Generic.Edit, 4, slot=self.edit_profile)
+        _, profile_action = menu.add_button('Change profile', Icons.Profile.User, 4, slot=self.change_profile)
 
         pos = self.mapToGlobal(self.frame_controls.geometry().bottomLeft())
         pos += QPoint(4, 5)
@@ -179,7 +179,7 @@ class MainPage(QWidget, Ui_main_page):
         chat = ConfigBackend.session.selected_server.selected_chat
         if chat is None:
             return
-        self.icon_chat.setIcon(Icons.TextChat, override_color=True)
+        self.icon_chat.setIcon(Icons.Server.TextChat, override_color=True)
         self.label_chatname.setText(chat.name)
         run_task(
             RoleBackend.get_chat_members, chat.uuid,
@@ -291,7 +291,7 @@ class MainPage(QWidget, Ui_main_page):
     def update_profile(self):
         profile = ConfigBackend.session.profile
         self.label_username.setText(profile.username)
-        self.icon_useravatar.setPixmap(profile.avatar or Icons.Avatar)
+        self.icon_useravatar.setPixmap(profile.avatar or Icons.Profile.Avatar)
 
     def update_status(self):
         try:

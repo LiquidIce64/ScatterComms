@@ -10,5 +10,5 @@ class ProfileCard(QWidget, Ui_profile_card):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.icon_avatar.painter_mask = self.icon_avatar.CircleMask()
-        self.icon_avatar.setPixmap(profile.avatar or Icons.Avatar)
+        self.icon_avatar.setPixmap(profile.avatar or Icons.Profile.Avatar)
         self.label_username.setText(profile.username)

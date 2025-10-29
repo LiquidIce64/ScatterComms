@@ -25,7 +25,7 @@ class MemberWidget(QWidget, Ui_member_widget):
         self.label_status.hide()
 
     def update_profile_info(self):
-        self.icon_avatar.setPixmap(self.profile.avatar or Icons.Avatar)
+        self.icon_avatar.setPixmap(self.profile.avatar or Icons.Profile.Avatar)
         self.label_username.setText(self.profile.username)
 
     def update_role_info(self):

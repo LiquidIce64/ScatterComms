@@ -32,5 +32,5 @@ class AttachmentPreview(QFrame):
         self.remove_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.remove_btn.setGeometry(48, 0, 16, 16)
         self.remove_btn.setIconSize(QSize(8, 8))
-        self.remove_btn.setIcon(Icons.Cross)
+        self.remove_btn.setIcon(Icons.Generic.Cross)
         self.remove_btn.clicked.connect(self.deleteLater)

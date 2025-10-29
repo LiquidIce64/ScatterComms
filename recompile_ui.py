@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from pathlib import Path
 from hashlib import md5
 
@@ -29,9 +30,24 @@ for filepath in working_directory.rglob('*.qrc'):
     if check_hash(filepath):
         continue
     print(f'Compiling {filepath.name}...')
-    new_name = f'{filepath.with_suffix("").name}_rc.py'
+    name_without_ext = filepath.with_suffix("").name
+    new_name = f'{name_without_ext}_rc.py'
     new_path = working_directory.joinpath(new_name).resolve()
     os.system(f'pyside6-rcc {filepath} -o {new_path}')
+
+    if filepath.name == 'icons.qrc':
+        # compile icons
+        with open(filepath, 'r') as f:
+            text = f.read()
+        new_contents = 'from PySide6.QtGui import QIcon\n\n\nICON_DIR = \'resources/icons/\'\n\n\nclass Icons:'
+        for resource_match in re.finditer(r'<qresource prefix=\"(\w+)\">[\s\S]*?</qresource>', text):
+            prefix = resource_match.group(1)
+            new_contents += f'\n    class {prefix}:\n'
+            for file_match in re.finditer(r'<file alias=\"(\w+)\">icons/(\S+)</file>', resource_match.group()):
+                alias, path = file_match.groups()
+                new_contents += f'        {alias} = QIcon(ICON_DIR + \'{path}\')\n'
+        with open('resources/icons.py', 'w') as f:
+            f.write(new_contents)
 
 
 # compile widget UIs
