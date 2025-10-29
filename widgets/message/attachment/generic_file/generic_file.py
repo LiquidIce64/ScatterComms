@@ -1,24 +1,13 @@
 import os
-import math
 
-from PySide6.QtWidgets import QFrame, QFileDialog, QApplication
-from PySide6.QtCore import QFile, QStandardPaths, Qt
+from PySide6.QtWidgets import QFrame
+from PySide6.QtCore import Qt
 
 from .ui_generic_file import Ui_generic_file_widget
 from widgets.message.attachment.attachment_widget import AttachmentWidget, register
+from widgets.internal import format_file_size
 from backend import MessageBackend
 from resources import Icons
-
-
-def format_file_size(size: int):
-    units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-    unit_ind = min(
-        int(math.log(size, 1024)),
-        len(units)-1
-    ) if size > 0 else 0
-    value = size / (1024 ** unit_ind)
-    unit = QApplication.translate('file_size', units[unit_ind])
-    return f'{value:.{0 if unit_ind == 0 else 1}f}\xa0{unit}'
 
 
 @register('*')
@@ -45,14 +34,4 @@ class GenericFileWidget(QFrame, AttachmentWidget, Ui_generic_file_widget):
         self.label.setText(format_file_size(file_size))
         self.btn_file.setEnabled(True)
         self.btn_file.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_file.clicked.connect(self.save_file)
-
-    def save_file(self):
-        downloads_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DownloadLocation)
-        new_filepath = QFileDialog.getSaveFileName(
-            parent=self,
-            caption=QApplication.translate('file_dialog', 'Save file'),
-            dir=f'{downloads_dir}/{self.attachment.filename}'
-        )[0]
-        if new_filepath:
-            QFile.copy(self.attachment.filepath, new_filepath)
+        self.btn_file.clicked.connect(self.save_attachment)
