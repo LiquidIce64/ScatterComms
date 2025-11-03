@@ -195,7 +195,7 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Add chat</string>
+            <string>Create chat</string>
            </property>
            <property name="text">
             <string notr="true"/>
@@ -227,7 +227,7 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Edit category</string>
+            <string>Category settings</string>
            </property>
            <property name="text">
             <string notr="true"/>

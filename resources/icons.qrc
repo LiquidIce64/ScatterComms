@@ -6,6 +6,7 @@
     <file alias="Edit">icons/generic/edit.svg</file>
     <file alias="Plus">icons/generic/plus.svg</file>
     <file alias="Save">icons/generic/save.svg</file>
+    <file alias="Copy">icons/generic/copy.svg</file>
     <file alias="Search">icons/generic/search.svg</file>
     <file alias="Settings">icons/generic/settings.svg</file>
     <file alias="Download">icons/generic/download.svg</file>

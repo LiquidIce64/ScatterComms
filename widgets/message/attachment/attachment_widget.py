@@ -60,8 +60,8 @@ class AttachmentWidget:
     def context_menu_buttons(self, menu: MenuWidget):
         if self.attachment.filepath is None:
             return
-        menu.add_button('Save attachment', Icons.Generic.Save, 4, slot=self.save_attachment, override_icon_color=False)
-        menu.add_button('Copy attachment', Icons.Generic.Save, 4, slot=self.copy_attachment, override_icon_color=False)
+        menu.add_button('Save attachment', Icons.Generic.Save, 4, slot=self.save_attachment)
+        menu.add_button('Copy attachment', Icons.Generic.Copy, 4, slot=self.copy_attachment)
 
     def save_attachment(self):
         downloads_dir = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DownloadLocation)

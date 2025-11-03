@@ -41,9 +41,8 @@ class MessageWidget(QWidget, Ui_message_widget):
             if text_label.hasSelectedText():
                 selected_text = text_label.selectedText()
                 menu.add_button(
-                    'Copy', Icons.Generic.Save, 4,
-                    slot=lambda: QApplication.clipboard().setText(selected_text),
-                    override_icon_color=False
+                    'Copy', Icons.Generic.Copy, 4,
+                    slot=lambda: QApplication.clipboard().setText(selected_text)
                 )
                 menu.addSeparator()
 
@@ -53,7 +52,7 @@ class MessageWidget(QWidget, Ui_message_widget):
         menu.addSeparator()
 
         if has_text:
-            menu.add_button('Copy text', Icons.Generic.Save, 4, slot=self.copy_text, override_icon_color=False)
+            menu.add_button('Copy text', Icons.Generic.Copy, 4, slot=self.copy_text)
 
         attachment_count = 0
         attachment_widget = None
