@@ -173,7 +173,7 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Edit chat</string>
+            <string>Chat settings</string>
            </property>
            <property name="text">
             <string notr="true"/>
