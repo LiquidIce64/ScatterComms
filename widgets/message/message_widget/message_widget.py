@@ -46,8 +46,8 @@ class MessageWidget(QWidget, Ui_message_widget):
                 )
                 menu.addSeparator()
 
-        menu.add_button('Reply', Icons.Message.Send, 4, slot=self.reply)
-        menu.add_button('Forward', Icons.Message.Send, 4, slot=self.forward)
+        menu.add_button('Reply', Icons.Message.Reply, 4, slot=self.reply)
+        menu.add_button('Forward', Icons.Message.Forward, 4, slot=self.forward)
         menu.add_button('Pin message', Icons.Message.Pin, 4, slot=self.pin)
         menu.addSeparator()
 

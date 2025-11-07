@@ -28,6 +28,8 @@
     <file alias="Pin">icons/message/pin.svg</file>
     <file alias="Emoji">icons/message/emoji.svg</file>
     <file alias="Send">icons/message/send.svg</file>
+    <file alias="Reply">icons/message/reply.svg</file>
+    <file alias="Forward">icons/message/forward.svg</file>
   </qresource>
   <qresource prefix="Server">
     <file alias="Server">icons/server/server.svg</file>
