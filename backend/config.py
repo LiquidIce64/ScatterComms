@@ -8,6 +8,7 @@ from .storage import StorageBackend
 if TYPE_CHECKING:
     from .profile import ProfileBackend
     from .server import ServerBackend
+    from .networking import NetBackend
 
 
 class ConfigBackend(BaseBackend):
@@ -35,6 +36,9 @@ class ConfigBackend(BaseBackend):
 
             self.video_volume: int = cast(int, settings.value('media/video_volume', defaultValue=100, type=int))
             self.audio_volume: int = cast(int, settings.value('media/audio_volume', defaultValue=100, type=int))
+
+            self.listen_port: int = cast(int, settings.value('network/listen_port', defaultValue=51200, type=int))
+            self.listen_port = min(max(self.listen_port, 0), 65535)  # clamp port to allowed range
 
             self.__profile = profile_backend.get_profile(profile_uuid)
 
@@ -78,6 +82,11 @@ class ConfigBackend(BaseBackend):
                 self.server_changed.emit()
             self.profile_changed.emit()
 
+            net_backend = BaseBackend.get_backend('NetBackend')
+            if TYPE_CHECKING:
+                net_backend = cast(NetBackend, net_backend)
+            net_backend.init()
+
         @status.setter
         def status(self, new_value: 'ProfileBackend.Status'):
             if self.__status == new_value:
@@ -102,6 +111,7 @@ class ConfigBackend(BaseBackend):
             settings.setValue('server/uuid', self.__selected_server and str(self.__selected_server.uuid) or '')
             settings.setValue('media/video_volume', self.video_volume)
             settings.setValue('media/audio_volume', self.audio_volume)
+            settings.setValue('network/listen_port', self.listen_port)
 
     session: Optional[Session] = None
 

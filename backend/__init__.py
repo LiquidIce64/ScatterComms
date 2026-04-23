@@ -1,4 +1,5 @@
 from .multithreading import run_task
+from .networking import NetBackend
 from .storage import StorageBackend
 from .config import ConfigBackend
 from .profile import ProfileBackend

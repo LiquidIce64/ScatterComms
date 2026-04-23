@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QMainWindow
 
 from widgets.main_page import MainPage
 from widgets.profile import ProfileSelect
-from backend import ConfigBackend
+from backend import ConfigBackend, NetBackend
 
 
 class MainWindow(QMainWindow):
@@ -18,6 +18,7 @@ class MainWindow(QMainWindow):
 
         ConfigBackend.session = ConfigBackend.Session()
         ConfigBackend.session.setParent(self)
+        NetBackend.init()
 
         if ConfigBackend.session.geometry is not None:
             self.restoreGeometry(ConfigBackend.session.geometry)
